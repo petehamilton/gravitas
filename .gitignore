@@ -1,0 +1,7 @@
+*.pyc
+
+
+client/css/lib/
+client/js/lib/
+
+staticfetcher.py
