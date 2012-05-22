@@ -57,7 +57,11 @@ Setting up server
 * Go to the server directory ```cd server```
 * run ```sudo npm link``` to install dependencies
 
-Running the server
+
+
+Running the server(s)
 ------------------
 
-* From top level server: ```make server```
+* From top level server
+ * ```make server```, this starts the main node server
+ * ```make dev```, this starts the second python server to serve assets
