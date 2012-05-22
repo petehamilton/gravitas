@@ -27,9 +27,9 @@ Links
 
 Installing on OS X
 ------------------
-* [homebrew] (https://github.com/mxcl/homebrew)
-* run ```brew install node```
-* run ```brew install wget```
-* run ```make```
+* install [homebrew] (https://github.com/mxcl/homebrew)
+* run ```brew install node``` to install node.js
 * run ```curl http://npmjs.org/install.sh | sh```
-* run ```npm install -g coffee-script```
+* run ```npm install -g coffee-script``` to install coffeescript
+* run ```brew install wget``` to ensure the make file can download the libraries
+* run ```make``` to install the library files
