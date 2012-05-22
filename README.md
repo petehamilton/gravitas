@@ -24,6 +24,7 @@ Links
 * [Jasmine](https://github.com/pivotal/jasmine/wiki) for testing. Especially [Matchers](https://github.com/pivotal/jasmine/wiki/Matchers) and [Suites and Specs](https://github.com/pivotal/jasmine/wiki/Suites-and-specs)
 * [CoffeeScript](http://js2coffee.org) and [js2coffee](http://js2coffee.org)
 * [git ready](http://gitready.com)
+* [Raphael](http://raphaeljs.com/reference.html)
 
 Installing on OS X
 ==================
