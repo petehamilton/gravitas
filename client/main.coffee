@@ -28,7 +28,7 @@ main = ->
   background.attr({fill: '#000'})
 
   # create a new turret
-  @g = new Game(canvas, 2)
+  @g = new Game(canvas, 0)
 
   p = new PlasmaBall()
   p.render(canvas)
