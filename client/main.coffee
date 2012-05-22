@@ -28,13 +28,13 @@ main = ->
   background.attr({fill: '#000'})
 
   # create a new turret
-  @g = new Game(canvas, 0)
+  @g = new Game(canvas, 2)
 
   p = new PlasmaBall()
   p.render(canvas)
 
   $(document).mousemove (e) =>
-    g.mouseMoved(event.pageX, event.pageY)
+    g.mouseMoved(e.pageX, e.pageY)
 
 
 $ ->

@@ -42,9 +42,9 @@ class @Turret
   mouseMoved: (mx, my) ->
     opp_adj = switch @position
       when 0 then my/mx
-      when 1 then (c.width - mx)/my
-      when 2 then (c.height - my)/(c.width - mx)
-      when 3 then mx/(c.height - my)
+      when 1 then (@canvas.width - mx)/my
+      when 2 then (@canvas.height - my)/(@canvas.width - mx)
+      when 3 then mx/(@canvas.height - my)
 
     angle = Math.floor(Math.atan(opp_adj) * (180 / Math.PI)) + @position * 90
     @setTurretRotation angle
