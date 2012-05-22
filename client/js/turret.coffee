@@ -40,54 +40,19 @@ class @Turret
               .transform("r#{@angle},#{@body_center.x},#{@body_center.y}")
 
   mouseMoved: (mx, my) ->
+    dx = @center.x - mx 
+    dy = @center.y - my
 
-    switch @position
-      when 0
-        a = Math.atan(Math.abs(my/mx))
-        if mx < 0 and my < 0
-          angle = Math.PI + a
-        else if mx < 0
-          angle = 2 * Math.PI - a
-        else if my < 0
-          log "THIS"
-          angle = Math.PI - a
-        else
-          angle =  a
-
-      when 1
-        a = Math.atan(Math.abs((@canvas.width - mx)/my))
-        if my < 0 and mx > @canvas.width
-          angle = Math.PI + a
-        else if my < 0
-          angle = Math.PI - a
-        else if mx > @canvas.width
-          angle = 2 * Math.PI - a
-        else
-          angle = a
-
-      when 2
-        a = Math.atan(Math.abs((@canvas.height - my)/(@canvas.width - mx)))
-        if mx > @canvas.width and my > @canvas.height
-          angle = Math.PI + a
-        else if mx > @canvas.width
-          angle = Math.PI - a
-        else if my > @canvas.height
-          angle = 2 * Math.PI - a
-        else
-          angle = a
-
-      when 3
-        a = Math.atan(Math.abs(mx/(@canvas.height - my)))
-        if mx < 0 and my > @canvas.height
-          angle = Math.PI + a
-        else if my > @canvas.height
-          angle = Math.PI - a
-        else if mx < 0
-          angle = 2 * Math.PI - a
-        else
-          angle = a
-
-    angle_degrees = angle * (180 / Math.PI) + @position * 90
+    a = Math.atan(Math.abs(dy/dx))
+    if dx > 0 and dy > 0
+      angle = Math.PI + a
+    else if dx > 0 
+      angle = Math.PI - a
+    else if dy > 0
+      angle = 2 * Math.PI - a
+    else
+      angle = a
+    angle_degrees = angle * (180 / Math.PI)
     @setTurretRotation angle_degrees
 
   # sets the turret rotation based on the given angle (in degrees)
