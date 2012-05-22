@@ -26,6 +26,9 @@ Links
 * [git ready](http://gitready.com)
 
 Installing on OS X
+==================
+
+Basic setup
 ------------------
 * install [homebrew] (https://github.com/mxcl/homebrew)
 * run ```brew install node``` to install node.js
@@ -35,7 +38,7 @@ Installing on OS X
 * run ```make``` inside the project root to install all the library files
 
 
-Install Sublime
+Installing Sublime
 ---------------
 * Download [sublime] (http://www.sublimetext.com/2)
 * Add Package manager
@@ -47,3 +50,14 @@ Install Sublime
   * start typing coffeescript, enter
 * Install git package
   * Same as Coffeescript but typing git
+
+Setting up server
+-----------------
+
+* Go to the server directory ```cd server```
+* run ```sudo npm link``` to install dependencies
+
+Running the server
+------------------
+
+* From top level server: ```make server```
