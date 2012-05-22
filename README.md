@@ -24,3 +24,12 @@ Links
 * [Jasmine](https://github.com/pivotal/jasmine/wiki) for testing. Especially [Matchers](https://github.com/pivotal/jasmine/wiki/Matchers) and [Suites and Specs](https://github.com/pivotal/jasmine/wiki/Suites-and-specs)
 * [CoffeeScript](http://js2coffee.org) and [js2coffee](http://js2coffee.org)
 * [git ready](http://gitready.com)
+
+Installing on OS X
+------------------
+* [homebrew] (https://github.com/mxcl/homebrew)
+* run ```brew install node```
+* run ```brew install wget```
+* run ```make```
+* run ```curl http://npmjs.org/install.sh | sh```
+* run ```npm install -g coffee-script```
