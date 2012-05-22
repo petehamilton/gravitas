@@ -1,6 +1,6 @@
 @log = (m) ->
   console.log m
-
+    
 main = ->
   canvas = $('#main_game_canvas')
 
