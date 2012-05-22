@@ -1,0 +1,12 @@
+{
+  "name": "server",
+  "version": "0.0.1",
+  "description": "Turret game server",
+  "author": "Niklas Hambuechen <mail@nh2.me>",
+  "dependencies": {
+    "express": ">= 2.5.9",
+    "mongodb": ">= 1.0.2",
+    "now": ">= 0.8.1"
+  },
+  "engine": "node 0.6.18"
+}

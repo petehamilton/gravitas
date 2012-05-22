@@ -4,7 +4,7 @@ all: clean init build
 staticfetcher.py:
 	wget https://raw.github.com/nh2/staticfetcher/master/staticfetcher.py
 
-.PHONY: statics_fetch statics_fetch_force statics_clean
+.PHONY: statics_fetch statics_fetch_force statics_clean server
 
 statics_fetch: staticfetcher.py
 	python statics.py fetch
@@ -23,3 +23,6 @@ clean:
 	rm -f staticfetcher.py
 
 init: statics_fetch_force
+
+server:
+	coffee server/server.coffee
