@@ -3,7 +3,7 @@ class @Turret
   # Positions are clockwise from top left to bottom left
   # 0 => TL, 1 => TR, 2 => BR, 3 => BL
   constructor: (@position) ->
-    log "Turret Position: #{@position}"
+    log "Creating turret at #{@position}"
     @angle = 45
 
   # takes a raphael canvas c
@@ -24,5 +24,4 @@ class @Turret
       mx = event.pageX
       my = event.pageY
       @angle = Math.floor(Math.atan(my/mx) * (180 / Math.PI))
-      log "Angle: #{@angle}"
       turret.transform("R#{@angle},0,0")
