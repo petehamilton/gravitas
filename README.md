@@ -40,7 +40,7 @@ Install Sublime
 * Download [sublime] (http://www.sublimetext.com/2)
 * Add Package manager
   * Visit [package manager](http://wbond.net/sublime_packages/package_control/installation) and copy the huge chunk of text
-  * Press cmd+shift+p, copy in the chunk and press enter
+  * Press ctrl+(the plus/minus key thignn top left of keyboard), copy in the chunk and press enter
 * Now install coffeescript package
   * cmd+shift+p
   * type install, enter
