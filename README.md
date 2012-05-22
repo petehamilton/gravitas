@@ -32,4 +32,4 @@ Installing on OS X
 * run ```curl http://npmjs.org/install.sh | sh```
 * run ```npm install -g coffee-script``` to install coffeescript
 * run ```brew install wget``` to ensure the make file can download the libraries
-* run ```make``` to install the library files
+* run ```make``` inside the project root to install all the library files
