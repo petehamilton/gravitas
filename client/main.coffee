@@ -23,18 +23,20 @@ main = ->
   canvas_width = 400
   canvas_height = 400
 
-  canvas = Raphael(0, 0, canvas_width, canvas_height)
-  background = canvas.rect(0, 0, canvas_width, canvas_height)
+  arena = Raphael(100, 100, canvas_width, canvas_height)
+  background = arena.rect(0, 0, canvas_width, canvas_height)
   background.attr({fill: '#000'})
 
   # create a new turret
-  @g = new Game(canvas, 0)
+  @g = new Game(arena, 0)
 
   p = new PlasmaBall()
-  p.render(canvas)
+  p.render(arena)
 
   $(document).mousemove (e) =>
-    g.mouseMoved(e.pageX, e.pageY)
+    mx = e.pageX - arena.canvas.offsetLeft
+    my = e.pageY - arena.canvas.offsetTop
+    g.mouseMoved(mx, my)
 
 
 $ ->
