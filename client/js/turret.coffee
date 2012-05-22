@@ -28,13 +28,14 @@ class @Turret
     @angle = @position * 90# + 45
 
     @setup()
+
   name: ->
     "Turret #{@position}"
 
   # takes a raphael canvas c
   setup: ->
     log "Rendering #{@name()}"
-    
+
     # simple body (circle!)
     @body_sprite = @canvas.circle(@center.x, @center.y, 80)
                     .attr({fill: '#CCCCCC'})
@@ -43,13 +44,13 @@ class @Turret
                       .transform("r#{@angle},#{@center.x},#{@center.y}")
 
   mouseMoved: (mx, my) ->
-    dx = @offset_center.x - mx 
+    dx = @offset_center.x - mx
     dy = @offset_center.y - my
 
     a = Math.atan(Math.abs(dy/dx))
     if dx > 0 and dy > 0
       angle = Math.PI + a
-    else if dx > 0 
+    else if dx > 0
       angle = Math.PI - a
     else if dy > 0
       angle = 2 * Math.PI - a
