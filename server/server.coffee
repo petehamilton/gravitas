@@ -84,4 +84,8 @@ run = ->
     console.log msg
 
 
+  everyone.now.chat = (msg) ->
+    console.log "chat message: #{msg}"
+    everyone.now.displayMessage msg
+
 run()
