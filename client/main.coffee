@@ -1,7 +1,5 @@
 log (m) ->
   console.log m
-  $("#log").append($('<p>').val(m))
-  # Output to some other on screen log?
 
 $ ->
   host = window.location.hostname
