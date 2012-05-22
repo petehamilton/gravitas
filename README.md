@@ -33,3 +33,8 @@ Installing on OS X
 * run ```npm install -g coffee-script``` to install coffeescript
 * run ```brew install wget``` to ensure the make file can download the libraries
 * run ```make``` inside the project root to install all the library files
+
+
+Install Sublime
+---------------
+* [sublime] (http://www.sublimetext.com/2)
