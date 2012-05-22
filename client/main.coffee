@@ -1,4 +1,7 @@
-log = (x) -> console.log x
+log  (m) ->
+  console.log m
+  $("#log").append($('<p>').val(m))
+  # Output to some other on screen log?
 
 $ ->
   host = window.location.hostname
@@ -22,3 +25,13 @@ $ ->
         log msg
 
         now.chat msg
+
+  t = new Turret
+console.log "coffee loaded"
+
+now.ready ->
+  console.log "now ready"
+
+class Turret
+  constructor: () ->
+    log "I am a turret!"
