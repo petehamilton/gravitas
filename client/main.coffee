@@ -3,9 +3,7 @@ log = (m) ->
 
 
 class Turret
-  constructor: () ->
-    log "I am a turret!"
-
+  
   # Positions are clockwise from top left to bottom left
   # 0 => TL, 1 => TR, 2 => BR, 3 => BL
   constructor: (@position) ->
@@ -34,7 +32,9 @@ main = ->
 
       now.chat msg
       false
-  
+
+  # Test turret rendering
+  canvas = Raphael(0, 0, 400, 400);
   t = new Turret(0)
 
 
