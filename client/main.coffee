@@ -1,4 +1,4 @@
-log  (m) ->
+log (m) ->
   console.log m
   $("#log").append($('<p>').val(m))
   # Output to some other on screen log?
@@ -27,10 +27,6 @@ $ ->
         now.chat msg
 
   t = new Turret
-console.log "coffee loaded"
-
-now.ready ->
-  console.log "now ready"
 
 class Turret
   constructor: () ->
