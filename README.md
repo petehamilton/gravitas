@@ -37,7 +37,7 @@ Installing on OS X
 
 Install Sublime
 ---------------
-* [sublime] (http://www.sublimetext.com/2)
+* Download [sublime] (http://www.sublimetext.com/2)
 * Add Package manager
   * Visit [package manager](http://wbond.net/sublime_packages/package_control/installation) and copy the huge chunk of text
   * Press cmd+shift+p, copy in the chunk and press enter
