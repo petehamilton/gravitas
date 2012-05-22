@@ -23,7 +23,7 @@ main = ->
   canvas_width = 400
   canvas_height = 400
 
-  arena = Raphael(100, 100, canvas_width, canvas_height)
+  arena = Raphael(0, 0, canvas_width, canvas_height)
   background = arena.rect(0, 0, canvas_width, canvas_height)
   background.attr({fill: '#000'})
 
