@@ -16,6 +16,9 @@ STATICS = {
 
 	# 'lib/jsschema.js': 'https://raw.github.com/nh2/jsschema/schemafields/jsschema.js',
 	# 'runtogether.py': 'https://raw.github.com/nh2/runtogether/master/runtogether.py',
+
+	# Raphael for simple graphics amnipulation
+	'js/lib/raphael-min.js': 'http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js',
 }
 
 
