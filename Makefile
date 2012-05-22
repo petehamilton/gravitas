@@ -25,8 +25,7 @@ clean:
 init: statics_fetch_force
 
 dev:
-	cd client
-	python -m SimpleHTTPServer
+	cd client && python -m SimpleHTTPServer
 
 server:
 	coffee server/server.coffee
