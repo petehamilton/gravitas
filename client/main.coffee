@@ -30,6 +30,8 @@ main = ->
   # create a new turret
   t = new Turret(0)
   t.render(canvas)
+  p = new PlasmaBall()
+  p.render(canvas)
 
 $ ->
   host = window.location.hostname
