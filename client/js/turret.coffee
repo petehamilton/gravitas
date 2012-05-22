@@ -44,20 +44,20 @@ class @Turret
     switch @position
       when 0
         a = Math.atan(Math.abs(my/mx))
-        if mx < 0 and my < 0
+        if mx < @canvas.x and my < @canvas.y
           angle = Math.PI + a
-        else if mx < 0
+        else if mx < @canvas.x
           angle = 2 * Math.PI - a
-        else if my < 0
+        else if my < @canvas.y
           angle = Math.PI - a
         else
           angle =  a
 
       when 1
         a = Math.atan(Math.abs((@canvas.width - mx)/my))
-        if my < 0 and mx > @canvas.width
+        if my < @canvas.y and mx > @canvas.width
           angle = Math.PI + a
-        else if my < 0
+        else if my < @canvas.y
           angle = Math.PI - a
         else if mx > @canvas.width
           angle = 2 * Math.PI - a
@@ -77,11 +77,11 @@ class @Turret
 
       when 3
         a = Math.atan(Math.abs(mx/(@canvas.height - my)))
-        if mx < 0 and my > @canvas.height
+        if mx < @canvas.x and my > @canvas.height
           angle = Math.PI + a
         else if my > @canvas.height
           angle = Math.PI - a
-        else if mx < 0
+        else if mx < @canvas.x
           angle = 2 * Math.PI + a
         else
           angle = a
