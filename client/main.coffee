@@ -2,7 +2,7 @@
   console.log args...
 
 createPaper = (width, height) ->
-  paper = Raphael(0, 0, width, height)
+  paper = Raphael('paper', width, height)  # TODO don't hardcode id here
 
   background = paper.rect(0, 0, width, height)
   background.attr({fill: '#000'})
