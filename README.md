@@ -55,11 +55,11 @@ Installing Sublime
 * *Optional:* Allow output to Sublime console on build
   * Create **CoffeScript.sublime-build** file in ~/Library/Application Support/Sublime Text 2/Packages/User/
   * Add this to the file:
-       {
-         "cmd": ["coffee", "$file"],
-	        "selector" : "source.coffee",
-	        "path" : "/usr/local/bin"
-       }
+      		 {
+        	 "cmd": ["coffee", "$file"],
+	         "selector" : "source.coffee",
+	         "path" : "/usr/local/bin"
+       		 }
    
 
 Setting up server
