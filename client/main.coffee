@@ -16,7 +16,7 @@ setupNow = (game) ->
     log "received message: #{msg}"
     $('#log').append($('<p>').text(msg))
 
-  now.receiveAngle = game.setAngle
+  now.receiveAngle = (args...) -> game.setAngle args...
 
 
 setupChat = ->
