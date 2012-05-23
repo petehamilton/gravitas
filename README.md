@@ -25,6 +25,7 @@ Links
 * [CoffeeScript](http://js2coffee.org) and [js2coffee](http://js2coffee.org)
 * [git ready](http://gitready.com)
 * [Raphael](http://raphaeljs.com/reference.html)
+* [knockout](http://knockoutjs.com/) for everything outside the canvas. Work through the [tutorial](http://learn.knockoutjs.com/)
 
 Installing on OS X
 ==================
