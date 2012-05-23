@@ -4,6 +4,17 @@
   height: 400px;
 }
 
-#log_container{
-	margin-top: 450px;
+#log_container {
+  margin-top: 450px;
+}
+
+#lag_indicator {
+  position: absolute;
+  top: .5em;
+  right: .5em;
+}
+
+#lag_indicator.lag {
+  color: white;
+  background-color: red;
 }
