@@ -2,6 +2,14 @@ class @Game
   constructor: (@arena, @player, @server) ->
     @lag = false
 
+    # TODO remove DOM
+    $('.player').change (e) =>
+      log $(e)
+      @setPlayer parseInt($(e.target).val(), 10)
+
+  setPlayer: (player) ->
+    @player = player
+
   # Controls the lag indicator.
   setLag: (lag) ->
     @lag = lag
