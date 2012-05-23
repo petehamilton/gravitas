@@ -1,5 +1,5 @@
-@log = (m) ->
-  console.log m
+@log = (args...) ->
+  console.log args...
 
 createPaper = (width, height) ->
   paper = Raphael(0, 0, width, height)
