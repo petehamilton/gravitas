@@ -58,10 +58,10 @@ class @Turret
     else
       angle = a
     angle_degrees = angle * (180 / Math.PI)
-    @setTurretRotation angle_degrees
+    @setRotation angle_degrees
     angle_degrees
 
   # sets the turret rotation based on the given angle (in degrees)
-  setTurretRotation: (angle) ->
+  setRotation: (angle) ->
     @angle = angle
     @turret_sprite.transform("R#{@angle},#{@center.x},#{@center.y}")

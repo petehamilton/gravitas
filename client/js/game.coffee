@@ -7,6 +7,3 @@ class @Game
 
   setAngle: (player, angle) ->
     @arena.setTurretRotation(player, angle)
-
-  setTurretRotation: (turret, angle) ->
-    @turrets[turret].setTurretRotation angle

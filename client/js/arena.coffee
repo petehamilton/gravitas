@@ -13,4 +13,4 @@ class @Arena
     @game.onOwnAngle angle
 
   setTurretRotation: (turret, angle) ->
-    @turrets[turret].setTurretRotation angle
+    @turrets[turret].setRotation angle
