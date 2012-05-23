@@ -1,9 +1,12 @@
 class @Game
-  constructor: (@canvas, @current_player) ->
-    @turrets = (new Turret(p, @canvas) for p in [0..3])
+  constructor: (@arena, @player, @server) ->
 
-  mouseMoved: (mx, my) ->
-    @turrets[@current_player].mouseMoved(mx, my)
+  onOwnAngle: (angle) ->
+    # TODO send the angle to the server
+    # @server.setAngle @player, angle
+
+  setAngle: (player, angle) ->
+    @arena.setTurretRotation(player, angle)
 
   setTurretRotation: (turret, angle) ->
     @turrets[turret].setTurretRotation angle

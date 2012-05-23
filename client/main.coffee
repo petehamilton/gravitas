@@ -1,42 +1,60 @@
 @log = (m) ->
   console.log m
-    
-main = ->
-  canvas = $('#main_game_canvas')
+
+createPaper = (width, height) ->
+  paper = Raphael(0, 0, width, height)
+
+  background = paper.rect(0, 0, width, height)
+  background.attr({fill: '#000'})
+
+  paper
+
+
+setupNow = (game) ->
 
   now.displayMessage = (msg) ->
     log "received message: #{msg}"
-    $('#log').append ($('<p>').text(msg))
+    $('#log').append($('<p>').text(msg))
+
+  now.receiveAngle = game.setAngle
+
+
+setupChat = ->
+
+  $('#chatform').submit ->
+    msg = $('#chatinput').val()
+    $('#chatinput').val('')
+    log msg
+
+    now.chat msg
+    false
+
+
+main = ->
+
+  # create paper
+  paper = createPaper 400, 400
+
+  # create game
+  @a = arena = new Arena(paper)
+  @g = game = new Game(arena, 0, now)
+  arena.setGame game
+
+  p = new PlasmaBall()
+  p.render(paper)  # TODO remove
+
+  # listen to mouse events
+  $(document).mousemove (e) ->
+    mx = e.pageX - paper.canvas.offsetLeft
+    my = e.pageY - paper.canvas.offsetTop
+    arena.mouseMoved(mx, my)
+
+  setupNow game
 
   now.ready ->
     log "now ready"
 
-    $('#chatform').submit ->
-      msg = $('#chatinput').val()
-      $('#chatinput').val('')
-      log msg
-
-      now.chat msg
-      false
-
-  # create canvas
-  canvas_width = 400
-  canvas_height = 400
-
-  arena = Raphael(0, 0, canvas_width, canvas_height)
-  background = arena.rect(0, 0, canvas_width, canvas_height)
-  background.attr({fill: '#000'})
-
-  # create a new turret
-  @g = new Game(arena, 0)
-
-  p = new PlasmaBall()
-  p.render(arena)
-
-  $(document).mousemove (e) =>
-    mx = e.pageX - arena.canvas.offsetLeft
-    my = e.pageY - arena.canvas.offsetTop
-    g.mouseMoved(mx, my)
+    setupChat()
 
 
 $ ->

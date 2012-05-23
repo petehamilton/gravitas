@@ -88,4 +88,7 @@ run = ->
     console.log "chat message: #{msg}"
     everyone.now.displayMessage msg
 
+  everyone.now.setAngle = (player, angle) ->
+    everyone.now.receiveAngle(player, angle)
+
 run()
