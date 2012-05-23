@@ -26,6 +26,8 @@ main = ->
   arena = Raphael(0, 0, canvas_width, canvas_height)
   background = arena.rect(0, 0, canvas_width, canvas_height)
   background.attr({fill: '#000'})
+  
+  v = new Vortex(arena)
 
   # create a new turret
   @g = new Game(arena, 0)
