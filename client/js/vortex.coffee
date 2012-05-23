@@ -15,7 +15,7 @@ class @Vortex
       @vortices.push
         sprite: v
         direction: 1 - 2 * Math.floor(Math.random() * 2)
-        speed: Math.random() + 0.5
+        speed: Math.random()
       log v.direction
 
     log (v.direction for v in @vortices)
