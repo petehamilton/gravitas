@@ -14,6 +14,9 @@ STATICS = {
 	'js/lib/console-runner.js': 'https://raw.github.com/nh2/phantom-jasmine/fix-long-running-tests/lib/console-runner.js',
 	'js/lib/run_jasmine_test.coffee': 'https://raw.github.com/nh2/phantom-jasmine/fix-long-running-tests/lib/run_jasmine_test.coffee',
 
+	'js/lib/knockout.js': 'http://cloud.github.com/downloads/SteveSanderson/knockout/knockout-2.1.0.js',
+	'js/lib/knockout.mapping.js': 'https://raw.github.com/SteveSanderson/knockout.mapping/master/build/output/knockout.mapping-latest.js',
+
 	# 'lib/jsschema.js': 'https://raw.github.com/nh2/jsschema/schemafields/jsschema.js',
 	# 'runtogether.py': 'https://raw.github.com/nh2/runtogether/master/runtogether.py',
 

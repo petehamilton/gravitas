@@ -7,7 +7,9 @@
     <script type="text/javascript" src="js/lib/coffee-script.js"></script>
     <script type="text/javascript" src="js/lib/raphael.js"></script>
     <script type="text/javascript" src="js/lib/jquery.js"></script>
+    <script type='text/javascript' src='js/lib/knockout.js'></script>
 
+    <script type='text/coffeescript' src='js/ko-extenders.coffee'></script>
 
     <script type="text/coffeescript" src="js/turret.coffee"></script>
     <script type="text/coffeescript" src="js/arena.coffee"></script>
@@ -18,13 +20,13 @@
 
   <body>
 
-    <p id="lag_indicator">Lag</p>
+    <p id="lag_indicator" data-bind="css: { lag: lag }">Lag</p>
 
     Player:
-    <input type="radio" class="player" name="player" value="0" checked="checked">0
-    <input type="radio" class="player" name="player" value="1">1
-    <input type="radio" class="player" name="player" value="2">2
-    <input type="radio" class="player" name="player" value="3">3
+    <input type="radio" class="player" name="player" value="0" data-bind="checked: player" checked="checked" />0
+    <input type="radio" class="player" name="player" value="1" data-bind="checked: player" />1
+    <input type="radio" class="player" name="player" value="2" data-bind="checked: player" />2
+    <input type="radio" class="player" name="player" value="3" data-bind="checked: player" />3
 
     <div id="paper"></div>
 

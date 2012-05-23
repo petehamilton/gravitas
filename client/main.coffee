@@ -49,6 +49,9 @@ main = ->
     my = e.pageY - paper.canvas.offsetTop
     arena.mouseMoved(mx, my)
 
+  # Use game as toplevel knockout ViewModel
+  ko.applyBindings game
+
   setupNow game
 
   now.ready ->
