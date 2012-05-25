@@ -19,7 +19,6 @@ class @PlasmaBall
     Math.floor(Math.random() * (max - min + 1)) + min
 
   moveIt: (canvas) ->
-    log "Moving PlasmaBall"
     unless @time
       @time = @rand(30, 100)
       @deg = @rand(-179, 180)
