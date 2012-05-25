@@ -45,9 +45,8 @@ main = ->
   @g = game = new Game(arena, 0, now)
   arena.setGame game
 
-  colors = ["#ff0000", "#0000ff", "#00ff00", "#ffff00" ]
-  num_balls = 5
-  pballs = (new PlasmaBall(colors[i%=num_balls]) for i in [0..num_balls])
+  num_colors = 4
+  pballs = (new PlasmaBall(i%=num_colors) for i in [0..5])
   for p in pballs
     p.render(paper)
 
