@@ -1,28 +1,32 @@
 class @PlasmaBall
-  constructor: (@x, @y) ->
+  constructor: (@x = 0, @y = 0) ->
     log "Creating PlasmaBall"
+    @time = 0
 
   render: (canvas) ->
     log "Rendering PlasmaBall"
     @ball = canvas.circle(canvas.width/2, canvas.height/2, 10)
             .attr({fill: '#00ff00', "stroke-opacity": 0})
+    @moveIt canvas
+    @moveIt canvas
+    @moveIt canvas
+    @moveIt canvas
     setInterval () =>
        @moveIt canvas
-    , 100
+    , 50
 
   rand: (min, max) ->
     Math.floor(Math.random() * (max - min + 1)) + min
 
   moveIt: (canvas) ->
     log "Moving PlasmaBall"
-    unless @time
-      @time = @rand(30, 100)
-      deg = @rand(-179, 180)
-      vel = @rand(1, 5)
-      curve = @rand(0, 1)
-
-    dx = vel * Math.cos (deg * Math.PI/180)
-    dy = vel * Math.sin (deg * Math.PI/180)
+    unless @time > 0
+      @time = @rand(50, 200)
+      @deg = @rand(-179, 180)
+      @vel = @rand(1, 5)
+      @curve = @rand(0, 1)
+    dx = @vel * Math.cos (@deg * Math.PI/180)
+    dy = @vel * Math.sin (@deg * Math.PI/180)
     
     @x += dx
     @y += dy
@@ -38,15 +42,15 @@ class @PlasmaBall
       @y = @y % canvas.height
 
     if @curve > 0
-      deg += 2
+      @deg += 2
     else
-      deg -= 2
+      @deg -= 2
 
     @ball.attr({cx: @x, cy: @y})
 
     @time = @time - 1
-    if vel < 1
+    if @vel < 1
       @time = 0
     else
-      vel = vel - .05
+      @vel = @vel - .05
 
