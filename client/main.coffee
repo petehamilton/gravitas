@@ -45,8 +45,9 @@ main = ->
   @g = game = new Game(arena, 0, now)
   arena.setGame game
 
-  p = new PlasmaBall()
-  p.render(paper)
+  pballs = (new PlasmaBall() for i in [0..5])
+  for p in pballs
+    p.render(paper)
 
   # listen to mouse events
   $(document).mousemove (e) ->
