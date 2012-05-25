@@ -67,6 +67,6 @@ class @PlasmaBall
 
     i = 0
     for b in @ball_layers
-      b.transform "... r#{@speeds[i]}"
+      # b.transform "... r#{@speeds[i]}"
       i += 1
 
