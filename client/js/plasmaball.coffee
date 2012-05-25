@@ -15,17 +15,33 @@ class @PlasmaBall
     @x = @center.x + @rand(-center_variation, center_variation)
     @y = @center.y + @rand(-center_variation, center_variation)
 
-    @ball = canvas.circle(@x, @y, 10)
-            .attr({fill: @color, "stroke-opacity": 0})
+
+    #Graphics
+    sprite_folder = "../images/plasma_balls/"
+    sprite_prefix = switch @color
+      when 0 then "pb_blue_"
+      when 1 then "pb_green_"
+      when 2 then "pb_pink_"
+      when 3 then "pb_yellow_"
+
+    sprite_paths = ("#{sprite_folder}#{sprite_prefix}#{i}.png" for i in [0..2])
+    log sprite_paths
+    @ball_layers = (canvas.image(s, @x, @y, 40, 40) for s in sprite_paths)
+    for b in @ball_layers
+      b.attr({opacity: Math.random()*0.7 + 0.0})
+
+    @speeds = [2, -3, -2]
+    
 
     setInterval () =>
-       @moveItGravity()
+       @calculateGravity()
+       @move()
     , 50
 
   rand: (min, max) ->
     Math.floor(Math.random() * (max - min + 1)) + min
 
-  moveItGravity: ->
+  calculateGravity: ->
     @x -= @vx
     @y -= @vy
 
@@ -44,23 +60,13 @@ class @PlasmaBall
       @vx += ax / @mass
       @vy += ay / @mass
 
-    @ball.attr({cx: @x, cy: @y})
 
-  moveIt: (canvas) ->
-    unless @time
-      @time = @rand(30, 100)
-      @deg = @rand(-179, 180)
-      @vel = @rand(1, 5)
-      @curve = @rand(0, 1)
+  move: ->
+    for b in @ball_layers
+      b.attr({x: @x, y: @y})
 
-    @x += @vel * Math.cos (@deg * Math.PI/180)
-    @y += @vel * Math.sin (@deg * Math.PI/180)
-    
-    if @x < 0 then @x += canvas.width else @x %= canvas.width
+    i = 0
+    for b in @ball_layers
+      b.transform "... r#{@speeds[i]}"
+      i += 1
 
-    if @y < 0 then @y += canvas.height else @y %= canvas.height
-
-    if @curve > 0 then @deg += 2 else @deg -= 2
-
-    @ball.attr({cx: @x, cy: @y})
-    @time -= 1
