@@ -1,10 +1,13 @@
 class @PlasmaBall
-  constructor: (@x = 0, @y = 0) ->
+  constructor: () ->
     log "Creating PlasmaBall"
     @time = 0
 
   render: (canvas) ->
     log "Rendering PlasmaBall"
+    @x = canvas.width/2
+    @y = canvas.height/2
+
     @ball = canvas.circle(canvas.width/2, canvas.height/2, 10)
             .attr({fill: '#00ff00', "stroke-opacity": 0})
 
