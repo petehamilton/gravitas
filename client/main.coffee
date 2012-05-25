@@ -45,8 +45,9 @@ main = ->
 
   # listen to mouse events
   $(document).mousemove (e) ->
-    mx = e.pageX - paper.canvas.offsetLeft
-    my = e.pageY - paper.canvas.offsetTop
+    canvas_offset = $(paper.canvas).offset()
+    mx = e.pageX - Math.abs(canvas_offset.left)
+    my = e.pageY - Math.abs(canvas_offset.top)
     arena.mouseMoved(mx, my)
 
   # Use game as toplevel knockout ViewModel
