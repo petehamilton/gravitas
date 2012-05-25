@@ -1,5 +1,5 @@
 class @PlasmaBall
-  constructor: () ->
+  constructor: (@color) ->
     log "Creating PlasmaBall"
     @time = 0
 
@@ -16,7 +16,7 @@ class @PlasmaBall
     @y = @center.y + @rand(-center_variation, center_variation)
 
     @ball = canvas.circle(@x, @y, 10)
-            .attr({fill: '#00ff00', "stroke-opacity": 0})
+            .attr({fill: @color, "stroke-opacity": 0})
 
     setInterval () =>
        @moveItGravity()
