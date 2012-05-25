@@ -39,10 +39,13 @@ main = ->
   @a = arena = new Arena(paper)
   @g = game = new Game(arena, 0, now)
   arena.setGame game
+  
+  v = new Vortex(paper)
+  v.render(paper)
 
   p = new PlasmaBall()
-  p.render(paper)  # TODO remove
-
+  p.render(paper)
+  
   # listen to mouse events
   $(document).mousemove (e) ->
     mx = e.pageX - paper.canvas.offsetLeft
