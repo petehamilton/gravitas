@@ -1,6 +1,12 @@
 @log = (args...) ->
   console.log args...
 
+@zip = () ->
+  lengthArray = (arr.length for arr in arguments)
+  length = Math.max(lengthArray...)
+  for i in [0...length]
+    arr[i] for arr in arguments
+
 createPaper = (width, height) ->
   paper = Raphael('paper', width, height)  # TODO don't hardcode id here
 
@@ -18,6 +24,7 @@ setupNow = (game) ->
 
   now.receiveAngle = (args...) -> game.setAngle args...
 
+  now.receivePlasmaBalls = (args...) -> game.setPlasmaBalls args...
 
 setupChat = ->
 
@@ -28,7 +35,6 @@ setupChat = ->
 
     now.chat msg
     false
-
 
 main = ->
 
@@ -46,9 +52,9 @@ main = ->
   arena.setGame game
 
   num_colors = 4
-  pballs = (new PlasmaBall(i%=num_colors) for i in [0..5])
-  for p in pballs
-    p.render(paper)
+  # pballs = (new PlasmaBall(i%=num_colors) for i in [0..5])
+  # for p in pballs
+  #   p.render(paper)
 
   # listen to mouse events
   $(document).mousemove (e) ->

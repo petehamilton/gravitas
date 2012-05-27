@@ -35,7 +35,6 @@ class @PlasmaBall
       b.attr({opacity: Math.random()*0.7 + 0.0})
 
     @speeds = [2, -3, -2]
-    
 
     setInterval () =>
        @calculateGravity()

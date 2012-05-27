@@ -23,7 +23,6 @@ class @Game
   setAngle: (player, angle) ->
     @arena.setTurretRotation(player, angle)
 
-
   zip: (args...) ->
     lengthArray = (arr.length for arr in args)
     length = Math.max(lengthArray...)
@@ -37,3 +36,7 @@ class @Game
       for coord, ball in coord_balls
         ball.attr({x: coord.x, y: coord.y})
 
+  # Sets the (x,y) coords of the plasmaballs
+  setPlasmaBalls: (plasma_ball_coords) ->
+    log plasma_ball_coords
+    # @arena.setTurretRotation(player, angle)

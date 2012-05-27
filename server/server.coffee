@@ -91,4 +91,13 @@ run = ->
   everyone.now.setAngle = (player, angle) ->
     everyone.now.receiveAngle(player, angle)
 
+  everyone.now.broadcastPlasmaBalls = (plasma_balls) ->
+    everyone.now.receivePlasmaBalls plasma_balls
+
+  setInterval () =>
+    fake_pb = {x: Math.random() * 100, y: Math.random() * 100}
+    balls = (fake_pb for i in [0..3])
+    everyone.now.broadcastPlasmaBalls(fake_pb)
+  , 1000
+
 run()
