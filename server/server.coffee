@@ -68,9 +68,6 @@ configureNow = (everyone) ->
   everyone.now.setAngle = (player, angle) ->
     everyone.now.receiveAngle(player, angle)
 
-  everyone.now.broadcastPlasmaBalls = (plasma_balls) ->
-    everyone.now.receivePlasmaBalls plasma_balls
-
 configureApp = (app) -> 
   app.configure ->
     app.use express.bodyParser()
@@ -103,7 +100,7 @@ performCalculations = () ->
     p.calculateVelocity()
 
 sendDataToClient = () ->
-  everyone.now.broadcastPlasmaBalls(calc_vars.plasma_balls)
+  everyone.now.receivePlasmaBalls plasma_balls
 
 run = ->
   players = [0,1,2,3]
