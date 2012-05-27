@@ -6,6 +6,7 @@ class @PlasmaBallModel
 
     @mass = 1
     @vortex_mass = 7000
+    @size = 40
 
     @terminal_velocity = 5
     @vx = @rand(-@terminal_velocity, @terminal_velocity)
@@ -16,6 +17,19 @@ class @PlasmaBallModel
 
   calculateVelocity: ->
     #TODO: Center hardcoded for now but should be linked to the client side size?
+    calculateNewPoint = (center, point) ->
+      offset = Math.abs(point - center) - center
+      if (offset > center)
+        Math.abs(point) - offset
+      else
+        point
+
+    reverseVelocity = ->
+      @vx *= -1
+      @vy *= -1
+
+    # TODO: Remove hard coding
+    @ball_boundary = {x: 400 - @size, y: 400 - @size}
     center = {x: 200, y: 200}
 
     @x -= @vx
@@ -38,4 +52,12 @@ class @PlasmaBallModel
 
     @vx = (@vx/@vx) * Math.min(@vx, @terminal_velocity)
     @vy = (@vy/@vy) * Math.min(@vy, @terminal_velocity)
+
+    # TODO why can't I call reverseVelocity() doesnt seem to register
+    # changes to vx and vy?!?
+    if (@ball_boundary.x < @x or @x < 0) or (@ball_boundary.y  < @y or @y < 0)
+      @x = calculateNewPoint(center.x, @x)
+      @y = calculateNewPoint(center.y, @y)
+      @vx *= -1
+      @vy *= -1
 
