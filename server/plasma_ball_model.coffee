@@ -36,8 +36,8 @@ class @PlasmaBallModel
       # (velocity/Math.abs(velocity)) * Math.min(@, @terminal_velocity)
 
 
-    @x -= @vx
-    @y -= @vy
+    @x -= Math.floor(@vx)
+    @y -= Math.floor(@vy)
 
     adjusted_center = {x: @center.x + @rand(-50, 50), y: @center.y + @rand(-50, 50)}
 
