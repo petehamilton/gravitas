@@ -35,9 +35,11 @@ class @PlasmaBallModel
       @vx *= -1
       @vy *= -1
 
-    limitVelocity = (velocity) ->
+    limitVelocity = (velocity) =>
       abs_velocity = Math.abs(velocity)
-      (velocity/Math.abs velocity) * Math.min(Math.abs velocity, @terminal_velocity)
+      sign = (velocity/abs_velocity)
+      min = Math.min(abs_velocity, @terminal_velocity)
+      return sign * min
 
     for m in external_masses
       @gravitateTo m
