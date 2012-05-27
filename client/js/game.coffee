@@ -3,7 +3,6 @@ class @Game
     # TODO relocate ko
     @lag = ko.observable false
     @player = ko.observable(0).extend { convert: parseInt }
-    setupBallMove ()
 
   # Makes sure the server connection is esablished before executing fn.
   # Otherwise sets the lag indicator.
@@ -30,13 +29,12 @@ class @Game
       arr[i] for arr in args
 
 
-  setupBallMove: () ->
-    now.moveBalls = (coords) ->
-      coord_balls = @zip(coords, @plasmaballs)
-      for coord, ball in coord_balls
-        ball.attr({x: coord.x, y: coord.y})
+  movePlasmaBalls: (coords) ->
+    coord_balls = @zip(coords, @plasmaballs)
+    for coord, ball in coord_balls
+      ball.attr({x: coord.x, y: coord.y})
 
   # Sets the (x,y) coords of the plasmaballs
   setPlasmaBalls: (plasma_ball_coords) ->
-    log plasma_ball_coords
+    movePlasmaBalls(plasma_ball_coords)
     # @arena.setTurretRotation(player, angle)
