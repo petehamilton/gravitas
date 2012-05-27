@@ -110,9 +110,10 @@ sendDataToClient = () ->
 run = ->
   players = [0,1,2,3]
 
-  #TODO: this is a hack, in reality players should ahve multiple plasma balls, change!!!
+  # TODO: this is a hack, in reality players should ahve multiple plasma balls, change!!!
+  # TODO: Make plasma balls spawn in centre
   starting_coords = ({x: Math.random() * 100, y: Math.random() * 100} for i in [0..3])
-  calc_vars.plasma_balls = (new pbm.PlasmaBallModel(i, i, starting_coords[i].x, starting_coords[i].y) for i in [0..3])
+  calc_vars.plasma_balls = (new pbm.PlasmaBallModel(i, i, , ) for i in [0..3])
 
   setInterval () =>
     performCalculations()
