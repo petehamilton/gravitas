@@ -22,7 +22,7 @@ fixId = (obj) ->
   obj._id = mongodb.ObjectID obj._id
   obj
 
-setupEveryoneNowFunctions = (everyone) ->
+configureNow = (everyone) ->
   everyone.now.dbGetAll = () ->
     collection.find().toArray (err, results) ->
       console.dir results
@@ -123,6 +123,6 @@ run = ->
   configureApp app
 
   everyone = nowjs.initialize(app, { socketio: {'browser client minification': true} })
-  setupEveryoneNowFunctions everyone
+  configureNow everyone
 
 run()
