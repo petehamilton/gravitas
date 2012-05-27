@@ -58,6 +58,17 @@ main = ->
     my = e.pageY - paper.canvas.offsetTop
     arena.mouseMoved(mx, my)
 
+    # listen to mouse events
+  $(paper.canvas).mousedown (e) ->
+    log "PRESSED"
+    arena.mousePressed()
+
+  # listen to mouse events
+  $(paper.canvas).mouseup (e) ->
+    log "RELEASED"
+    arena.mouseReleased()
+
+
   # Use game as toplevel knockout ViewModel
   ko.applyBindings game
 

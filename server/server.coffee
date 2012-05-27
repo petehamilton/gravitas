@@ -17,6 +17,7 @@ pbm = require "./plasma_ball_model"
 
 calc_vars = {}
 everyone = null
+player_ids = [0..3]
 
 fixId = (obj) ->
   obj._id = mongodb.ObjectID obj._id
@@ -68,6 +69,17 @@ configureNow = (everyone) ->
   everyone.now.setAngle = (player, angle) ->
     everyone.now.receiveAngle(player, angle)
 
+  everyone.now.startGravityGun = (player) ->
+    console.log "Start Gravity Gun"
+    #TODO: This is hardcoded. It should not be.
+    turret_mass = 50000
+
+    calc_vars.turret_masses[player] = turret_mass
+
+  everyone.now.stopGravityGun = (player) ->
+    console.log "Stop Gravity Gun"
+    calc_vars.turret_masses[player] = 0
+
 configureApp = (app) -> 
   app.configure ->
     app.use express.bodyParser()
@@ -95,30 +107,56 @@ configureApp = (app) ->
   app.listen 7777, "0.0.0.0"
 
 performCalculations = () ->
-  plasma_balls = calc_vars.plasma_balls
-  for p in plasma_balls
-    p.calculateVelocity()
+
+  #TODO: Change this to be dynamic as elsewhere
+  canvas_size = 400
+
+  # Get the turret masses into a simplified form
+  turret_masses = []
+  for i in player_ids
+    center = switch i
+      when 0 then {x: 0, y: 0}
+      when 1 then {x: canvas_size, y: 0}
+      when 2 then {x: canvas_size, y: canvas_size}
+      when 3 then {x: 0, y: canvas_size}
+
+    turret_masses.push {mass: calc_vars.turret_masses[i], x: center.x, y: center.y}
+
+  vortex = {mass: 10000, x: canvas_size/2, y: canvas_size/2}
+  
+  external_masses = turret_masses.concat [vortex]
+  console.log "EXT: ", external_masses
+
+  for p in calc_vars.plasma_balls
+    p.calculateVelocity(external_masses)
+
+  # Decrease turret pulls
+  for i in player_ids
+    if calc_vars.turret_masses[i] > 0
+      calc_vars.turret_masses[i] -= 200
+      calc_vars.turret_masses[i] = Math.max(0, calc_vars.turret_masses[i])
+
 
 sendDataToClient = () ->
-  everyone.now.receivePlasmaBalls plasma_balls
+  if everyone.now.receivePlasmaBalls
+    everyone.now.receivePlasmaBalls calc_vars.plasma_balls
 
 run = ->
-  players = [0,1,2,3]
-
-  # TODO: this is a hack, in reality players should ahve multiple plasma balls, change!!!
-  # TODO: Make plasma balls spawn in centre
-  starting_coords = ({x: Math.random() * 100, y: Math.random() * 100} for i in [0..3])
-  calc_vars.plasma_balls = (new pbm.PlasmaBallModel(i, i, starting_coords[i].x, starting_coords[i].y) for i in [0..3])
-
-  setInterval () =>
-    performCalculations()
-    sendDataToClient()
-  , 30
+  #TODO: this is a hack, in reality players should ahve multiple plasma balls, change!!!
+  starting_coords = ({x: Math.random() * 100, y: Math.random() * 100} for i in player_ids)
+  calc_vars.plasma_balls = (new pbm.PlasmaBallModel(i, i, starting_coords[i].x, starting_coords[i].y) for i in player_ids)
+  calc_vars.turret_masses = [0,0,0,0]
 
   app = express.createServer()
   configureApp app
 
   everyone = nowjs.initialize(app, { socketio: {'browser client minification': true} })
   configureNow everyone
+  console.log everyone.now.setAngle
+
+  setInterval () =>
+    performCalculations()
+    sendDataToClient()
+  , 30
 
 run()

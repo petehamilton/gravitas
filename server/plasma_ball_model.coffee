@@ -25,7 +25,7 @@ class @PlasmaBallModel
     rounded = (0.5 + val) | 0;
 
   # Changes the x and y values based on the respective velocities
-  calculateVelocity: ->
+  calculateVelocity: (external_masses) ->
     #TODO: Center hardcoded for now but should be linked to the client side size?
     calculateNewPoint = (c, point) ->
       offset = Math.abs(point - c) - c
@@ -39,24 +39,11 @@ class @PlasmaBallModel
       abs_velocity = Math.abs(velocity)
       (velocity/Math.abs velocity) * Math.min(Math.abs velocity, @terminal_velocity)
 
+    for m in external_masses
+      @gravitateTo m
 
     @x -= @pixelRound(@vx)
-    @y -= @pixelRound(@vy)
-
-    adjusted_center = {x: @center.x + @rand(-50, 50), y: @center.y + @rand(-50, 50)}
-
-    dx = @x - adjusted_center.x
-    dy = @y - adjusted_center.y
-    distSq = dx * dx + dy * dy
-    dist = Math.sqrt(distSq)
-
-    if dist > 100
-      force = @mass * @vortex_mass / distSq
-      ax = force * dx / dist
-      ay = force * dy / dist
-
-      @vx += ax / @mass
-      @vy += ay / @mass
+    @y -= @pixelRound(@vy)    
 
     @vx = limitVelocity @vx
     @vy = limitVelocity @vy
@@ -70,4 +57,18 @@ class @PlasmaBallModel
       unless (0 < @y < @ball_boundary.y)
         @y = calculateNewPoint(@offset_center.y, @y)
         @vy *= -1
+
+  gravitateTo: (other_mass) ->
+    dx = @x - other_mass.x
+    dy = @y - other_mass.y
+    distSq = dx * dx + dy * dy
+    dist = Math.sqrt(distSq)
+
+    if dist > 80
+      force = @mass * other_mass.mass / distSq
+      ax = force * dx / dist
+      ay = force * dy / dist
+
+      @vx += ax / @mass
+      @vy += ay / @mass
 

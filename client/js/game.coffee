@@ -19,6 +19,18 @@ class @Game
     @withServer =>
       @server.setAngle @player(), angle
 
+  # Starts the gravity gun of the current player
+  startGravityGun: ->
+    log "Start Gravity Gun"
+    @withServer =>
+      @server.startGravityGun @player()
+
+  # Stops the turret angle of the current player.
+  stopGravityGun: ->
+    log "Stop Gravity Gun"
+    @withServer =>
+      @server.stopGravityGun @player()
+
   # Sets the angle of any player turret.
   setAngle: (player, angle) ->
     @arena.setTurretRotation(player, angle)
