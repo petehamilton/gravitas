@@ -20,6 +20,13 @@ class @PlasmaBallModel
   rand: (min, max) ->
     Math.floor(Math.random() * (max - min + 1)) + min
 
+  # Used to speed up rendering. Based on half vs full pixel test at:
+  # http://www.html5rocks.com/en/tutorials/canvas/performance/#toc-avoid-float
+  # Basically, integer coords are easier to render. This is quicker than Math.round
+  pixelRound: (val) ->
+    rounded = (0.5 + val) | 0;
+
+  # Changes the x and y values based on the respective velocities
   calculateVelocity: ->
     #TODO: Center hardcoded for now but should be linked to the client side size?
     calculateNewPoint = (c, point) ->
@@ -36,8 +43,8 @@ class @PlasmaBallModel
       # (velocity/Math.abs(velocity)) * Math.min(@, @terminal_velocity)
 
 
-    @x -= Math.floor(@vx)
-    @y -= Math.floor(@vy)
+    @x -= @pixelRound(@vx)
+    @y -= @pixelRound(@vy)
 
     adjusted_center = {x: @center.x + @rand(-50, 50), y: @center.y + @rand(-50, 50)}
 
