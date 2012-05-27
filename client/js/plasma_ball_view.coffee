@@ -5,6 +5,7 @@ class @PlasmaBallView
     # Construct from model values
     @id = model.id
     @player = model.player
+    @size = 40
 
     # Set up graphics
     sprite_folder = "../images/plasma_balls/"
@@ -14,7 +15,7 @@ class @PlasmaBallView
       when 2 then "pb_pink_"
       when 3 then "pb_yellow_"
     sprite_paths = ("#{sprite_folder}#{sprite_prefix}#{i}.png" for i in [0..2])
-    @layers = (canvas.image(s, @x, @y, 40, 40) for s in sprite_paths)
+    @layers = (canvas.image(s, @x, @y, @size, @size) for s in sprite_paths)
     for b in @layers
       b.attr({opacity: Math.random()*0.7 + 0.0})
 
