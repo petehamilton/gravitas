@@ -5,8 +5,12 @@ class @PlasmaBall
 
     @mass = 1
     @vortex_mass = 7000
-    @vx = @rand(-5, 5)
-    @vy = @rand(-5, 5)
+
+    @terminal_velocity = 5
+    @vx = @rand(-@terminal_velocity, @terminal_velocity)
+    @vy = @rand(-@terminal_velocity, @terminal_velocity)
+
+    
 
   render: (canvas) ->
     log "Rendering PlasmaBall"
@@ -36,7 +40,7 @@ class @PlasmaBall
     setInterval () =>
        @calculateGravity()
        @move()
-    , 50
+    , 30
 
   rand: (min, max) ->
     Math.floor(Math.random() * (max - min + 1)) + min
@@ -52,7 +56,7 @@ class @PlasmaBall
     distSq = dx * dx + dy * dy
     dist = Math.sqrt(distSq)
 
-    if dist > 80
+    if dist > 100
       force = @mass * @vortex_mass / distSq
       ax = force * dx / dist
       ay = force * dy / dist
@@ -60,6 +64,8 @@ class @PlasmaBall
       @vx += ax / @mass
       @vy += ay / @mass
 
+    @vx = (@vx/@vx) * Math.min(@vx, @terminal_velocity)
+    @vy = (@vy/@vy) * Math.min(@vy, @terminal_velocity)
 
   move: ->
     for b in @ball_layers
