@@ -67,12 +67,12 @@ class @PlasmaBall
     @vx = (@vx/@vx) * Math.min(@vx, @terminal_velocity)
     @vy = (@vy/@vy) * Math.min(@vy, @terminal_velocity)
 
-  move: ->
-    for b in @ball_layers
-      b.attr({x: @x, y: @y})
+  # move: ->
+  #   for b in @ball_layers
+  #     b.attr({x: @x, y: @y})
 
-    i = 0
-    for b in @ball_layers
-      # b.transform "... r#{@speeds[i]}"
-      i += 1
+  #   i = 0
+  #   for b in @ball_layers
+  #     # b.transform "... r#{@speeds[i]}"
+  #     i += 1
 
