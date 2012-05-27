@@ -33,9 +33,7 @@ class @Game
 
   setupBallMove: () ->
     now.moveBalls = (coords) ->
-      Usage: zip(arr1, arr2, arr3, ...)
-      zip([1,2,3],[4,5,6])
-      coord_balls = zip (coords, @plasmaballs)
-      for (coord, ball) in coord_balls
-        ball.attr {x: coord.x, y: coord.y}
+      coord_balls = @zip(coords, @plasmaballs)
+      for coord, ball in coord_balls
+        ball.attr({x: coord.x, y: coord.y})
 
