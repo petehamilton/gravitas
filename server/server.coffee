@@ -105,7 +105,7 @@ performCalculations = () ->
   # console.log plasma_balls[0] 
 
 sendDataToClient = () ->
-  everyone.now.broadcastPlasmaBalls([calc_vars.plasma_balls[0]])
+  everyone.now.broadcastPlasmaBalls(calc_vars.plasma_balls)
 
 run = ->
   players = [0,1,2,3]
