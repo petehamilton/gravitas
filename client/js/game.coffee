@@ -23,16 +23,19 @@ class @Game
   setAngle: (player, angle) ->
     @arena.setTurretRotation(player, angle)
 
-  # zip two arrays together 
-  zip = () ->
-    lengthArray = (arr.length for arr in arguments)
+
+  zip: (args...) ->
+    lengthArray = (arr.length for arr in args)
     length = Math.max(lengthArray...)
     for i in [0...length]
-      arr[i] for arr in arguments
+      arr[i] for arr in args
 
-  setupBallMove: ->
+
+  setupBallMove: () ->
     now.moveBalls = (coords) ->
+      Usage: zip(arr1, arr2, arr3, ...)
+      zip([1,2,3],[4,5,6])
       coord_balls = zip (coords, @plasmaballs)
       for (coord, ball) in coord_balls
-        ball.attr{x: coord.x, y: coord.y}
+        ball.attr {x: coord.x, y: coord.y}
 

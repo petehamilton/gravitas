@@ -41,8 +41,8 @@ main = ->
   # create game
   @a = arena = new Arena(paper)
   
-
-  @g = game = new Game(arena, 0, now)
+  # TODO: Need to pass in plasmaballs
+  @g = game = new Game(arena, 0, [], now)
   arena.setGame game
 
   num_colors = 4
