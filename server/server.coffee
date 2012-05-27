@@ -70,14 +70,12 @@ configureNow = (everyone) ->
     everyone.now.receiveAngle(player, angle)
 
   everyone.now.startGravityGun = (player) ->
-    console.log "Start Gravity Gun"
     #TODO: This is hardcoded. It should not be.
     turret_mass = 50000
 
     calc_vars.turret_masses[player] = turret_mass
 
   everyone.now.stopGravityGun = (player) ->
-    console.log "Stop Gravity Gun"
     calc_vars.turret_masses[player] = 0
 
 configureApp = (app) -> 
@@ -125,7 +123,7 @@ performCalculations = () ->
   vortex = {mass: 10000, x: canvas_size/2, y: canvas_size/2}
   
   external_masses = turret_masses.concat [vortex]
-  console.log "EXT: ", external_masses
+  # console.log "EXT: ", external_masses
 
   for p in calc_vars.plasma_balls
     p.calculateVelocity(external_masses)

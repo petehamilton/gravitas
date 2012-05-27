@@ -60,12 +60,10 @@ main = ->
 
     # listen to mouse events
   $(paper.canvas).mousedown (e) ->
-    log "PRESSED"
     arena.mousePressed()
 
   # listen to mouse events
   $(paper.canvas).mouseup (e) ->
-    log "RELEASED"
     arena.mouseReleased()
 
 
