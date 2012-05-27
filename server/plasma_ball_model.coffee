@@ -66,8 +66,8 @@ class @PlasmaBallModel
     unless ((0 < @x < @ball_boundary.x) and (0 < @y < @ball_boundary.y))
       unless (0 < @x < @ball_boundary.x)
         @x = calculateNewPoint(@offset_center.x, @x)
+        @vx *= -1
       unless (0 < @y < @ball_boundary.y)
         @y = calculateNewPoint(@offset_center.y, @y)
-      @vx *= -1
-      @vy *= -1
+        @vy *= -1
 
