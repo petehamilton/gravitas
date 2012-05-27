@@ -18,8 +18,8 @@ class @PlasmaBallModel
     #TODO: Center hardcoded for now but should be linked to the client side size?
     center = {x: 200, y: 200}
 
-    @x -= @vx
-    @y -= @vy
+    @x -= Math.floor(@vx)
+    @y -= Math.floor(@vy)
 
     adjusted_center = {x: center.x + @rand(-50, 50), y: center.y + @rand(-50, 50)}
 
