@@ -102,8 +102,6 @@ performCalculations = () ->
   for p in plasma_balls
     p.calculateVelocity()
 
-  # console.log plasma_balls[0] 
-
 sendDataToClient = () ->
   everyone.now.broadcastPlasmaBalls(calc_vars.plasma_balls)
 
