@@ -1,7 +1,5 @@
 class @PlasmaBallModel
   constructor: (@id, @player, @x, @y) ->
-
-
     console.log "Creating PlasmaBall"
 
     @mass = 1
@@ -30,10 +28,9 @@ class @PlasmaBallModel
       @vx *= -1
       @vy *= -1
 
-    # limitVelocity = (velocity) ->
-      # velocity
-      # abs_velocity = Math.abs(velocity)
-      # (velocity/Math.abs(velocity)) * Math.min(@, @terminal_velocity)
+    limitVelocity = (velocity) ->
+      abs_velocity = Math.abs(velocity)
+      (velocity/Math.abs velocity) * Math.min(Math.abs velocity, @terminal_velocity)
 
 
     @x -= Math.floor(@vx)
@@ -54,8 +51,8 @@ class @PlasmaBallModel
       @vx += ax / @mass
       @vy += ay / @mass
 
-    @vx = (@vx/@vx) * Math.min(@vx, @terminal_velocity)
-    @vy = (@vy/@vy) * Math.min(@vy, @terminal_velocity)
+    @vx = limitVelocity @vx
+    @vy = limitVelocity @vy
 
     # TODO why can't I call reverseVelocity() doesnt seem to register
     # changes to vx and vy?!?
