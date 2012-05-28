@@ -15,7 +15,7 @@ pbm = require "./plasma_ball_model"
 
 # Global Variables
 
-calc_vars = {}
+calc_vars = {plasma_balls: []}
 everyone = null
 player_ids = [0..3]
 
@@ -104,6 +104,78 @@ configureApp = (app) ->
 
   app.listen 7777, "0.0.0.0"
 
+detectCollisions = () ->
+  # Taken from page 254 of "Actionscript Animation"
+  rotate = (x, y, sine, cosine, reverse) =>
+    result = {}
+    if(reverse)
+      result.x = x * cosine + y * sine
+      result.y = y * cosine - x * sine
+    else
+      result.x = x * cosine - y * sine
+      result.y = y * cosine + x * sine
+    result
+
+  checkCollision = (b1, b2) =>
+    dx = b1.x - b2.x
+    dy = b1.y - b2.y
+    dist = Math.sqrt(dx*dx + dy*dy)
+    if (dist < b1.size/2 + b2.size/2)
+      # Calculate angle, sine and cosine
+      angle = Math.atan2(dy, dx)
+      sine = Math.sin(angle)
+      cosine = Math.cos(angle)
+
+      # rotate b1's postion
+      pos1 = {x: 0, y: 0}
+
+      # rotate b2's position
+      pos2 = rotate(dx, dy, sine, cosine, true)
+
+      # rotate b1's velocity
+      vel1 = rotate(b1.vx, b1.vy, sine, cosine, true)
+
+      # rotate b2's velcoity
+      vel2 = rotate(b2.vx, b2.vy, sine, cosine, true)
+
+      # collision reaction
+      vxTotal = vel1.x + vel2.x
+      vel1.x = ((b1.mass - b2.mass) *  vel1.x + 2 * b2.mass * vel2.x)/(b1.mass + b2.mass)
+      vel2.x = vxTotal + vel1.x
+
+      # update position
+      pos1.x  += vel1.x
+      pos2.x += vel2.x
+
+      # Rotate positions back
+      pos1 = rotate(pos1.x, pos1.y, sine, cosine, false)
+      pos2 = rotate(pos2.x, pos2.y, sine, cosine, false)
+
+      # adjust positions
+      b2.x = b1.x + pos2.x
+      b2.y = b1.y + pos2.y
+      b1.x += pos1.x
+      b1.y += pos1.y
+
+      # rotate velocities back
+      vel1 = rotate(vel1.x, vel1.y, sine, cosine, false)
+      vel2 = rotate(vel2.x, vel2.y, sine, cosine, false)
+      b1.vx = vel1.x
+      b1.vy = vel1.y
+      b2.vx = vel2.x
+      b2.vx = vel2.y
+
+
+  i = 0
+  while i < player_ids.length
+    j = i + 1
+    while j < player_ids.length
+      checkCollision(calc_vars.plasma_balls[i], calc_vars.plasma_balls[j])
+      j++
+
+    i++
+
+
 performCalculations = () ->
 
   #TODO: Change this to be dynamic as elsewhere
@@ -128,6 +200,8 @@ performCalculations = () ->
   for p in calc_vars.plasma_balls
     p.calculateVelocity(external_masses)
 
+  detectCollisions()
+
   # Decrease turret pulls
   for i in player_ids
     if calc_vars.turret_masses[i] > 0
@@ -151,6 +225,9 @@ run = ->
   everyone = nowjs.initialize(app, { socketio: {'browser client minification': true} })
   configureNow everyone
   console.log everyone.now.setAngle
+
+  # performCalculations()
+  # sendDataToClient()
 
   setInterval () =>
     performCalculations()
