@@ -13,17 +13,46 @@ pbm = require "./plasma_ball_model"
   # collection = new mongodb.Collection(client, "gravitas_collection")
   # console.log "database connected"
 
+# Server configuration
+
+MODEL_FPS = 60
+BALLS_ENABLED = true
+
 # Global Variables
 
 calc_vars = {}
 everyone = null
 player_ids = [0..3]
 
+ballsEnabled = BALLS_ENABLED
+ballsInterval = null
+
 fixId = (obj) ->
   obj._id = mongodb.ObjectID obj._id
   obj
 
+
+# Turns balls on and off.
+setBallsEnabled = (enabled) ->
+  ballsEnabled = enabled
+
+  if ballsEnabled
+    ballsInterval = setInterval () =>
+      performCalculations()
+      sendDataToClient()
+    , MODEL_FPS
+  else
+    clearInterval ballsInterval
+
+
 configureNow = (everyone) ->
+
+  nowjs.on 'connect', ->
+    console.log "client #{@user.clientId} connected"
+
+    # Send initial game parameters
+    @now.receiveBallsEnabled ballsEnabled
+
   everyone.now.dbGetAll = () ->
     collection.find().toArray (err, results) ->
       console.dir results
@@ -78,7 +107,12 @@ configureNow = (everyone) ->
   everyone.now.stopGravityGun = (player) ->
     calc_vars.turret_masses[player] = 0
 
-configureApp = (app) -> 
+  everyone.now.setBallsEnabled = (enabled) ->
+    setBallsEnabled enabled
+    everyone.now.receiveBallsEnabled enabled
+
+
+configureApp = (app) ->
   app.configure ->
     app.use express.bodyParser()
 
@@ -152,9 +186,6 @@ run = ->
   configureNow everyone
   console.log everyone.now.setAngle
 
-  setInterval () =>
-    performCalculations()
-    sendDataToClient()
-  , 30
+  setBallsEnabled on
 
 run()

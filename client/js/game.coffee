@@ -5,6 +5,21 @@ class @Game
     @player = ko.observable(0).extend { convert: parseInt }
     @plasma_balls = []
 
+    # Model observable that has a corresponding `.view` observable.
+    # Changes to the ".view" are sent to the server using `syncFn`.
+    # The `target` observable is to reflect the (shared) actual state,
+    # the `.view` one the desired state (e.g. choice of the user).
+    withViewObservable = (target, syncFn) =>
+      target.view = ko.computed
+        read: -> target()
+        write: (val) => @withServer -> syncFn val
+      target
+
+
+    @ballsEnabled = withViewObservable (ko.observable false), (val) =>
+      @server.setBallsEnabled val
+
+
   # Makes sure the server connection is esablished before executing fn.
   # Otherwise sets the lag indicator.
   withServer: (fn) ->
@@ -39,6 +54,9 @@ class @Game
     for i in [0...length]
       arr[i] for arr in args
 
+
+  setBallsEnabled: (enabled) ->
+    @ballsEnabled enabled
 
   movePlasmaBalls: (coords) ->
     coord_balls = @zip(coords, @plasma_balls)
