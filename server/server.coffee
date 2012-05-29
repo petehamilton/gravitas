@@ -1,17 +1,8 @@
-http = require "http"
-mongodb = require "mongodb"
-express = require "express"
-nowjs = require "now"
-pbm = require "./plasma_ball_model"
-
-# server = new mongodb.Server "127.0.0.1", 27017, {}
-
-# new mongodb.Db("gravitas", server, {}).open (error, client) ->
-
-  # throw error if error
-
-  # collection = new mongodb.Collection(client, "gravitas_collection")
-  # console.log "database connected"
+http = require 'http'
+express = require 'express'
+nowjs = require 'now'
+pbm = require './plasma_ball_model'
+db = require './db'
 
 # Server configuration
 
@@ -112,31 +103,11 @@ configureNow = (everyone) ->
     everyone.now.receiveBallsEnabled enabled
 
 
-configureApp = (app) ->
-  app.configure ->
-    app.use express.bodyParser()
-
-  app.get "/gravitas/all", (req, res, next) ->
-    collection.find().toArray (err, results) ->
-      console.dir results
-      res.send JSON.stringify(results)
-
-  app.get "/gravitas/get/:id?", (req, res, next) ->
-    id = req.params.id
-    if id
-      console.log id
-      collection.find({id: id}, {limit: 1}).toArray (err, voc) ->
-        console.dir voc[0]
-        res.send JSON.stringify(voc[0])
-    else
-      next()
-
-  app.post "/gravitas/put/", (req, res) ->
-    obj = req.body
-    collection.update { uid: obj.uid }, obj, { upsert: true }
-    res.send req.body
-
+createApp = ->
+  app = express.createServer()
+  app.configure -> app.use express.bodyParser()
   app.listen 7777, "0.0.0.0"
+  app
 
 performCalculations = () ->
 
@@ -179,8 +150,8 @@ run = ->
   calc_vars.plasma_balls = (new pbm.PlasmaBallModel(i, i, starting_coords[i].x, starting_coords[i].y) for i in player_ids)
   calc_vars.turret_masses = [0,0,0,0]
 
-  app = express.createServer()
-  configureApp app
+  app = createApp()
+  db.configureRoutes app
 
   everyone = nowjs.initialize(app, { socketio: {'browser client minification': true} })
   configureNow everyone
