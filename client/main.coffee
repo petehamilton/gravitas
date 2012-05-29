@@ -42,10 +42,10 @@ main = ->
 
   v = new Vortex(paper)
   v.render(paper)
-  
+
   # create game
   @a = arena = new Arena(paper)
-  
+
   # TODO: Need to pass in plasmaballs
   @g = game = new Game(arena, 0, now)
   arena.setGame game

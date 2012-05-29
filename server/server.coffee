@@ -121,7 +121,7 @@ performCalculations = () ->
     turret_masses.push {mass: calc_vars.turret_masses[i], x: center.x, y: center.y}
 
   vortex = {mass: 10000, x: canvas_size/2, y: canvas_size/2}
-  
+
   external_masses = turret_masses.concat [vortex]
   # console.log "EXT: ", external_masses
 
