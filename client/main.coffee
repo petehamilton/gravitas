@@ -7,6 +7,9 @@
   for i in [0...length]
     arr[i] for arr in arguments
 
+# Constants
+FPS = 50
+
 createPaper = (width, height) ->
   paper = Raphael('paper', width, height)  # TODO don't hardcode id here
 
@@ -35,6 +38,16 @@ setupChat = ->
     now.chat msg
     false
 
+class FpsThrottler
+  constructor: (@fps) ->
+    @frameTime = 1000 / @fps
+    @lastEventDate = null
+
+  throttle: (fn) ->
+    if !@lastEventDate or (new Date() > new Date(@lastEventDate.getTime() + @frameTime))
+      @lastEventDate = new Date()
+      fn()
+
 main = ->
 
   # create paper
@@ -53,12 +66,14 @@ main = ->
   num_colors = 4
 
   # listen to mouse events
+  mouseMoveThrottler = new FpsThrottler FPS
   $(document).mousemove (e) ->
-    mx = e.pageX - paper.canvas.offsetLeft
-    my = e.pageY - paper.canvas.offsetTop
-    arena.mouseMoved(mx, my)
+    mouseMoveThrottler.throttle ->
+      mx = e.pageX - paper.canvas.offsetLeft
+      my = e.pageY - paper.canvas.offsetTop
+      arena.mouseMoved(mx, my)
 
-    # listen to mouse events
+  # listen to mouse events
   $(paper.canvas).mousedown (e) ->
     arena.mousePressed()
 
