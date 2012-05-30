@@ -152,10 +152,10 @@ detectCollisions = () ->
       pos2 = rotate(pos2.x, pos2.y, sine, cosine, false)
 
       # adjust positions
-      b2.x = b1.x + pos2.x
-      b2.y = b1.y + pos2.y
-      b1.x += pos1.x
-      b1.y += pos1.y
+      b2.x = b1.x - pos2.x
+      b2.y = b1.y - pos2.y
+      b1.x -= pos1.x
+      b1.y -= pos1.y
 
       # rotate velocities back
       vel1 = rotate(vel1.x, vel1.y, sine, cosine, false)
@@ -163,7 +163,7 @@ detectCollisions = () ->
       b1.vx = vel1.x
       b1.vy = vel1.y
       b2.vx = vel2.x
-      b2.vx = vel2.y
+      b2.vy = vel2.y
 
 
   i = 0
