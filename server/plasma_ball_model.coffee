@@ -26,7 +26,6 @@ class @PlasmaBallModel
 
   # Changes the x and y values based on the respective velocities
   calculateVelocity: (external_masses) ->
-    #TODO: Center hardcoded for now but should be linked to the client side size?
     calculateNewPoint = (c, point) ->
       offset = Math.abs(point - c) - c
       Math.abs(point) - offset
@@ -44,11 +43,13 @@ class @PlasmaBallModel
     for m in external_masses
       @gravitateTo m
 
+    #TODO: Center hardcoded for now but should be linked to the client side size?
+    @vx = limitVelocity @vx
+    @vy = limitVelocity @vy
+
     @x -= @pixelRound(@vx)
     @y -= @pixelRound(@vy)    
 
-    @vx = limitVelocity @vx
-    @vy = limitVelocity @vy
 
     # TODO why can't I call reverseVelocity() doesnt seem to register
     # changes to vx and vy?!?
