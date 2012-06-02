@@ -1,4 +1,6 @@
 config =
+  fps: 50
+
   ball_kinds:
     player: 0
     powerup: 1

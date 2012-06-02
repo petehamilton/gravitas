@@ -11,8 +11,6 @@
   for i in [0...length]
     arr[i] for arr in arguments
 
-# Constants
-FPS = 50
 
 createPaper = (paperId, width, height) ->
   paper = Raphael(paperId, width, height)
@@ -70,7 +68,7 @@ main = ->
   num_colors = 4
 
   # listen to mouse events
-  mouseMoveThrottler = new FpsThrottler FPS
+  mouseMoveThrottler = new FpsThrottler config.fps
   $(document).mousemove (e) ->
     mouseMoveThrottler.throttle ->
       mx = e.pageX - paper.canvas.offsetLeft
