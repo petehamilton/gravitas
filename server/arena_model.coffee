@@ -11,7 +11,6 @@ genBallId = -> next_ball_id++
 class @ArenaModel
 
   constructor: ->
-    #TODO: this is a hack, in reality players should ahve multiple plasma balls, change!!!
     starting_coords = ({x: Math.random() * 100, y: Math.random() * 100} for i in PLAYER_IDS)
     @plasma_balls = (new pbm.PlasmaBallModel(genBallId(), pbm.makePlayerBallType(i), starting_coords[i].x, starting_coords[i].y) for i in PLAYER_IDS)
 
