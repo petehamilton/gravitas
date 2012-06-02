@@ -53,8 +53,7 @@ class FpsThrottler
 
 main = ->
   # create paper
-  # TODO use config
-  paper = createPaper 'paper', 400, 400
+  paper = createPaper 'paper', config.arena_size.x, config.arena_size.y
 
   v = new Vortex(paper)
 
