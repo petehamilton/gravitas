@@ -1,14 +1,27 @@
-#log_container {
-  margin-top: 450px;
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 3px;
+  border: 5px solid red;
 }
 
 #lag_indicator {
-  position: absolute;
-  top: .5em;
-  right: .5em;
+  text-align: center;
+  background-color: #ccc;
 }
 
 #lag_indicator.lag {
   color: white;
   background-color: red;
+}
+
+#log_container {
+  margin-top: 2em;
 }
