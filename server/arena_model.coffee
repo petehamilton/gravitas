@@ -86,10 +86,12 @@ class @ArenaModel
   # TODO this is time-independent, balls move faster with higher FPS! Change!
   update: () ->
 
-    # TODO use config / delete these constant things
-    vortex = { mass: 10000, x: config.arena_size.x / 2, y: config.arena_size.y / 2 }
+    vortex_mass =
+      mass: config.vortex_mass
+      x: config.arena_size.x / 2
+      y: config.arena_size.y / 2
 
     for ball in @plasma_balls
-      ball.calculateVelocity [vortex]
+      ball.calculateVelocity [vortex_mass]
 
     @detectCollisions()
