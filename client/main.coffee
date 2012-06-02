@@ -55,7 +55,7 @@ main = ->
   # create paper
   paper = createPaper 'paper', config.arena_size.x, config.arena_size.y
 
-  v = new Vortex(paper)
+  vortex = new Vortex(paper)
 
   # create game
   @a = arena = new Arena(paper)
