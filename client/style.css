@@ -1,9 +1,17 @@
 body {
   margin: 0;
   padding: 0;
+
+  /* Turns off ALL selections.
+     For some reason, just setting it on #paper doesn't work.
+     Re-enabling it for everything else doesn't work either. */
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
 }
 
 #paper {
+  display: inline-block;
   cursor: url(images/cursor/transparent.png), default;
 }
 
