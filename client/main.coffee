@@ -58,10 +58,10 @@ main = ->
   vortex = new Vortex(paper)
 
   # create game
-  @a = arena = new Arena(paper)
+  arena = new Arena(paper)
 
   # TODO: Need to pass in plasmaballs
-  @g = game = new Game(arena, 0, now)
+  game = new Game(arena, 0, now)
   arena.setGame game
 
   num_colors = 4
@@ -91,6 +91,10 @@ main = ->
     log "now ready"
 
     setupChat()
+
+  # Debugging global variables
+  @a = arena
+  @g = game
 
 
 $ ->
