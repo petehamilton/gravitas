@@ -16,7 +16,6 @@ class @PlasmaBallModel
     # TODO: Remove hard coding
     @ball_boundary = {x: 400 - @size, y: 400 - @size}
     @center = {x: 200, y: 200}
-    @offset_center = {x: @center.x - @size/2, y: @center.y - @size/2}
 
   rand: (min, max) ->
     Math.floor(Math.random() * (max - min + 1)) + min
@@ -29,13 +28,6 @@ class @PlasmaBallModel
 
   # Changes the x and y values based on the respective velocities
   calculateVelocity: (external_masses) ->
-    calculateNewPoint = (c, point) ->
-      offset = Math.abs(point - c) - c
-      Math.abs(point) - offset
-
-    reverseVelocity = ->
-      @vx *= -1
-      @vy *= -1
 
     limitVelocity = (velocity) =>
       abs_velocity = Math.abs(velocity)
@@ -53,16 +45,7 @@ class @PlasmaBallModel
     @x -= @pixelRound(@vx)
     @y -= @pixelRound(@vy)
 
-
-    # TODO why can't I call reverseVelocity() doesnt seem to register
-    # changes to vx and vy?!?
-    unless ((0 < @x < @ball_boundary.x) and (0 < @y < @ball_boundary.y))
-      unless (0 < @x < @ball_boundary.x)
-        @x = calculateNewPoint(@offset_center.x, @x)
-        @vx *= -1
-      unless (0 < @y < @ball_boundary.y)
-        @y = calculateNewPoint(@offset_center.y, @y)
-        @vy *= -1
+    # TODO delete ball if it flies out of the arena
 
   gravitateTo: (other_mass) ->
     dx = @x - other_mass.x
