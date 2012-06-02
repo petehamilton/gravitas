@@ -60,6 +60,8 @@ main = ->
 
   vortex = new Vortex(paper)
 
+  crosshair = new Crosshair(paper)
+  
   # create game
   arena = new Arena(paper)
 

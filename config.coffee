@@ -22,6 +22,8 @@ config =
   ball_mass: 1
   ball_size: 40
 
+  crosshair_size: 64
+
   vortex_mass: 10000
 
   turret_width: 200

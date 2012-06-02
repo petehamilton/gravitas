@@ -1,6 +1,7 @@
 class @Arena
   constructor: (@paper) ->
     @turrets = (new Turret(p, @paper) for p in [0..3])
+    @crosshair = new Crosshair(@paper)
 
    setGame: (game) ->
      @game = game
@@ -8,6 +9,7 @@ class @Arena
   mouseMoved: (x, y) ->
     # The turret view calculates the angle and updates itself
     angle = @turrets[@game.player()].mouseMoved(x, y)
+    @crosshair.mouseMoved(x, y)
 
     # Tell the game about the changed player angle to send it to the server
     @game.onOwnAngle angle

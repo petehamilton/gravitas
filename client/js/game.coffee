@@ -65,8 +65,8 @@ class @Game
     coord_balls = @zip(coords, @plasma_balls)
     for coord, ball in coord_balls
       ball.attr({x: coord.x, y: coord.y})
+    
 
-  # Sets the (x,y) coords of the plasmaballs
   updatePlasmaBalls: (server_plasma_balls) ->
 
     for ball_model in server_plasma_balls
