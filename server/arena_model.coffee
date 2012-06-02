@@ -14,7 +14,6 @@ class @ArenaModel
     #TODO: this is a hack, in reality players should ahve multiple plasma balls, change!!!
     starting_coords = ({x: Math.random() * 100, y: Math.random() * 100} for i in PLAYER_IDS)
     @plasma_balls = (new pbm.PlasmaBallModel(genBallId(), pbm.makePlayerBallType(i), starting_coords[i].x, starting_coords[i].y) for i in PLAYER_IDS)
-    @turret_masses = [0,0,0,0]
 
   detectCollisions: ->
     # Taken from page 254 of "Actionscript Animation"
@@ -87,35 +86,10 @@ class @ArenaModel
   # TODO this is time-independent, balls move faster with higher FPS! Change!
   update: () ->
 
-    # Get the turret masses into a simplified form
-    # TODO use map
-    turret_masses = []
-    for i in PLAYER_IDS
-      center = switch i
-        when 0 then { x: 0,                   y: 0                   }
-        when 1 then { x: config.arena_size.x, y: 0                   }
-        when 2 then { x: config.arena_size.x, y: config.arena_size.y }
-        when 3 then { x: 0,                   y: config.arena_size.y }
-
-      turret_masses.push
-        mass: @turret_masses[i]
-        x: center.x
-        y: center.y
-
     # TODO use config / delete these constant things
     vortex = { mass: 10000, x: config.arena_size.x / 2, y: config.arena_size.y / 2 }
 
-    external_masses = turret_masses.concat [vortex]
-    # console.log "EXT: ", external_masses
-
     for ball in @plasma_balls
-      ball.calculateVelocity external_masses
+      ball.calculateVelocity [vortex]
 
     @detectCollisions()
-
-    # Decrease turret pulls
-    for i in PLAYER_IDS
-      if @turret_masses[i] > 0
-        @turret_masses[i] -= 200
-        @turret_masses[i] = Math.max(0, @turret_masses[i])
-

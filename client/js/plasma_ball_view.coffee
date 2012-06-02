@@ -29,9 +29,6 @@ class @PlasmaBallView
 
     @image = @paper.image(sprite_path, @ball_model.x, @ball_model.y, size, size)
 
-    # TODO opacity needed?
-    # @image.attr({opacity: Math.random()*0.7 + 0.0})
-
     @update()
 
 

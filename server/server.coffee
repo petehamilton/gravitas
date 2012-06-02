@@ -95,13 +95,12 @@ configureNow = (everyone) ->
     everyone.now.receiveAngle(player, angle)
 
   everyone.now.startGravityGun = (player) ->
-    #TODO: use config
-    turret_mass = 50000
-
-    arena.turret_masses[player] = turret_mass
+    # TODO implement ball pulling
+    log "TODO: implement ball pulling"
 
   everyone.now.stopGravityGun = (player) ->
-    arena.turret_masses[player] = 0
+    # TODO implement ball releasing
+    log "TODO: implement ball releasing"
 
   everyone.now.setBallsEnabled = (enabled) ->
     setBallsEnabled enabled
@@ -117,8 +116,6 @@ createApp = ->
 
 sendDataToClient = () ->
   if everyone.now.receivePlasmaBalls
-    # TODO remove
-    # log arena.plasma_balls
     everyone.now.receivePlasmaBalls arena.plasma_balls
 
 run = ->
