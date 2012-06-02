@@ -29,8 +29,14 @@ class @ArenaModel
     processCollision = (b1, b2) =>
       dx = b1.x - b2.x
       dy = b1.y - b2.y
+
+      # All our balls have the same mass and size
+      b1_mass = b2_mass = config.ball_mass
+      b1_size = b2_size = config.ball_size
+
       dist = Math.sqrt(dx*dx + dy*dy)
-      if (dist < b1.size/2 + b2.size/2)
+      if (dist < b1_size/2 + b2_size/2)
+
         # Calculate angle, sine and cosine
         angle = Math.atan2(dy, dx)
         sine = Math.sin(angle)
@@ -49,8 +55,8 @@ class @ArenaModel
         vel2 = rotate(b2.vx, b2.vy, sine, cosine, true)
 
         # collision reaction
-        vxTotal = vel1.x + vel2.x
-        vel1.x = ((b1.mass - b2.mass) *  vel1.x + 2 * b2.mass * vel2.x)/(b1.mass + b2.mass)
+        vxTotal = vel1.x - vel2.x
+        vel1.x = ((b1_mass - b2_mass) *  vel1.x + 2 * b2_mass * vel2.x)/(b1_mass + b2_mass)
         vel2.x = vxTotal + vel1.x
 
         # update position
@@ -62,10 +68,10 @@ class @ArenaModel
         pos2 = rotate(pos2.x, pos2.y, sine, cosine, false)
 
         # adjust positions
-        b2.x = b1.x - pos2.x
-        b2.y = b1.y - pos2.y
-        b1.x -= pos1.x
-        b1.y -= pos1.y
+        b2.x = b1.x + pos2.x
+        b2.y = b1.y + pos2.y
+        b1.x += pos1.x
+        b1.y += pos1.y
 
         # rotate velocities back
         vel1 = rotate(vel1.x, vel1.y, sine, cosine, false)

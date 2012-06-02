@@ -4,16 +4,16 @@ exports.makePlayerBallType = (player_id) ->
   kind: config.ball_kinds.player
   player_id: player_id
 
+
+BALL_MASS = config.ball_mass
+
+
 class @PlasmaBallModel
   # type examples:
   # - { kind: PLAYER, player_id: 2 }
   # - { kind: POWERUP, effect: SHIELD }
   constructor: (@id, @type, @x, @y) ->
     console.log "Creating PlasmaBall"
-
-    @mass = config.ball_mass
-    @vortex_mass = config.vortex_mass
-    @size = config.ball_size
 
     @terminal_velocity = config.ball_terminal_velocity
 
@@ -56,10 +56,10 @@ class @PlasmaBallModel
     dist = Math.sqrt(distSq)
 
     if dist > 80
-      force = @mass * other_mass.mass / distSq
+      force = BALL_MASS * other_mass.mass / distSq
       ax = force * dx / dist
       ay = force * dy / dist
 
-      @vx += ax / @mass
-      @vy += ay / @mass
+      @vx += ax / BALL_MASS
+      @vy += ay / BALL_MASS
 
