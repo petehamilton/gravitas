@@ -1,5 +1,6 @@
-@log = (args...) ->
-  console.log args...
+@log = (args...) -> console.log args...
+@dir = (obj) -> console.log(JSON.stringify obj)
+
 
 @zip = () ->
   lengthArray = (arr.length for arr in arguments)
