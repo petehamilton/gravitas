@@ -21,7 +21,7 @@ class @Turret
       when 2 then {x: @paper.width - xoffset, y: @paper.height - yoffset }
       when 3 then {x: -xoffset, y: @paper.height - yoffset}
 
-    @angle = @position * 90# + 45
+    @angle = @position * 90 + 45
 
     # simple body (circle!)
     @body_sprite = @paper.circle(@center.x, @center.y, 80)
