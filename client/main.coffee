@@ -14,8 +14,8 @@
 # Constants
 FPS = 50
 
-createPaper = (width, height) ->
-  paper = Raphael('paper', width, height)  # TODO don't hardcode id here
+createPaper = (paperId, width, height) ->
+  paper = Raphael(paperId, width, height)
 
   background = paper.rect(0, 0, width, height)
   background.attr({fill: '#000'})
@@ -56,7 +56,8 @@ class FpsThrottler
 main = ->
 
   # create paper
-  paper = createPaper 400, 400
+  # TODO use config
+  paper = createPaper 'paper', 400, 400
 
   v = new Vortex(paper)
   v.render(paper)

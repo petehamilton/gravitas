@@ -1,3 +1,4 @@
+# TODO config
 LAG_LIMIT = 50
 
 class @Game
