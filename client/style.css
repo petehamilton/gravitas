@@ -3,6 +3,10 @@ body {
   padding: 0;
 }
 
+#paper {
+  cursor: url(images/cursor/transparent.png), default;
+}
+
 #controls {
   position: absolute;
   top: 0;
