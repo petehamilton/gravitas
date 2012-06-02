@@ -20,11 +20,6 @@ class @PlasmaBallModel
     @vx = @rand(-@terminal_velocity, @terminal_velocity)
     @vy = @rand(-@terminal_velocity, @terminal_velocity)
 
-    # TODO: Remove hard coding
-    @ball_boundary = {x: 400 - @size, y: 400 - @size}
-    @center = {x: 200, y: 200}
-
-
   rand: (min, max) ->
     Math.floor(Math.random() * (max - min + 1)) + min
 
@@ -46,7 +41,6 @@ class @PlasmaBallModel
     for m in external_masses
       @gravitateTo m
 
-    #TODO: Center hardcoded for now but should be linked to the client side size?
     @vx = limitVelocity @vx
     @vy = limitVelocity @vy
 
