@@ -1,7 +1,6 @@
 class @Vortex
-  constructor: () ->
+  constructor: (@canvas) ->
 
-  render: (@canvas) ->
     sprites = ["cv001.png", "cv002.png", "cv003.png", "cv004.png"]
     sprite_folder = "../images/central_vortex/"
 

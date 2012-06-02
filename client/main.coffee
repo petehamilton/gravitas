@@ -59,7 +59,6 @@ main = ->
   paper = createPaper 'paper', 400, 400
 
   v = new Vortex(paper)
-  v.render(paper)
 
   # create game
   @a = arena = new Arena(paper)
