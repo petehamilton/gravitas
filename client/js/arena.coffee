@@ -12,5 +12,13 @@ class @Arena
     # Tell the game about the changed player angle to send it to the server
     @game.onOwnAngle angle
 
+  mousePressed: ->
+    # Tell the game about the player clicking their mouse
+    @game.startGravityGun()
+
+  mouseReleased: ->
+    # Tell the game about the player clicking their mouse
+    @game.stopGravityGun()
+
   setTurretRotation: (turret, angle) ->
     @turrets[turret].setRotation angle

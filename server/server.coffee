@@ -1,55 +1,58 @@
-http = require "http"
-mongodb = require "mongodb"
-express = require "express"
-nowjs = require "now"
+http = require 'http'
+express = require 'express'
+nowjs = require 'now'
+arena_model = require './arena_model'
+pbm = require './plasma_ball_model'
+db = require './db'
+{log, dir} = require('./utils')
+config = require('./config').config
 
-# server = new mongodb.Server "127.0.0.1", 27017, {}
+# Server configuration
 
-# new mongodb.Db("gravitas", server, {}).open (error, client) ->
+MODEL_FPS = config.model_fps
+BALLS_ENABLED = config.balls_enabled
 
-  # throw error if error
+# Global Variables
 
-  # collection = new mongodb.Collection(client, "gravitas_collection")
-  # console.log "database connected"
+arena = new arena_model.ArenaModel()
+everyone = null
 
-run = ->
+ballsEnabled = BALLS_ENABLED
+ballsInterval = null
 
-  app = express.createServer()
-  app.configure ->
-    app.use express.bodyParser()
+fixId = (obj) ->
+  obj._id = mongodb.ObjectID obj._id
+  obj
 
-  app.get "/gravitas/all", (req, res, next) ->
-    collection.find().toArray (err, results) ->
-      console.dir results
-      res.send JSON.stringify(results)
 
-  app.get "/gravitas/get/:id?", (req, res, next) ->
-    id = req.params.id
-    if id
-      console.log id
-      collection.find({id: id}, {limit: 1}).toArray (err, voc) ->
-        console.dir voc[0]
-        res.send JSON.stringify(voc[0])
-    else
-      next()
+# Turns balls on and off.
+setBallsEnabled = (enabled) ->
+  ballsEnabled = enabled
 
-  app.post "/gravitas/put/", (req, res) ->
-    obj = req.body
-    collection.update { uid: obj.uid }, obj, { upsert: true }
-    res.send req.body
+  if ballsEnabled
+    ballsInterval = setInterval () =>
+      # Perform model calculations
+      arena.update()
+      sendDataToClient()
+    , (1000 / MODEL_FPS)
+  else
+    clearInterval ballsInterval
 
-  app.listen 7777, "0.0.0.0"
 
-  everyone = nowjs.initialize(app, { socketio: {'browser client minification': true} })
+configureNow = (everyone) ->
+
+  nowjs.on 'connect', ->
+    console.log "client #{@user.clientId} connected"
+
+    # Send initial game parameters
+    @now.receiveBallsEnabled ballsEnabled
+
+  everyone.now.config = config
 
   everyone.now.dbGetAll = () ->
     collection.find().toArray (err, results) ->
       console.dir results
       everyone.now.dbReceiveAll results
-
-  fixId = (obj) ->
-    obj._id = mongodb.ObjectID obj._id
-    obj
 
   # TODO check if we can replace dbInsert and dbUpdate by one dbSave
   everyone.now.dbInsert = (obj) ->
@@ -90,5 +93,43 @@ run = ->
 
   everyone.now.setAngle = (player, angle) ->
     everyone.now.receiveAngle(player, angle)
+
+  everyone.now.startGravityGun = (player) ->
+    #TODO: use config
+    turret_mass = 50000
+
+    arena.turret_masses[player] = turret_mass
+
+  everyone.now.stopGravityGun = (player) ->
+    arena.turret_masses[player] = 0
+
+  everyone.now.setBallsEnabled = (enabled) ->
+    setBallsEnabled enabled
+    everyone.now.receiveBallsEnabled enabled
+
+
+createApp = ->
+  app = express.createServer()
+  app.configure -> app.use express.bodyParser()
+  app.listen 7777, "0.0.0.0"
+  app
+
+
+sendDataToClient = () ->
+  if everyone.now.receivePlasmaBalls
+    # TODO remove
+    # log arena.plasma_balls
+    everyone.now.receivePlasmaBalls arena.plasma_balls
+
+run = ->
+
+  app = createApp()
+  db.configureRoutes app
+
+  everyone = nowjs.initialize(app, { socketio: {'browser client minification': true} })
+  configureNow everyone
+  console.log everyone.now.setAngle
+
+  setBallsEnabled on
 
 run()
