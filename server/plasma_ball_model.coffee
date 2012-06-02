@@ -6,6 +6,7 @@ exports.makePlayerBallType = (player_id) ->
 
 
 BALL_MASS = config.ball_mass
+BALL_SIZE = config.ball_size
 TERMINAL_VELOCITY = config.ball_terminal_velocity
 
 
@@ -21,6 +22,17 @@ class @PlasmaBallModel
 
   rand: (min, max) ->
     Math.floor(Math.random() * (max - min + 1)) + min
+
+  # As x and y are top left we may wish to know the center
+  getCenter: ->
+    x: @x + BALL_SIZE/2
+    y: @y + BALL_SIZE/2
+
+  # As x and y are top left we may wish to set x and y based
+  # on the center
+  setFromCenter: (x, y) ->
+    @x = x - BALL_SIZE/2
+    @y = y - BALL_SIZE/2
 
   # Used to speed up rendering. Based on half vs full pixel test at:
   # http://www.html5rocks.com/en/tutorials/canvas/performance/#toc-avoid-float
