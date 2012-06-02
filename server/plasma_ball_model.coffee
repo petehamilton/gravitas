@@ -6,6 +6,7 @@ exports.makePlayerBallType = (player_id) ->
 
 
 BALL_MASS = config.ball_mass
+TERMINAL_VELOCITY = config.ball_terminal_velocity
 
 
 class @PlasmaBallModel
@@ -15,10 +16,8 @@ class @PlasmaBallModel
   constructor: (@id, @type, @x, @y) ->
     console.log "Creating PlasmaBall"
 
-    @terminal_velocity = config.ball_terminal_velocity
-
-    @vx = @rand(-@terminal_velocity, @terminal_velocity)
-    @vy = @rand(-@terminal_velocity, @terminal_velocity)
+    @vx = @rand(-TERMINAL_VELOCITY, TERMINAL_VELOCITY)
+    @vy = @rand(-TERMINAL_VELOCITY, TERMINAL_VELOCITY)
 
   rand: (min, max) ->
     Math.floor(Math.random() * (max - min + 1)) + min
@@ -35,7 +34,7 @@ class @PlasmaBallModel
     limitVelocity = (velocity) =>
       abs_velocity = Math.abs(velocity)
       sign = (velocity/abs_velocity)
-      min = Math.min(abs_velocity, @terminal_velocity)
+      min = Math.min(abs_velocity, TERMINAL_VELOCITY)
       return sign * min
 
     for m in external_masses
