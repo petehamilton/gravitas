@@ -1,6 +1,10 @@
 class @Game
   constructor: (@arena, @player, @server) ->
     # TODO relocate ko
+    @loggedIn = ko.observable false
+    @username = ko.observable 'user'
+    @password = ko.observable ''
+
     @lag = ko.observable false
     @player = ko.observable(0).extend { convert: parseInt }
 
