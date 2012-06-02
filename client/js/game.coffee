@@ -49,7 +49,8 @@ class @Game
 
   # Sets the angle of any player turret.
   setAngle: (player, angle) ->
-    @arena.setTurretRotation(player, angle)
+    if player != @player()
+      @arena.setTurretRotation(player, angle)
 
   zip: (args...) ->
     lengthArray = (arr.length for arr in args)
