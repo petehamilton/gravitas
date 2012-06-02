@@ -38,7 +38,7 @@ setupChat = ->
   $('#chatform').submit ->
     msg = $('#chatinput').val()
     $('#chatinput').val('')
-    log msg
+    log "chat message:", msg
 
     now.chat msg
     false

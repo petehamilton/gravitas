@@ -18,7 +18,7 @@ configureRoutes = (app) ->
   app.get "/gravitas/get/:id?", (req, res, next) ->
     id = req.params.id
     if id
-      console.log id
+      console.log "get id:", id
       collection.find({id: id}, {limit: 1}).toArray (err, voc) ->
         console.dir voc[0]
         res.send JSON.stringify(voc[0])

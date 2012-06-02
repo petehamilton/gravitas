@@ -18,9 +18,8 @@ class @Vortex
         sprite: v
         direction: 1 - 2 * Math.floor(Math.random() * 2)
         speed: Math.random()
-      log v.direction
 
-    log (v.direction for v in @vortices)
+    log "vorticies directions", (v.direction for v in @vortices)
 
     @setSpeed(5)
     # setInterval =>
