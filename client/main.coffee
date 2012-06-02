@@ -60,7 +60,6 @@ main = ->
   # create game
   arena = new Arena(paper)
 
-  # TODO: Need to pass in plasmaballs
   game = new Game(arena, 0, now)
   arena.setGame game
 
