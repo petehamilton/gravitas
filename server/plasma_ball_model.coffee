@@ -1,12 +1,15 @@
+config = require('./config').config
+
 class @PlasmaBallModel
   constructor: (@id, @player, @x, @y) ->
     console.log "Creating PlasmaBall"
 
-    @mass = 1
-    @vortex_mass = 10000
-    @size = 40
+    @mass = config.arena.ball_mass
+    @vortex_mass = config.arena.vortex_mass
+    @size = config.arena.ball_size
 
-    @terminal_velocity = 5
+    @terminal_velocity = config.arena.terminal_velocity
+
     @vx = @rand(-@terminal_velocity, @terminal_velocity)
     @vy = @rand(-@terminal_velocity, @terminal_velocity)
 
@@ -48,7 +51,7 @@ class @PlasmaBallModel
     @vy = limitVelocity @vy
 
     @x -= @pixelRound(@vx)
-    @y -= @pixelRound(@vy)    
+    @y -= @pixelRound(@vy)
 
 
     # TODO why can't I call reverseVelocity() doesnt seem to register

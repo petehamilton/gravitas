@@ -3,11 +3,12 @@ express = require 'express'
 nowjs = require 'now'
 pbm = require './plasma_ball_model'
 db = require './db'
+config = require('./config').config
 
 # Server configuration
 
 MODEL_FPS = 60
-BALLS_ENABLED = true
+BALLS_ENABLED = config.arena.balls_enabled
 
 # Global Variables
 
@@ -43,6 +44,8 @@ configureNow = (everyone) ->
 
     # Send initial game parameters
     @now.receiveBallsEnabled ballsEnabled
+
+  everyone.now.config = config
 
   everyone.now.dbGetAll = () ->
     collection.find().toArray (err, results) ->
