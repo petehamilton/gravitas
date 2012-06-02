@@ -12,8 +12,8 @@ config =
   player_ids: [0..3]
 
   arena_size:
-      x: 400
-      y: 400
+    x: 400
+    y: 400
 
   balls_enabled: true
 
@@ -30,6 +30,6 @@ config =
 
 
 if exports?
-  config = config
+  exports.config = config
 else
   @config = config
