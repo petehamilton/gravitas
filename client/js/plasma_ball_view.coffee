@@ -4,7 +4,7 @@ SPRITE_FOLDER = "../images/plasma_balls/"
 getSpritePath = (ball_type, config) ->
   filename = switch ball_type.kind
     when config.ball_kinds.player
-      assert(ball_type.player_id in config.player_ids) # TODO make a shortcut assertion for this
+      assertPlayerId ball_type.player_id
 
       switch ball_type.player_id
         when 0 then "pb_blue_0.png"

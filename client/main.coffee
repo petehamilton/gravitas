@@ -4,6 +4,9 @@
   if not bool
     throw new Error('assertion failed' + if msg? then ' ' + msg else '')
 
+@assertPlayerId = (player_id) ->
+  assert(player_id in config.player_ids, "Invalid user id")
+
 
 @zip = () ->
   lengthArray = (arr.length for arr in arguments)
