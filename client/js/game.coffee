@@ -1,6 +1,3 @@
-# TODO config
-LAG_LIMIT = 50
-
 class @Game
   constructor: (@arena, @player, @server) ->
     # TODO relocate ko
@@ -28,7 +25,7 @@ class @Game
   # Makes sure the server connection is esablished before executing fn.
   # Otherwise sets the lag indicator.
   withServer: (fn) ->
-    timeout = setTimeout (=> @lag on), LAG_LIMIT
+    timeout = setTimeout (=> @lag on), config.lag_limit
     @server.ready =>
       clearTimeout timeout
       @lag off

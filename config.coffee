@@ -30,6 +30,8 @@ config =
   # Maximum allowed ball velocity
   ball_terminal_velocity: 5
 
+  lag_limit: 50
+
 
 if exports?
   exports.config = config
