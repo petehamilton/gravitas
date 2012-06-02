@@ -1,7 +1,8 @@
 class @Arena
   constructor: (@paper) ->
     @turrets = (new Turret(p, @paper) for p in [0..3])
-    @crosshair = new Crosshair(@paper)
+    @crosshair = new Crosshair(paper)
+
 
    setGame: (game) ->
      @game = game
