@@ -3,13 +3,9 @@ class @Turret
   # Positions are clockwise from top left to bottom left
   # 0 => TL, 1 => TR, 2 => BR, 3 => BL
   constructor: (@position, @paper) ->
-    log "Creating #{@name()}"
-
+    log "Creating Turret #{@position}"
 
     @image = "../images/double_turret.png"
-
-    @width = 200
-    @height = 100
 
     @center = switch @position
       when 0 then {x: 0, y: 0}
@@ -27,20 +23,16 @@ class @Turret
 
     @angle = @position * 90# + 45
 
-    @setup()
-
-  name: ->
-    "Turret #{@position}"
-
-  setup: ->
-    log "Rendering #{@name()}"
-
     # simple body (circle!)
     @body_sprite = @paper.circle(@center.x, @center.y, 80)
                     .attr({fill: '#CCCCCC'})
 
-    @turret_sprite = @paper.image(@image, @offset_center.x, @offset_center.y, @width, @height)
+    width = config.turret_width
+    height = config.turret_height
+
+    @turret_sprite = @paper.image(@image, @offset_center.x, @offset_center.y, width, height)
                       .transform("r#{@angle},#{@center.x},#{@center.y}")
+
 
   # Turns the turret according to the mouse position.
   # Returns the angle in degrees.

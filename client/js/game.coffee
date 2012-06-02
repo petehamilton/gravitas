@@ -80,4 +80,4 @@ class @Game
         ball_view.setModel ball_model
       else
         # Create a new view for this ball. This calls update() for us already.
-        @plasma_balls[ball_model.id] = new PlasmaBallView(ball_model, @, @arena.paper)
+        @plasma_balls[ball_model.id] = new PlasmaBallView(ball_model, @arena.paper)

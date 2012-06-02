@@ -18,14 +18,13 @@ getSpritePath = (ball_type, config) ->
 
 
 class @PlasmaBallView
-  constructor: (@ball_model, @game, @paper) ->
+  constructor: (@ball_model, @paper) ->
     log "Creating PlasmaBall"
-
     # Set up graphics
 
-    sprite_path = getSpritePath @ball_model.type, @game.config
+    sprite_path = getSpritePath @ball_model.type, config
 
-    size = @game.config.ball_size
+    size = config.ball_size
 
     @image = @paper.image(sprite_path, @ball_model.x, @ball_model.y, size, size)
 

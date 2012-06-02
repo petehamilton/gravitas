@@ -1,4 +1,4 @@
-config = require('./config').config
+{config} = require './utils'
 pbm = require './plasma_ball_model'
 
 

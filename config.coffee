@@ -19,10 +19,17 @@ config =
 
   ball_mass: 1
   ball_size: 40
+
   vortex_mass: 10000
+
+  turret_width: 200
+  turret_height: 100
 
   # Maximum allowed ball velocity
   ball_terminal_velocity: 5
 
 
-exports.config = config
+if exports?
+  config = config
+else
+  @config = config

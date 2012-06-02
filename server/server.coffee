@@ -4,8 +4,7 @@ nowjs = require 'now'
 arena_model = require './arena_model'
 pbm = require './plasma_ball_model'
 db = require './db'
-{log, dir} = require('./utils')
-config = require('./config').config
+{config, log, dir} = require('./utils')
 
 # Server configuration
 
@@ -46,8 +45,6 @@ configureNow = (everyone) ->
 
     # Send initial game parameters
     @now.receiveBallsEnabled ballsEnabled
-
-  everyone.now.config = config
 
   everyone.now.dbGetAll = () ->
     collection.find().toArray (err, results) ->

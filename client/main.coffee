@@ -54,7 +54,6 @@ class FpsThrottler
       fn()
 
 main = ->
-
   # create paper
   # TODO use config
   paper = createPaper 'paper', 400, 400
@@ -94,10 +93,6 @@ main = ->
 
   now.ready ->
     log "now ready"
-
-    # TODO change this to sending the config because otherwise nested members are loaded lazily
-    game.config = now.config
-    log "received config", game.config
 
     setupChat()
 
