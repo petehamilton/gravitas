@@ -38,6 +38,7 @@ class @Game
 
   # Starts the gravity gun of the current player
   startGravityGun: ->
+    new Audio("sounds/pull.wav").play()
     @withServer =>
       @server.startGravityGun @player()
 
