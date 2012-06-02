@@ -1,5 +1,8 @@
 @log = (args...) -> console.log args...
 @dir = (obj) -> console.log(JSON.stringify obj)
+@assert = (bool, msg) ->
+  if not bool
+    throw new Error('assertion failed' + if msg? then ' ' + msg else '')
 
 
 @zip = () ->
@@ -91,6 +94,10 @@ main = ->
 
   now.ready ->
     log "now ready"
+
+    # TODO change this to sending the config because otherwise nested members are loaded lazily
+    game.config = now.config
+    log "received config", game.config
 
     setupChat()
 

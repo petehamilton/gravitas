@@ -1,7 +1,14 @@
 config = require('./config').config
 
+exports.makePlayerBallType = (player_id) ->
+  kind: config.ball_kinds.player
+  player_id: player_id
+
 class @PlasmaBallModel
-  constructor: (@id, @player, @x, @y) ->
+  # type examples:
+  # - { kind: PLAYER, player_id: 2 }
+  # - { kind: POWERUP, effect: SHIELD }
+  constructor: (@id, @type, @x, @y) ->
     console.log "Creating PlasmaBall"
 
     @mass = config.arena.ball_mass
@@ -16,6 +23,7 @@ class @PlasmaBallModel
     # TODO: Remove hard coding
     @ball_boundary = {x: 400 - @size, y: 400 - @size}
     @center = {x: 200, y: 200}
+
 
   rand: (min, max) ->
     Math.floor(Math.random() * (max - min + 1)) + min

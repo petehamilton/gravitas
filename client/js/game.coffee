@@ -5,7 +5,9 @@ class @Game
     # TODO relocate ko
     @lag = ko.observable false
     @player = ko.observable(0).extend { convert: parseInt }
-    @plasma_balls = []
+
+    # Balls currently in the game. The key is the ball ID.
+    @plasma_balls = {}
 
     # Model observable that has a corresponding `.view` observable.
     # Changes to the ".view" are sent to the server using `syncFn`.
@@ -57,7 +59,6 @@ class @Game
     for i in [0...length]
       arr[i] for arr in args
 
-
   setBallsEnabled: (enabled) ->
     @ballsEnabled enabled
 
@@ -68,22 +69,14 @@ class @Game
 
   # Sets the (x,y) coords of the plasmaballs
   updatePlasmaBalls: (server_plasma_balls) ->
-    server_ids = server_plasma_balls.map (p) -> p.id
-    local_ids = @plasma_balls.map (p) -> p.id
 
-    # log @plasma_balls, server_ids, local_ids
-    # for p in @plasma_balls
-    #   if !(valid_ids.some (id) -> p.id = id)
-    #     log "Not There Any More!"
-    # @plasma_balls = (p for )
+    for ball_model in server_plasma_balls
 
-    for p in server_plasma_balls
-      if !(local_ids.some (id) -> p.id == id)
-        # log "New Plasma Ball!"
-        @plasma_balls.push new PlasmaBallView(p, @arena.paper)
+      ball_view = @plasma_balls[ball_model.id]
+
+      if ball_view?
+        # Ball already has a view, update model
+        ball_view.setModel ball_model
       else
-        for p2 in @plasma_balls
-          if p2.id == p.id
-            p2.update(p)
-    # @movePlasmaBalls(plasma_balls)
-    # @arena.setTurretRotation(player, angle)
+        # Create a new view for this ball. This calls update() for us already.
+        @plasma_balls[ball_model.id] = new PlasmaBallView(ball_model, @, @arena.paper)

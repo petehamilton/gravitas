@@ -1,6 +1,19 @@
 config =
 
-	arena:
+  game:
+    model_fps: 30
+    player_ids: [0..3]
+
+  ball_kinds:
+    player: 0
+    powerup: 1
+
+  powerup_effects:
+    health: 0
+    shield: 1
+
+  # TODO flatten out the config a bit
+  arena:
     size:
       x: 400
       y: 400
@@ -13,5 +26,6 @@ config =
 
     # Maximum allowed ball velocity
     terminal_velocity: 5
+
 
 exports.config = config
