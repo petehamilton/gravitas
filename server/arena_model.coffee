@@ -2,7 +2,7 @@ config = require('./config').config
 pbm = require './plasma_ball_model'
 
 
-PLAYER_IDS = config.game.player_ids
+PLAYER_IDS = config.player_ids
 
 next_ball_id = 0
 genBallId = -> next_ball_id++
@@ -93,9 +93,9 @@ class @ArenaModel
     for i in PLAYER_IDS
       center = switch i
         when 0 then { x: 0,                   y: 0                   }
-        when 1 then { x: config.arena.size.x, y: 0                   }
-        when 2 then { x: config.arena.size.x, y: config.arena.size.y }
-        when 3 then { x: 0,                   y: config.arena.size.y }
+        when 1 then { x: config.arena_size.x, y: 0                   }
+        when 2 then { x: config.arena_size.x, y: config.arena_size.y }
+        when 3 then { x: 0,                   y: config.arena_size.y }
 
       turret_masses.push
         mass: @turret_masses[i]
@@ -103,7 +103,7 @@ class @ArenaModel
         y: center.y
 
     # TODO use config / delete these constant things
-    vortex = { mass: 10000, x: config.arena.size.x / 2, y: config.arena.size.y / 2 }
+    vortex = { mass: 10000, x: config.arena_size.x / 2, y: config.arena_size.y / 2 }
 
     external_masses = turret_masses.concat [vortex]
     # console.log "EXT: ", external_masses

@@ -11,11 +11,11 @@ class @PlasmaBallModel
   constructor: (@id, @type, @x, @y) ->
     console.log "Creating PlasmaBall"
 
-    @mass = config.arena.ball_mass
-    @vortex_mass = config.arena.vortex_mass
-    @size = config.arena.ball_size
+    @mass = config.ball_mass
+    @vortex_mass = config.vortex_mass
+    @size = config.ball_size
 
-    @terminal_velocity = config.arena.terminal_velocity
+    @terminal_velocity = config.ball_terminal_velocity
 
     @vx = @rand(-@terminal_velocity, @terminal_velocity)
     @vy = @rand(-@terminal_velocity, @terminal_velocity)

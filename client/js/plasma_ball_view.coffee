@@ -4,7 +4,7 @@ SPRITE_FOLDER = "../images/plasma_balls/"
 getSpritePath = (ball_type, config) ->
   filename = switch ball_type.kind
     when config.ball_kinds.player
-      assert(ball_type.player_id in config.game.player_ids) # TODO make a shortcut assertion for this
+      assert(ball_type.player_id in config.player_ids) # TODO make a shortcut assertion for this
 
       switch ball_type.player_id
         when 0 then "pb_blue_0.png"
@@ -25,7 +25,7 @@ class @PlasmaBallView
 
     sprite_path = getSpritePath @ball_model.type, @game.config
 
-    size = @game.config.arena.ball_size
+    size = @game.config.ball_size
 
     @image = @paper.image(sprite_path, @ball_model.x, @ball_model.y, size, size)
 

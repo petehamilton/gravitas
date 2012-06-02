@@ -9,8 +9,8 @@ config = require('./config').config
 
 # Server configuration
 
-MODEL_FPS = config.game.model_fps
-BALLS_ENABLED = config.arena.balls_enabled
+MODEL_FPS = config.model_fps
+BALLS_ENABLED = config.balls_enabled
 
 # Global Variables
 
