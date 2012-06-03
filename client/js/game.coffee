@@ -16,9 +16,7 @@ class @Game
     $("#toggleLogin").attr('checked', @loggedIn());
     $("#toggleGameStarted").attr('checked', @gameStarted());
 
-
     $("input#toggleLogin").change ->
-      log "changelogin"
       if $(this).is(":checked")
         $.cookie "loggedInCookie", "true"
       else
