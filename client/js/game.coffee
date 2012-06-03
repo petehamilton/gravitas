@@ -2,20 +2,37 @@ class @Game
   constructor: (@arena, @player, @server) ->
     # TODO relocate ko
     @loggedIn = ko.observable $.cookie("loggedInCookie")
+    @gameStarted = ko.observable $.cookie("gameStartedCookie")
+
     @username = ko.observable 'user'
     @password = ko.observable ''
 
     @logIn = ->
       @loggedIn true
 
+    @startGame = ->
+      @gameStarted true
+
     $("#toggleLogin").attr('checked', $.cookie "loggedInCookie");
+    $("#toggleGameStarted").attr('checked', $.cookie "gameStartedCookie");
+
 
     $("input#toggleLogin").change ->
       if $(this).is(":checked")
         $.cookie "loggedInCookie", "true"
       else
-        $.cookie "loggedInCookie", "true",
-        expires: -1
+        $.cookie "loggedInCookie", "true", expires: -1
+
+    $("input#toggleGameStarted").change ->
+      if $(this).is(":checked")
+        $.cookie "gameStartedCookie", "true"
+        $("#toggleLogin").attr('checked', true);
+        $.cookie "loggedInCookie", "true"
+      else
+        $("#toggleLogin").attr('checked', false);
+        $.cookie "loggedInCookie", "true", expires: -1
+        $.cookie "gameStartedCookie", "true", expires: -1
+
 
     ko.bindingHandlers.fadeVisible =
       init: (element, valueAccessor) ->
