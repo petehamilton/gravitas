@@ -62,6 +62,16 @@ button:hover {
   margin-left: -90px;
   margin-top: -95px;
 }
+#paper-container {
+  width: 400px;
+  height: 400px;
+  margin-left: -200px;
+  margin-top: -200px;
+  vertical-align: middle;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
 #paper {
   display: inline-block;
   cursor: url("images/cursor/transparent.png"), default;

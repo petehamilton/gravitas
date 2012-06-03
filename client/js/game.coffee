@@ -8,6 +8,16 @@ class @Game
     @logIn = ->
       @loggedIn true
 
+    ko.bindingHandlers.fadeVisible =
+      init: (element, valueAccessor) ->
+        value = valueAccessor()
+        $(element).toggle ko.utils.unwrapObservable(value)
+
+      update: (element, valueAccessor) ->
+        value = valueAccessor()
+        (if ko.utils.unwrapObservable(value) then $(element).fadeIn() else $(element).fadeOut())
+
+
     @lag = ko.observable false
     @player = ko.observable(0).extend { convert: parseInt }
 
