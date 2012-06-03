@@ -25,18 +25,15 @@
 
     <div id="login-overlay" class="screen" data-bind="visible: !loggedIn()">
       <div id="login-window">
-        
-      <p><label for="userName" class="label">Username:</label>
-      <input id="userName" value="" name="userName" maxlength="320" type="text" tabindex="1" class="input" /></p>
+        <p><label for="userName" class="label">Username:</label>
+        <input id="userName" data-bind="value: username" name="userName" maxlength="320" type="text" tabindex="1" class="input" /></p>
 
-      <p><label for="userName" class="label">Password:</label>
-      <input id="userName" name="password" maxlength="16" type="password" tabindex="2" autocomplete="off" class="input" /></p>
+        <p><label for="password" class="label">Password:</label>
+        <input id="password" data-bind="value: password" name="password" maxlength="16" type="password" tabindex="2" autocomplete="off" class="input" /></p>
 
-      <button type="submit">
-      Log In
-      </button>
-
-
+        <button data-bind="click: login">
+        Log In
+        </button>
       </div>
     </div>
 
