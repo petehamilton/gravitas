@@ -36,7 +36,7 @@ config =
 
   #TODO: rename these to something better
   # radius of circle balls allowed within
-  dist_between_balls: 100
+  dist_between_balls: 60
 
   # Number of different levels in 'orbit'
   ball_levels: 3

@@ -1,4 +1,4 @@
-{ config, even } = require './utils'
+{ config, even, degToRad } = require './utils'
 pbm = require './plasma_ball_model'
 
 
@@ -39,8 +39,8 @@ class @ArenaModel
       max_index - offset + BALL_LEVELS
 
     dist_between_balls = config.dist_between_balls
-    ball_spacing = {dx: dist_between_balls / 2, dy: Math.sin(120) * dist_between_balls}
-
+    dist_components = {dx: dist_between_balls / 2, dy: Math.sin(degToRad(60)) * dist_between_balls}
+    console.log "dx:", dist_components.dx, "dy", dist_components.dy
     center_point = {x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2}
 
     start_coords = []
@@ -53,13 +53,13 @@ class @ArenaModel
       for col in [0..cols-1]
         start_coords.push
           x : center_point.x +
-              (col - Math.floor cols / 2) * ball_spacing.dx +
+              (col - Math.floor(cols / 2)) * dist_between_balls +
               if even cols
-                ball_spacing.dx / 2
+                dist_components.dx
               else
                 0
           y : center_point.y +
-              ball_spacing.dy * (row - Math.floor(rows / 2))
+              dist_components.dy * (row - Math.floor(rows / 2))
 
     return start_coords
 
