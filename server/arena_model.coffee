@@ -27,8 +27,10 @@ class @ArenaModel
       result
 
     processCollision = (b1, b2) =>
-      dx = b1.x - b2.x
-      dy = b1.y - b2.y
+      c1 = b1.getCenter()
+      c2 = b2.getCenter()
+      dx = c2.x - c1.x
+      dy = c2.y - c1.y
 
       # All our balls have the same mass and size
       b1_mass = b2_mass = config.ball_mass
@@ -36,6 +38,7 @@ class @ArenaModel
 
       dist = Math.sqrt(dx*dx + dy*dy)
       if (dist < b1_size/2 + b2_size/2)
+        b1.collided = b2.collided = true
 
         # Calculate angle, sine and cosine
         angle = Math.atan2(dy, dx)
@@ -68,10 +71,12 @@ class @ArenaModel
         pos2 = rotate(pos2.x, pos2.y, sine, cosine, false)
 
         # adjust positions
-        b2.x = b1.x + pos2.x
-        b2.y = b1.y + pos2.y
-        b1.x += pos1.x
-        b1.y += pos1.y
+        b2.setFromCenter(b1.x - pos2.x, b1.y - pos2.y)
+        b1.setFromCenter(b1.x - pos1.x, b1.y - pos1.y)
+        # b2.x = b1.x + pos2.x
+        # b2.y = b1.y + pos2.y
+        # b1.x += pos1.x
+        # b1.y += pos1.y
 
         # rotate velocities back
         vel1 = rotate(vel1.x, vel1.y, sine, cosine, false)
@@ -96,7 +101,8 @@ class @ArenaModel
       x: config.arena_size.x / 2
       y: config.arena_size.y / 2
 
+    @detectCollisions()
+
     for ball in @plasma_balls
       ball.calculateVelocity [vortex_mass]
 
-    @detectCollisions()

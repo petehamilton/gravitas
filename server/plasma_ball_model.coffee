@@ -20,6 +20,10 @@ class @PlasmaBallModel
     @vx = @rand(-TERMINAL_VELOCITY, TERMINAL_VELOCITY)
     @vy = @rand(-TERMINAL_VELOCITY, TERMINAL_VELOCITY)
 
+    # member variable to say if ball collided on the last
+    # iteration
+    @collided = false
+
   rand: (min, max) ->
     Math.floor(Math.random() * (max - min + 1)) + min
 
@@ -45,18 +49,23 @@ class @PlasmaBallModel
 
     limitVelocity = (velocity) =>
       abs_velocity = Math.abs(velocity)
-      sign = (velocity/abs_velocity)
+      if velocity == 0
+        sign = 1
+      else
+        sign = (velocity/abs_velocity)
       min = Math.min(abs_velocity, TERMINAL_VELOCITY)
       return sign * min
+    if !collided
+      for m in external_masses
+        @gravitateTo m
 
-    for m in external_masses
-      @gravitateTo m
+      @vx = limitVelocity @vx
+      @vy = limitVelocity @vy
 
-    @vx = limitVelocity @vx
-    @vy = limitVelocity @vy
-
-    @x -= @pixelRound(@vx)
-    @y -= @pixelRound(@vy)
+      @x -= @pixelRound(@vx)
+      @y -= @pixelRound(@vy)
+    else
+      collided = false
 
     # TODO delete ball if it flies out of the arena
 
