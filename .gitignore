@@ -4,6 +4,8 @@
 client/css/lib/
 client/js/lib/
 
+client/style.css
+
 staticfetcher.py
 runtogether.py
 
