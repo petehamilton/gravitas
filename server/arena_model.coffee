@@ -33,12 +33,10 @@ class @ArenaModel
   calculateStartPoints: ->
 
     # Calculates the number of balls for a given row
-    # We always have two balls for an outer level
-    # TODO: should this '+2' go in config?
     ballsForRow = (row) ->
       max_index = BALL_LEVELS - 1
       offset = Math.abs (max_index - row)
-      max_index - offset + 2
+      max_index - offset + BALL_LEVELS
 
     dist_between_balls = config.dist_between_balls
     ball_spacing = {dx: dist_between_balls / 2, dy: Math.sin(120) * dist_between_balls}
