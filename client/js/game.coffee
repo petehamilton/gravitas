@@ -5,8 +5,13 @@ class @Game
     @username = ko.observable 'user'
     @password = ko.observable ''
 
+    @logIn = ->
+      @loggedIn true
+
     @lag = ko.observable false
     @player = ko.observable(0).extend { convert: parseInt }
+
+
 
     # Balls currently in the game. The key is the ball ID.
     @plasma_balls = {}
