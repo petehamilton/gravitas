@@ -1,7 +1,7 @@
 class @Game
   constructor: (@arena, @player, @server) ->
     # TODO relocate ko
-    @loggedIn = ko.observable $.cookie "loggedInCookie"
+    @loggedIn = ko.observable $.cookie("loggedInCookie")
     @username = ko.observable 'user'
     @password = ko.observable ''
 
