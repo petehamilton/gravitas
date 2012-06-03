@@ -11,7 +11,7 @@ genBallId = -> next_ball_id++
 class @ArenaModel
 
   constructor: ->
-    starting_coords = ({x: Math.random() * 100, y: Math.random() * 100} for i in PLAYER_IDS)
+    starting_coords = ({x: Math.random() * config.arena_size.x, y: Math.random() * config.arena_size.y} for i in PLAYER_IDS)
     @plasma_balls = (new pbm.PlasmaBallModel(genBallId(), pbm.makePlayerBallType(i), starting_coords[i].x, starting_coords[i].y) for i in PLAYER_IDS)
 
   detectCollisions: ->
