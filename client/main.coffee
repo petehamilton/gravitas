@@ -103,3 +103,4 @@ $ ->
   host = window.location.hostname
   $.getScript "http://#{host}:7777/nowjs/now.js", ->
     main()
+

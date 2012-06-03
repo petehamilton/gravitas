@@ -7,6 +7,7 @@
     <script type="text/javascript" src="js/lib/coffee-script.js"></script>
     <script type="text/javascript" src="js/lib/raphael.js"></script>
     <script type="text/javascript" src="js/lib/jquery.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.cookie.js"></script>
     <script type='text/javascript' src='js/lib/knockout.js'></script>
 
     <script type='text/coffeescript' src='js/ko-extenders.coffee'></script>
@@ -48,6 +49,11 @@
         <p id="lag_indicator" data-bind="css: { lag: lag }">Lag indicator</p>
         <p>
           <input type="checkbox" data-bind="checked: ballsEnabled.view" />Balls
+        </p>
+
+
+        <p>
+          <input id="toggleLogin" type="checkbox" />Logged in
         </p>
 
         <p>

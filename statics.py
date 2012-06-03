@@ -21,6 +21,7 @@ STATICS = {
 	# 'runtogether.py': 'https://raw.github.com/nh2/runtogether/master/runtogether.py',
 
 	'js/lib/jquery.js': 'http://code.jquery.com/jquery.min.js',
+	'js/lib/jquery.cookie.js': 'https://raw.github.com/carhartl/jquery-cookie/master/jquery.cookie.js',
 
 	# Raphael for simple graphics amnipulation
 	'js/lib/raphael.js': 'http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael.js',

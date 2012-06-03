@@ -1,12 +1,21 @@
 class @Game
   constructor: (@arena, @player, @server) ->
     # TODO relocate ko
-    @loggedIn = ko.observable false
+    @loggedIn = ko.observable $.cookie "loggedInCookie"
     @username = ko.observable 'user'
     @password = ko.observable ''
 
     @logIn = ->
       @loggedIn true
+
+    $("#toggleLogin").attr('checked', $.cookie "loggedInCookie");
+
+    $("input#toggleLogin").change ->
+      if $(this).is(":checked")
+        $.cookie "loggedInCookie", "true"
+      else
+        $.cookie "loggedInCookie", "true",
+        expires: -1
 
     ko.bindingHandlers.fadeVisible =
       init: (element, valueAccessor) ->
@@ -84,7 +93,7 @@ class @Game
     coord_balls = @zip(coords, @plasma_balls)
     for coord, ball in coord_balls
       ball.attr({x: coord.x, y: coord.y})
-    
+
 
   updatePlasmaBalls: (server_plasma_balls) ->
 
