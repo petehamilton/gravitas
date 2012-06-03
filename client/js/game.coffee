@@ -89,13 +89,13 @@ class @Game
   setBallsEnabled: (enabled) ->
     @ballsEnabled enabled
 
-  movePlasmaBalls: (coords) ->
+  moveBalls: (coords) ->
     coord_balls = @zip(coords, @balls)
     for coord, ball in coord_balls
       ball.attr({x: coord.x, y: coord.y})
 
 
-  updatePlasmaBalls: (server_balls) ->
+  updateBalls: (server_balls) ->
 
     for ball_model in server_balls
 
@@ -106,4 +106,4 @@ class @Game
         ball_view.setModel ball_model
       else
         # Create a new view for this ball. This calls update() for us already.
-        @balls[ball_model.id] = new PlasmaBallView(ball_model, @arena.paper)
+        @balls[ball_model.id] = new BallView(ball_model, @arena.paper)

@@ -17,9 +17,9 @@ getSpritePath = (ball_type, config) ->
   SPRITE_FOLDER + filename
 
 
-class @PlasmaBallView
+class @BallView
   constructor: (@ball_model, @paper) ->
-    log "Creating PlasmaBall"
+    log "Creating Ball"
     # Set up graphics
 
     sprite_path = getSpritePath @ball_model.type, config
@@ -36,6 +36,6 @@ class @PlasmaBallView
 
 
   update: ->
-    # log "Updating Plasma Ball"
+    # log "Updating Ball"
     # dir @ball_model
     @image.attr { x: @ball_model.x, y: @ball_model.y }

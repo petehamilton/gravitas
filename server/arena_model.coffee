@@ -22,9 +22,9 @@ class @ArenaModel
 
   constructor: ->
     starting_coords = @calculateStartPoints()
-    # @balls = (new pbm.PlasmaBallModel.createFromCenterPoints(genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y) for {x, y} in starting_coords)
+    # @balls = (new pbm.BallModel.createFromCenterPoints(genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y) for {x, y} in starting_coords)
     @balls = for {x, y} in starting_coords
-      new pbm.PlasmaBallModel.createFromCenterPoints genBallId(),
+      new pbm.BallModel.createFromCenterPoints genBallId(),
                                                      pbm.makePlayerBallType(nextPlayerId()),
                                                      x,
                                                      y

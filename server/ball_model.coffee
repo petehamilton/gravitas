@@ -10,12 +10,12 @@ BALL_SIZE = config.ball_size
 TERMINAL_VELOCITY = config.ball_terminal_velocity
 
 
-class @PlasmaBallModel
+class @BallModel
   # type examples:
   # - { kind: PLAYER, player_id: 2 }
   # - { kind: POWERUP, effect: SHIELD }
   constructor: (@id, @type, @x, @y) ->
-    console.log "Creating PlasmaBall"
+    console.log "Creating Ball"
 
     @vx = @rand(-TERMINAL_VELOCITY, TERMINAL_VELOCITY)
     @vy = @rand(-TERMINAL_VELOCITY, TERMINAL_VELOCITY)
@@ -27,7 +27,7 @@ class @PlasmaBallModel
   @createFromCenterPoints: (id, type, cx, cy) ->
     x = cx - BALL_SIZE/2
     y = cy - BALL_SIZE/2
-    new PlasmaBallModel(id, type, x, y)
+    new BallModel(id, type, x, y)
 
   rand: (min, max) ->
     Math.floor(Math.random() * (max - min + 1)) + min

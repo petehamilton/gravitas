@@ -112,8 +112,8 @@ createApp = ->
 
 
 sendDataToClient = () ->
-  if everyone.now.receivePlasmaBalls
-    everyone.now.receivePlasmaBalls arena.balls
+  if everyone.now.receiveBalls
+    everyone.now.receiveBalls arena.balls
 
 run = ->
 
