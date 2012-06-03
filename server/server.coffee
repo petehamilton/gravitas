@@ -2,7 +2,7 @@ http = require 'http'
 express = require 'express'
 nowjs = require 'now'
 arena_model = require './arena_model'
-pbm = require './plasma_ball_model'
+pbm = require './ball_model'
 db = require './db'
 {config, log, dir} = require './utils'
 

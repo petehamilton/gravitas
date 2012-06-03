@@ -1,5 +1,5 @@
 { config, even, degToRad } = require './utils'
-pbm = require './plasma_ball_model'
+pbm = require './ball_model'
 
 
 PLAYER_IDS = config.player_ids
