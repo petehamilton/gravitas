@@ -24,6 +24,11 @@ class @PlasmaBallModel
     # iteration
     @collided = false
 
+  @createFromCenterPoints: (id, type, cx, cy) ->
+    x = cx - BALL_SIZE/2
+    y = cy - BALL_SIZE/2
+    new PlasmaBallModel(id, type, x, y)
+
   rand: (min, max) ->
     Math.floor(Math.random() * (max - min + 1)) + min
 
@@ -82,4 +87,3 @@ class @PlasmaBallModel
 
       @vx += ax / BALL_MASS
       @vy += ay / BALL_MASS
-

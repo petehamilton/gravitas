@@ -14,8 +14,8 @@ config =
   player_ids: [0..3]
 
   arena_size:
-    x: 400
-    y: 400
+    x: 600
+    y: 600
 
   balls_enabled: true
 
@@ -33,6 +33,13 @@ config =
   ball_terminal_velocity: 5
 
   lag_limit: 50
+
+  #TODO: rename these to something better
+  # radius of circle balls allowed within
+  dist_between_balls: 60
+
+  # Number of different levels in 'orbit'
+  ball_levels: 3
 
 
 if exports?

@@ -1,18 +1,68 @@
-{config} = require './utils'
+{ config, even, degToRad } = require './utils'
 pbm = require './plasma_ball_model'
 
 
 PLAYER_IDS = config.player_ids
+BALL_SIZE = config.ball_size
+ARENA_SIZE = config.arena_size
+BALL_LEVELS = config.ball_levels
 
 next_ball_id = 0
 genBallId = -> next_ball_id++
+
+cur_player_index = 0
+# Loops around player Id's
+nextPlayerId = ->
+  tmp = PLAYER_IDS[cur_player_index++]
+  cur_player_index %= PLAYER_IDS.length
+  tmp
 
 
 class @ArenaModel
 
   constructor: ->
-    starting_coords = ({x: Math.random() * config.arena_size.x, y: Math.random() * config.arena_size.y} for i in PLAYER_IDS)
-    @plasma_balls = (new pbm.PlasmaBallModel(genBallId(), pbm.makePlayerBallType(i), starting_coords[i].x, starting_coords[i].y) for i in PLAYER_IDS)
+    starting_coords = @calculateStartPoints()
+    # @plasma_balls = (new pbm.PlasmaBallModel.createFromCenterPoints(genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y) for {x, y} in starting_coords)
+    @plasma_balls = for {x, y} in starting_coords
+      new pbm.PlasmaBallModel.createFromCenterPoints genBallId(),
+                                                     pbm.makePlayerBallType(nextPlayerId()),
+                                                     x,
+                                                     y
+
+  # Calculates starting points for all the balls
+  calculateStartPoints: ->
+
+    # Calculates the number of balls for a given row
+    ballsForRow = (row) ->
+      max_index = BALL_LEVELS - 1
+      offset = Math.abs (max_index - row)
+      max_index - offset + BALL_LEVELS
+
+    dist_between_balls = config.dist_between_balls
+    dist_components = {dx: dist_between_balls / 2, dy: Math.sin(degToRad(60)) * dist_between_balls}
+    console.log "dx:", dist_components.dx, "dy", dist_components.dy
+    center_point = {x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2}
+
+    start_coords = []
+    rows = BALL_LEVELS * 2 - 1
+
+    for row in [0..(rows-1)]
+      cols = ballsForRow row
+      rows_from_center = Math.abs(BALL_LEVELS - 1 - row)
+
+      for col in [0..cols-1]
+        start_coords.push
+          x : center_point.x +
+              (col - Math.floor(cols / 2)) * dist_between_balls +
+              if even cols
+                dist_components.dx
+              else
+                0
+          y : center_point.y +
+              dist_components.dy * (row - Math.floor(rows / 2))
+
+    return start_coords
+
 
   detectCollisions: ->
     # Taken from page 254 of "Actionscript Animation"
@@ -34,7 +84,7 @@ class @ArenaModel
 
       # All our balls have the same mass and size
       b1_mass = b2_mass = config.ball_mass
-      b1_size = b2_size = config.ball_size
+      b1_size = b2_size = BALL_SIZE
 
       dist = Math.sqrt(dx*dx + dy*dy)
       if (dist < b1_size/2 + b2_size/2)
@@ -96,13 +146,13 @@ class @ArenaModel
   # TODO this is time-independent, balls move faster with higher FPS! Change!
   update: () ->
 
-    vortex_mass =
-      mass: config.vortex_mass
-      x: config.arena_size.x / 2
-      y: config.arena_size.y / 2
+    # vortex_mass =
+    #   mass: config.vortex_mass
+    #   x: config.arena_size.x / 2
+    #   y: config.arena_size.y / 2
 
-    @detectCollisions()
+    # @detectCollisions()
 
-    for ball in @plasma_balls
-      ball.calculateVelocity [vortex_mass]
+    # for ball in @plasma_balls
+    #   ball.calculateVelocity [vortex_mass]
 
