@@ -60,7 +60,7 @@ main = ->
 
   vortex = new Vortex(paper)
 
-  
+
   # create game
   arena = new Arena(paper)
 
@@ -71,11 +71,10 @@ main = ->
 
   # listen to mouse events
   mouseMoveThrottler = new FpsThrottler config.fps
-  $(document).mousemove (e) ->
+  $('#paper').mousemove (e) ->
     mouseMoveThrottler.throttle ->
-      mx = e.pageX - paper.canvas.offsetLeft
-      my = e.pageY - paper.canvas.offsetTop
-      arena.mouseMoved(mx, my)
+      arena.mouseMoved(e.offsetX, e.offsetY)
+
 
   # listen to mouse events
   $(paper.canvas).mousedown (e) ->
