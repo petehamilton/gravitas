@@ -1,10 +1,11 @@
-{config} = require './utils'
+{ config, even } = require './utils'
 pbm = require './plasma_ball_model'
 
 
 PLAYER_IDS = config.player_ids
 BALL_SIZE = config.ball_size
 ARENA_SIZE = config.arena_size
+BALL_LEVELS = config.ball_levels
 
 next_ball_id = 0
 genBallId = -> next_ball_id++
@@ -25,39 +26,39 @@ class @ArenaModel
     @plasma_balls = (new pbm.PlasmaBallModel(genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y) for {x, y} in starting_coords)
 
   # Calculates starting points for all the balls
-  calculateStartPoints: () ->
+  calculateStartPoints: ->
 
-    calculatePoint = (ring_index) ->
-      dist_between_balls = config.dist_between_balls
-      ball_spacing = {x: dist_between_balls/2, y: Math.sin(120)*dist_between_balls}
-      switch ring_index
-        when 0
-          x: start_points[0].x - dist_between_balls
-          y: start_points[0].y
-        when 1
-          x: start_points[0].x - ball_spacing.x
-          y: start_points[0].y + ball_spacing.y
-        when 2
-          x: start_points[0].x + ball_spacing.x
-          y: start_points[0].y + ball_spacing.y
-        when 3
-          x: start_points[0].x + dist_between_balls
-          y: start_points[0].y
-        when 4
-          x: start_points[0].x + ball_spacing.x
-          y: start_points[0].y - ball_spacing.y
-        when 5
-          x: start_points[0].x - ball_spacing.x
-          y: start_points[0].y - ball_spacing.y
+    # Calculates the number of balls for a given row
+    # We always have two balls for an outer level
+    # TODO: should this '+2' go in config?
+    ballsForRow = (row) ->
+      row % BALL_LEVELS + 2
 
+    dist_between_balls = config.dist_between_balls
+    ball_spacing = {dx: dist_between_balls / 2, dy: Math.sin(120) * dist_between_balls}
 
-    start_points = [{x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2}]
-    for i in [0..5]
-      start_points.push(calculatePoint i)
+    center_point = {x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2}
 
+    start_coords = []
+    rows = BALL_LEVELS * 2 - 1
 
+    for row in [0..(rows-1)]
+      cols = ballsForRow row
+      rows_from_center = Math.abs(BALL_LEVELS - 1 - row)
 
-    start_points
+      for col in [0..cols-1]
+        start_coords.push
+          x : center_point.x +
+              (col - Math.floor cols / 2) * ball_spacing.dx +
+              if even cols
+                ball_spacing.dx / 2
+              else
+                0
+          y : center_point.y +
+              ball_spacing.dy * (row - Math.floor(rows / 2))
+
+    return start_coords
+
 
   detectCollisions: ->
     # Taken from page 254 of "Actionscript Animation"
