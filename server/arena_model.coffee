@@ -22,8 +22,12 @@ class @ArenaModel
 
   constructor: ->
     starting_coords = @calculateStartPoints()
-    console.log "Starting points:", starting_coords
-    @plasma_balls = (new pbm.PlasmaBallModel(genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y) for {x, y} in starting_coords)
+    # @plasma_balls = (new pbm.PlasmaBallModel.createFromCenterPoints(genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y) for {x, y} in starting_coords)
+    @plasma_balls = for {x, y} in starting_coords
+      new pbm.PlasmaBallModel.createFromCenterPoints genBallId(),
+                                                     pbm.makePlayerBallType(nextPlayerId()),
+                                                     x,
+                                                     y
 
   # Calculates starting points for all the balls
   calculateStartPoints: ->
@@ -32,7 +36,9 @@ class @ArenaModel
     # We always have two balls for an outer level
     # TODO: should this '+2' go in config?
     ballsForRow = (row) ->
-      row % BALL_LEVELS + 2
+      max_index = BALL_LEVELS - 1
+      offset = Math.abs (max_index - row)
+      max_index - offset + 2
 
     dist_between_balls = config.dist_between_balls
     ball_spacing = {dx: dist_between_balls / 2, dy: Math.sin(120) * dist_between_balls}
