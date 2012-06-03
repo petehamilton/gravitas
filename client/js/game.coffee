@@ -23,13 +23,13 @@ class @Game
         $.cookie "loggedInCookie", "true"
       else
         $.cookie "loggedInCookie", "true", expires: -1
+        $("#toggleGameStarted").attr('checked', false).change();
 
     $("input#toggleGameStarted").change ->
       if $(this).is(":checked")
         $.cookie "gameStartedCookie", "true"
         $("#toggleLogin").attr('checked', true).change()
       else
-        $("#toggleLogin").attr('checked', false).change();
         $.cookie "gameStartedCookie", "true", expires: -1
 
 
