@@ -36,6 +36,7 @@ Basic setup
 * run ```brew install node``` to install node.js
 * run ```curl http://npmjs.org/install.sh | sh```
 * run ```npm install -g coffee-script``` to install coffeescript
+* run ```npm install -g stylus``` to install [stylus](http://learnboost.github.com/stylus/)
 * run ```brew install wget``` to ensure the make file can download the libraries
 * run ```make``` inside the project root to install all the library files
 
