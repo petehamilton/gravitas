@@ -1,4 +1,4 @@
-SPRITE_FOLDER = "../images/plasma_balls/"
+SPRITE_FOLDER = "../images/balls/"
 
 
 getSpritePath = (ball_type, config) ->

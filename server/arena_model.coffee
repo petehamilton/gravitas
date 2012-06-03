@@ -22,8 +22,8 @@ class @ArenaModel
 
   constructor: ->
     starting_coords = @calculateStartPoints()
-    # @plasma_balls = (new pbm.PlasmaBallModel.createFromCenterPoints(genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y) for {x, y} in starting_coords)
-    @plasma_balls = for {x, y} in starting_coords
+    # @balls = (new pbm.PlasmaBallModel.createFromCenterPoints(genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y) for {x, y} in starting_coords)
+    @balls = for {x, y} in starting_coords
       new pbm.PlasmaBallModel.createFromCenterPoints genBallId(),
                                                      pbm.makePlayerBallType(nextPlayerId()),
                                                      x,
@@ -137,8 +137,8 @@ class @ArenaModel
         b2.vy = vel2.y
 
     # Check collisions O(n^2)
-    for b1 in @plasma_balls
-      for b2 in @plasma_balls
+    for b1 in @balls
+      for b2 in @balls
         if b1.id < b2.id
           processCollision(b1, b2)
 
@@ -153,6 +153,6 @@ class @ArenaModel
 
     # @detectCollisions()
 
-    # for ball in @plasma_balls
+    # for ball in @balls
     #   ball.calculateVelocity [vortex_mass]
 
