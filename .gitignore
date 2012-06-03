@@ -5,5 +5,6 @@ client/css/lib/
 client/js/lib/
 
 staticfetcher.py
+runtogether.py
 
 server/node_modules
