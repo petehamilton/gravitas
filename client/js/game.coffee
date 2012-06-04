@@ -10,8 +10,14 @@ class @Game
     @logIn = ->
       @loggedIn true
 
-    @startGame = ->
-      @gameStarted true
+    @connectedPlayers = ko.observableArray([
+      new connectedPlayer("Player A", 321)
+      new connectedPlayer("Player XYZ", 456)
+    ])
+
+    #Used to add a new player to the connected players list
+    @connectNew = ->
+      @connectedPlayers.push new connectedPlayer("New", 666)
 
     $("#toggleLogin").attr('checked', @loggedIn());
     $("#toggleGameStarted").attr('checked', @gameStarted());
@@ -29,6 +35,13 @@ class @Game
         $("#toggleLogin").attr('checked', true).change()
       else
         $.cookie "gameStartedCookie", "true", expires: -1
+
+    @startGame = ->
+      @gameStarted true
+
+
+    @pingServer = ->
+      now.pingServer()
 
 
     ko.bindingHandlers.fadeVisible =
@@ -63,6 +76,11 @@ class @Game
     @ballsEnabled = withViewObservable (ko.observable false), (val) =>
       @server.setBallsEnabled val
 
+
+  #Data structure to hold connected players
+  connectedPlayer = (username, rating) ->
+    @username = username
+    @rating = rating
 
   # Makes sure the server connection is esablished before executing fn.
   # Otherwise sets the lag indicator.

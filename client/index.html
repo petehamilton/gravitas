@@ -40,6 +40,28 @@
 
       <div id="lobby" data-bind="fadeVisible: !gameStarted()&&loggedIn()">
 
+        <table>
+            <thead><tr>
+                <th>Username</th><th>Rating</th>
+            </tr></thead>
+            <tbody data-bind="foreach: connectedPlayers">
+                <tr>
+                    <td><span data-bind="text: username" /></span></td>
+                    <td><span data-bind="text: rating" /></span></td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+
+       <label><b>Total connected: <label data-bind="text: connectedPlayers().length"></label></label><br />
+        <button data-bind="click: connectNew">
+            Add a player
+        </button>
+
+        <button data-bind="click: pingServer">
+          Ping Server
+        </button>
+
         <button data-bind="click: startGame">
           Start Game
         </button>

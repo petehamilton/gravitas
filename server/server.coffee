@@ -24,6 +24,8 @@ fixId = (obj) ->
   obj
 
 
+
+
 # Turns balls on and off.
 setBallsEnabled = (enabled) ->
   ballsEnabled = enabled
@@ -45,6 +47,9 @@ configureNow = (everyone) ->
 
     # Send initial game parameters
     @now.receiveBallsEnabled ballsEnabled
+
+  everyone.now.pingServer = ->
+    console.log "pong"
 
   everyone.now.dbGetAll = () ->
     collection.find().toArray (err, results) ->
