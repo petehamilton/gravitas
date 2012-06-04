@@ -16,28 +16,10 @@ BALLS_ENABLED = config.balls_enabled
 arena = new arena_model.ArenaModel()
 everyone = null
 
-ballsEnabled = BALLS_ENABLED
-ballsInterval = null
 
 fixId = (obj) ->
   obj._id = mongodb.ObjectID obj._id
   obj
-
-
-
-
-# Turns balls on and off.
-setBallsEnabled = (enabled) ->
-  ballsEnabled = enabled
-
-  if ballsEnabled
-    ballsInterval = setInterval () =>
-      # Perform model calculations
-      arena.update()
-      sendContinuousData()
-    , (1000 / MODEL_FPS)
-  else
-    clearInterval ballsInterval
 
 
 configureNow = (everyone) ->
@@ -46,7 +28,7 @@ configureNow = (everyone) ->
     console.log "client #{@user.clientId} connected"
 
     # Send initial game parameters
-    @now.receiveBallsEnabled ballsEnabled
+    everyone.now.receiveBalls arena.balls
 
   everyone.now.pingServer = ->
     console.log "pong"
@@ -104,10 +86,6 @@ configureNow = (everyone) ->
     # TODO implement ball releasing
     log "TODO: implement ball releasing"
 
-  everyone.now.setBallsEnabled = (enabled) ->
-    setBallsEnabled enabled
-    everyone.now.receiveBallsEnabled enabled
-
 
 createApp = ->
   app = express.createServer()
@@ -115,10 +93,6 @@ createApp = ->
   app.listen 7777, "0.0.0.0"
   app
 
-
-sendContinuousData = () ->
-  if everyone.now.receiveBalls
-    everyone.now.receiveBalls arena.balls
 
 run = ->
 
@@ -128,7 +102,5 @@ run = ->
   everyone = nowjs.initialize(app, { socketio: {'browser client minification': true} })
   configureNow everyone
   console.log everyone.now.setAngle
-
-  setBallsEnabled on
 
 run()

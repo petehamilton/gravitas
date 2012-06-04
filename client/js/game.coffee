@@ -73,10 +73,6 @@ class @Game
       target
 
 
-    @ballsEnabled = withViewObservable (ko.observable false), (val) =>
-      @server.setBallsEnabled val
-
-
   #Data structure to hold connected players
   connectedPlayer = (username, rating) ->
     @username = username
@@ -117,9 +113,6 @@ class @Game
     length = Math.max(lengthArray...)
     for i in [0...length]
       arr[i] for arr in args
-
-  setBallsEnabled: (enabled) ->
-    @ballsEnabled enabled
 
   moveBalls: (coords) ->
     coord_balls = @zip(coords, @balls)
