@@ -32,7 +32,7 @@ setBallsEnabled = (enabled) ->
     ballsInterval = setInterval () =>
       # Perform model calculations
       arena.update()
-      sendDataToClient()
+      sendContinuousData()
     , (1000 / MODEL_FPS)
   else
     clearInterval ballsInterval
@@ -111,7 +111,7 @@ createApp = ->
   app
 
 
-sendDataToClient = () ->
+sendContinuousData = () ->
   if everyone.now.receiveBalls
     everyone.now.receiveBalls arena.balls
 
