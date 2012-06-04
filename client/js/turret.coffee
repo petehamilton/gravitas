@@ -37,6 +37,7 @@ class @Turret
 
 
     #hp indicator
+    @updateHpIndicator(40)
     hp_radius = config.hp_radius
 
     @hp_pos = switch @position
@@ -45,9 +46,12 @@ class @Turret
       when 2 then {x: @paper.width-1.5*hp_radius, y: @paper.height-1.5*hp_radius}
       when 3 then {x: 1.5*hp_radius, y: @paper.height-1.5*hp_radius}
 
-    @hp = @paper.piechart(@hp_pos.x, @hp_pos.y, hp_radius, [ 70, 30 ], {colors:["#57ff53","#ae0800"]})
+    @hp_indicator = @paper.piechart(@hp_pos.x, @hp_pos.y, hp_radius, @healthdata_display, {colors:["#57ff53","#ae0800"], smooth: true })
 
 
+  updateHpIndicator: (newHealth) ->
+    @health = newHealth
+    @healthdata_display = [ @health, (100-@health)]
 
   # Turns the turret according to the mouse position.
   # Returns the angle in degrees.
