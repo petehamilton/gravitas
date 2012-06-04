@@ -23,6 +23,7 @@ class @Turret
 
     @angle = @position * 90 + 45
 
+
     # simple body (circle!)
     @body_sprite = @paper.circle(@center.x, @center.y, 80)
                     .attr({fill: '#CCCCCC'})
@@ -32,6 +33,20 @@ class @Turret
 
     @turret_sprite = @paper.image(@image, @offset_center.x, @offset_center.y, width, height)
                       .transform("r#{@angle},#{@center.x},#{@center.y}")
+
+
+
+    #hp indicator
+    hp_radius = config.hp_radius
+
+    @hp_pos = switch @position
+      when 0 then {x: 1.5*hp_radius, y: 1.5*hp_radius}
+      when 1 then {x: @paper.width-1.5*hp_radius, y: 1.5*hp_radius}
+      when 2 then {x: @paper.width-1.5*hp_radius, y: @paper.height-1.5*hp_radius}
+      when 3 then {x: 1.5*hp_radius, y: @paper.height-1.5*hp_radius}
+
+    @hp = @paper.piechart(@hp_pos.x, @hp_pos.y, hp_radius, [ 70, 30 ], {colors:["#57ff53","#ae0800"]})
+
 
 
   # Turns the turret according to the mouse position.

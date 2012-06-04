@@ -97,6 +97,7 @@ main = ->
   # Debugging global variables
   @a = arena
   @g = game
+  @p = paper
 
 
 $ ->

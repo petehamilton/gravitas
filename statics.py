@@ -23,6 +23,9 @@ STATICS = {
 
 	# Raphael for simple graphics amnipulation
 	'client/js/lib/raphael.js': 'http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael.js',
+	'client/js/lib/g.raphael.js': 'https://raw.github.com/DmitryBaranovskiy/g.raphael/master/min/g.raphael-min.js',
+	'client/js/lib/g.pie.js': 'https://raw.github.com/DmitryBaranovskiy/g.raphael/master/min/g.pie-min.js',
+
 
 	# Runtogether to run multiple daemons in parallel
 	'runtogether.py': 'https://raw.github.com/nh2/runtogether/master/runtogether.py',

@@ -29,6 +29,8 @@ config =
   turret_width: 200
   turret_height: 100
 
+  hp_radius: 10
+
   # Maximum allowed ball velocity
   ball_terminal_velocity: 5
 
