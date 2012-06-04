@@ -1,5 +1,7 @@
 SPRITE_FOLDER = "../images/balls/"
 
+SIZE = config.ball_size
+
 
 getSpritePath = (ball_type, config) ->
   filename = switch ball_type.kind
@@ -17,16 +19,19 @@ getSpritePath = (ball_type, config) ->
   SPRITE_FOLDER + filename
 
 
+corner = (ball_center) ->
+  ball_center - SIZE / 2
+
+
 class @BallView
   constructor: (@ball_model, @paper) ->
     log "Creating Ball"
+
     # Set up graphics
 
     sprite_path = getSpritePath @ball_model.type, config
 
-    size = config.ball_size
-
-    @image = @paper.image(sprite_path, @ball_model.x, @ball_model.y, size, size)
+    @image = @paper.image(sprite_path, corner(@ball_model.x), corner(@ball_model.y), SIZE, SIZE)
 
     @update()
 
@@ -36,6 +41,5 @@ class @BallView
 
 
   update: ->
-    # log "Updating Ball"
-    # dir @ball_model
-    @image.attr { x: @ball_model.x, y: @ball_model.y }
+    # log "Updating Ball", @ball_model
+    @image.attr { x: corner(@ball_model.x), y: corner(@ball_model.y) }

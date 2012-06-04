@@ -7,6 +7,7 @@ BALL_SIZE = config.ball_size
 ARENA_SIZE = config.arena_size
 BALL_LEVELS = config.ball_levels
 
+
 next_ball_id = 0
 genBallId = -> next_ball_id++
 
@@ -22,12 +23,8 @@ class @ArenaModel
 
   constructor: ->
     starting_coords = @calculateStartPoints()
-    # @balls = (new pbm.BallModel.createFromCenterPoints(genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y) for {x, y} in starting_coords)
     @balls = for {x, y} in starting_coords
-      new pbm.BallModel.createFromCenterPoints genBallId(),
-                                                     pbm.makePlayerBallType(nextPlayerId()),
-                                                     x,
-                                                     y
+      new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
 
   # Calculates starting points for all the balls
   calculateStartPoints: ->
@@ -40,8 +37,7 @@ class @ArenaModel
 
     dist_between_balls = config.dist_between_balls
     dist_components = {dx: dist_between_balls / 2, dy: Math.sin(degToRad(60)) * dist_between_balls}
-    console.log "dx:", dist_components.dx, "dy", dist_components.dy
-    center_point = {x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2}
+    center_point = { x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2 }
 
     start_coords = []
     rows = BALL_LEVELS * 2 - 1
@@ -52,14 +48,14 @@ class @ArenaModel
 
       for col in [0..cols-1]
         start_coords.push
+          # TODO style
           x : center_point.x +
               (col - Math.floor(cols / 2)) * dist_between_balls +
               if even cols
                 dist_components.dx
               else
                 0
-          y : center_point.y +
-              dist_components.dy * (row - Math.floor(rows / 2))
+          y : Math.round (center_point.y + dist_components.dy * (row - Math.floor(rows / 2)))
 
     return start_coords
 
