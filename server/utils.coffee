@@ -13,3 +13,12 @@ exports.dict = (arr) ->
 exports.even = (num) -> num % 2 == 0
 
 exports.degToRad = (deg) -> (deg * Math.PI) / 180
+
+exports.partition = (list, iterator) ->
+  take = []
+  reject = []
+  i = 0
+  for x in list
+    (if iterator(x, i) then take else reject).push x
+    i++
+  [take, reject]

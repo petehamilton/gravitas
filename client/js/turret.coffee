@@ -42,6 +42,8 @@ class @Turret
     @max_health = config.max_health
     healthdata_display = [9999, 1]
 
+    @getBallStorePos = -> makeTurretOffset 30, 30
+
     @hp_pos = makeTurretOffset 1.5*@hp_radius, 1.5*@hp_radius
 
     @updateHpIndicator(66)

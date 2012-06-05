@@ -43,3 +43,32 @@ class @BallView
   update: ->
     # log "Updating Ball", @ball_model
     @image.attr { x: corner(@ball_model.x), y: corner(@ball_model.y) }
+
+
+  remove: ->
+    log "remove", @image
+    @image.remove()
+
+
+  pullTo: (x, y, callback) ->
+    duration = config.pull_time_ms
+
+    @image.animate { x: corner(x), y: corner(y) }, duration, 'backOut', callback
+
+
+  shoot: (angle, callback) ->
+    duration = config.shoot_time_ms
+    { x: oldX, y: oldY } = @image.getBBox()
+
+    # Make sure ball flies out of the window
+    radius = Math.max(config.arena_size.x, config.arena_size.y) * 1.42
+
+    stretched_target_pos =
+      x: corner(Math.cos(degToRad(angle)) * radius)
+      y: corner(Math.sin(degToRad(angle)) * radius)
+
+    # TODO explosion when turret is hit
+
+    @image.animate stretched_target_pos, duration, '<', =>
+      @image.remove()
+      callback()

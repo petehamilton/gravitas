@@ -76,15 +76,18 @@ configureNow = (everyone) ->
     everyone.now.displayMessage msg
 
   everyone.now.setAngle = (player, angle) ->
+    arena.setAngle player, angle
     everyone.now.receiveAngle(player, angle)
 
-  everyone.now.startGravityGun = (player) ->
-    # TODO implement ball pulling
-    log "TODO: implement ball pulling"
+  everyone.now.startGravityGun = (player, x, y) ->
+    # TODO remove X, Y only allow pulling balls in line
+    arena.pull player, x, y, (pulled_ball) ->
+      everyone.now.receivePull player, pulled_ball
 
   everyone.now.stopGravityGun = (player) ->
-    # TODO implement ball releasing
-    log "TODO: implement ball releasing"
+    arena.shoot player, (shot_ball, angle) ->
+      everyone.now.receiveShot player, shot_ball, angle
+
 
 
 createApp = ->

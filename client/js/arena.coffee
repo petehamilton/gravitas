@@ -17,7 +17,7 @@ class @Arena
 
   mousePressed: (x, y) ->
     # Tell the game about the player clicking their mouse
-    @game.startGravityGun()
+    @game.startGravityGun x, y
 
   mouseReleased: (x, y) ->
     # Tell the game about the player clicking their mouse
@@ -25,3 +25,6 @@ class @Arena
 
   setTurretRotation: (turret, angle) ->
     @turrets[turret].setRotation angle
+
+  getBallStorePosition: (player) ->
+    @turrets[player].getBallStorePos()

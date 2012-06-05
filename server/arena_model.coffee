@@ -1,5 +1,6 @@
-{ config, even, degToRad } = require './utils'
+{ config, dict, log, even, degToRad, partition } = require './utils'
 pbm = require './ball_model'
+assert = require 'assert'
 
 
 PLAYER_IDS = config.player_ids
@@ -29,6 +30,11 @@ class @ArenaModel
     starting_coords = @calculateStartPoints()
     @balls = for {x, y} in starting_coords
       new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
+
+    @angles = playerIdDict (i) -> 0
+
+    @stored_balls = playerIdDict (i) -> null
+
 
   # Calculates starting points for all the balls
   calculateStartPoints: ->
@@ -62,3 +68,44 @@ class @ArenaModel
           y : Math.round (center_point.y + dist_components.dy * (row - Math.floor(rows / 2)))
 
     return start_coords
+
+
+  setAngle: (player, angle) ->
+    @angles[player] = angle
+
+
+  pull: (player, x, y, pullCallback) ->
+    # TODO remove X, Y only allow pulling balls in line
+    r = config.pull_radius
+
+    angle = @angles[player]
+
+    # Find the balls that were selected by the pull
+    [selected, others] = partition @balls, (b, i) ->
+      Math.abs(x - b.x) < r and Math.abs(y - b.y) < r
+
+    assert.ok(selected.length in [0,1], "not more than one ball should be selected in a pull")
+
+    if selected.length
+      b = selected[0]
+
+      # Remove pulled ball from available balls
+      log "player #{player} pulled ball #{b.id} at", [b.x, b.y]
+      pullCallback b
+
+      @stored_balls[player] = b
+
+      # All other balls stay
+      @balls = others
+
+
+  shoot: (player, shotCallback) ->
+    angle = @angles[player]
+    b = @stored_balls[player]
+    if not b
+      log "player #{player} tries to shoot, but has no ball"
+    else
+      log "player #{player} shoots ball #{b.id} of kind #{b.type.kind} with angle #{angle}"
+      shotCallback b, angle
+      delete @stored_balls[player]
+

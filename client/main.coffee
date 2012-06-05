@@ -7,6 +7,8 @@
 @assertPlayerId = (player_id) ->
   assert(player_id in config.player_ids, "Invalid user id")
 
+@degToRad = (deg) -> (deg * Math.PI) / 180
+
 
 @zip = () ->
   lengthArray = (arr.length for arr in arguments)
@@ -32,6 +34,8 @@ setupNow = (game) ->
 
   now.receiveAngle = (args...) -> game.setAngle args...
   now.receiveBalls = (args...) -> game.updateBalls args...
+  now.receivePull = (args...) -> game.pulled args...
+  now.receiveShot = (args...) -> game.shot args...
 
 setupChat = ->
 

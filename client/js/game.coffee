@@ -93,15 +93,31 @@ class @Game
       @server.setAngle @player(), angle
 
   # Starts the gravity gun of the current player
-  startGravityGun: ->
+  startGravityGun: (x, y) ->
     new Audio("sounds/pull.wav").play()
     @withServer =>
-      @server.startGravityGun @player()
+      @server.startGravityGun @player(), x, y
 
   # Stops the turret angle of the current player.
-  stopGravityGun: ->
+  stopGravityGun: (x, y) ->
     @withServer =>
       @server.stopGravityGun @player()
+
+  pulled: (player, ball_model) ->
+    log "player #{player} pulled", ball_model
+    ball_view = @balls[ball_model.id]
+    {x, y} = @arena.getBallStorePosition player
+    ball_view.pullTo x, y
+
+  shot: (player, ball_model, angle) ->
+    log "player #{player} shot", ball_model
+    ball_view = @balls[ball_model.id]
+    ball_view.shoot angle, =>
+      # TODO delete ball view / let it fly out/explode
+      log "shot done"
+      # TODO check if this allow the ball to be GC'd
+      delete @balls[ball_model.id]
+
 
   # Sets the angle of any player turret.
   setAngle: (player, angle) ->

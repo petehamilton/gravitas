@@ -22,6 +22,9 @@ config =
   ball_size: 40
 
   crosshair_size: 64
+  pull_radius: 20
+  pull_time_ms: 500
+  shoot_time_ms: 500
 
   vortex_mass: 10000
 
