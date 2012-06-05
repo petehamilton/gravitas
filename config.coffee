@@ -19,7 +19,6 @@ config =
 
   balls_enabled: true
 
-  ball_mass: 1
   ball_size: 40
 
   crosshair_size: 64
@@ -30,9 +29,6 @@ config =
   turret_height: 100
 
   hp_radius: 10
-
-  # Maximum allowed ball velocity
-  ball_terminal_velocity: 5
 
   lag_limit: 50
 
