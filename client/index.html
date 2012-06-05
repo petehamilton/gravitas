@@ -30,47 +30,56 @@
 
     <div id="login-overlay" class="screen" data-bind="fadeVisible: !gameStarted()">
 
-      <div id="login-window" data-bind="fadeVisible: !loggedIn()" class="box">
-        <div id="logo-small"></div>
-        <p><label for="userName" class="label">Username:</label>
-        <input id="userName" data-bind="value: username" name="userName" maxlength="320" type="text" tabindex="1" class="input" /></p>
+      <div class="centered-table">
+        <div class="centered-table-cell">
 
-        <p><label for="password" class="label">Password:</label>
-        <input id="password" data-bind="value: password" name="password" maxlength="16" type="password" tabindex="2" autocomplete="off" class="input" /></p>
+          <div id="login-window" data-bind="fadeVisible: !loggedIn()" class="box">
+            <div id="logo-small"></div>
+            <p><label for="userName" class="label">Username:</label>
+            <input id="userName" data-bind="value: username" name="userName" maxlength="320" type="text" tabindex="1" class="input" /></p>
 
-        <button data-bind="click: logIn">
-          Log In
-        </button>
-      </div>
+            <p><label for="password" class="label">Password:</label>
+            <input id="password" data-bind="value: password" name="password" maxlength="16" type="password" tabindex="2" autocomplete="off" class="input" /></p>
 
-      <div id="lobby-window" data-bind="fadeVisible: !gameStarted() && loggedIn()" class="box">
-        <div id="logo-small"></div>
-        <table>
-            <thead><tr>
-                <th>Username</th><th>Rating</th>
-            </tr></thead>
-            <tbody data-bind="foreach: connectedPlayers">
-                <tr>
-                    <td><span data-bind="text: username">Username</span></td>
-                    <td><span data-bind="text: rating">Rating</span></td>
-                </tr>
-            </tbody>
-        </table>
-        <br />
+            <button data-bind="click: logIn">
+              Log In
+            </button>
+          </div>
 
-        <label>Total connected: <label data-bind="text: connectedPlayers().length"></label></label><br />
-        <button data-bind="click: connectNew">
-            Add a player
-        </button>
+          <div id="lobby-window" data-bind="fadeVisible: !gameStarted() && loggedIn()" class="box">
+            <div id="logo-small"></div>
+            <table>
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Rating</th>
+                  </tr>
+                </thead>
+                <tbody data-bind="foreach: connectedPlayers">
+                  <tr>
+                    <td><span data-bind="text: username"></span></td>
+                    <td><span data-bind="text: rating"></span></td>
+                  </tr>
+                </tbody>
+            </table>
+            <br />
 
-        <button data-bind="click: pingServer">
-          Ping Server
-        </button>
+            <label>Total connected: <label data-bind="text: connectedPlayers().length"></label></label><br />
+            <button data-bind="click: connectNew">
+                Add a player
+            </button>
 
-        <button data-bind="click: startGame">
-          Start Game
-        </button>
+            <button data-bind="click: pingServer">
+              Ping Server
+            </button>
 
+            <button data-bind="click: startGame">
+              Start Game
+            </button>
+
+          </div>
+
+        </div>
       </div>
 
     </div>
@@ -80,8 +89,8 @@
 
     <div id="game" class="screen">
 
-      <div id="game-table">
-        <div id="paper-container">
+      <div class="centered-table">
+        <div class="centered-table-cell">
           <div id="paper"></div>
         </div>
       </div>
