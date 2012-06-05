@@ -110,6 +110,7 @@ class @Game
     ball_view.pullTo x, y
 
   shot: (player, ball_model, angle) ->
+    new Audio("sounds/fire.wav").play()
     log "player #{player} shot", ball_model
     ball_view = @balls[ball_model.id]
     ball_view.shoot angle, =>
