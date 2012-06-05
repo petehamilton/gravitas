@@ -55,7 +55,7 @@ class @Turret
   # Updates the HP indicator
   updateHpIndicator: (newHealth) ->
     @hp_indicator? @hp_indicator.remove
-    @health = newHealth
+    @health = newHealth % 100
     healthdata_display = [ @health*10, (100-@health)*10+1]
     @hp_indicator = @paper.piechart(@hp_pos.x, @hp_pos.y, @hp_radius, healthdata_display,
       {colors:["#57ff53","#ae0800"], smooth: true, stroke: "#57ff53"})
