@@ -36,13 +36,13 @@
           <div id="login-window" class="box">
             <div class="logo"></div>
             <p>
-              <label for="userName" class="label">Username:</label>
-              <input id="userName" data-bind="value: username" name="userName" maxlength="320" type="text" tabindex="1" class="input" />
+              <label for="userName">Username:</label>
+              <input id="userName" type="text" name="userName" maxlength="32" tabindex="1" placeholder="Username" data-bind="value: username" />
             </p>
 
             <p>
-              <label for="password" class="label">Password:</label>
-              <input id="password" data-bind="value: password" name="password" maxlength="16" type="password" tabindex="2" autocomplete="off" class="input" />
+              <label for="password">Password:</label>
+              <input type="password" id="password" data-bind="value: password" name="password" tabindex="2" autocomplete="off" />
             </p>
 
             <button data-bind="click: logIn">

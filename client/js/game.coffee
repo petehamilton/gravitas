@@ -4,7 +4,7 @@ class @Game
     @loggedIn = ko.observable $.cookie("loggedInCookie")
     @gameStarted = ko.observable $.cookie("gameStartedCookie")
 
-    @username = ko.observable 'Username'
+    @username = ko.observable ''
     @password = ko.observable ''
 
     @logIn = ->
