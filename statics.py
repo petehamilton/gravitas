@@ -29,6 +29,8 @@ STATICS = {
 
 	# Runtogether to run multiple daemons in parallel
 	'runtogether.py': 'https://raw.github.com/nh2/runtogether/master/runtogether.py',
+
+	'server/lib/underscore.js': 'http://underscorejs.org/underscore.js',
 }
 
 
