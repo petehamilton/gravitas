@@ -16,6 +16,7 @@ centered-table-cell()
   vertical-align: middle
 
 
+
 body
   margin: 0
   padding: 0
@@ -71,6 +72,9 @@ button:hover
   height: 37px
 
 #login-overlay
+  display: table
+//  width: 100%
+//  height: 100%
   background-image: url(images/ui/bgnologo.jpg);
   background-size-cover()
   z-index: 1000
@@ -78,45 +82,30 @@ button:hover
   top: 0
   bottom: 0
   left: 0
-  width: 100%
-  height: 100%
 
+.box
+  border: 3px solid #525e67
+  padding: 10px
 
 #login-window
-  border: 3px solid #525e67
-  padding-left: 10px
+  centered-table-cell()
   width: 180px
   height: 250px
-  vertical-align: middle
-  position: absolute
-  left: 50%
-  top: 50%
-  margin-left: -90px
-  margin-top: -95px
   background-color:rgba(0,0,0,0.7);
 
 
+#lobby-window
+  centered-table-cell()
+  width: 600px
+  min-height: 380px
+  background-color:rgba(0,0,0,0.7);
+
 #game
-  // Use the full screen
   position: absolute
   top: 0
   bottom: 0
   left: 0
   right: 0
-
-
-#lobby
-  border: 3px solid #525e67
-  padding-left: 10px
-  width: 600px
-  height: 380px
-  vertical-align: middle
-  position: absolute
-  left: 50%
-  top: 50%
-  margin-left: -300px
-  margin-top: -190px
-  background-color:rgba(0,0,0,0.7);
 
 
 #game-table
