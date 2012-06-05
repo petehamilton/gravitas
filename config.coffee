@@ -29,6 +29,7 @@ config =
   turret_height: 100
 
   hp_radius: 10
+  max_health: 100
 
   lag_limit: 50
 

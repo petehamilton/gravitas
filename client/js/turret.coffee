@@ -36,6 +36,7 @@ class @Turret
 
     #hp indicator
     @hp_radius = config.hp_radius
+    @max_health = config.max_health
     healthdata_display = [9999, 1]
 
     @hp_pos = switch @position
@@ -55,8 +56,13 @@ class @Turret
   # Updates the HP indicator
   updateHpIndicator: (newHealth) ->
     @hp_indicator? @hp_indicator.remove
-    @health = newHealth % 100
-    healthdata_display = [ (@health*10)+1, (100-@health)*10+1]
+    if newHealth > @max_health
+      @health = @max_health
+    else if newHealth < 0
+      @health = 0
+    else
+      @health = newHealth
+    healthdata_display = [ @health+1, (100-@health)+1]
     @hp_indicator = @paper.piechart(@hp_pos.x, @hp_pos.y, @hp_radius, healthdata_display,
       {colors:["#57ff53","#ae0800"], smooth: true, stroke: "#57ff53"})
 
