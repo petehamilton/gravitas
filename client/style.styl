@@ -3,6 +3,12 @@ linear-gradient()
   background: -webkit-linear-gradient(arguments)
   background: -o-linear-gradient(arguments)
 
+background-size-cover()
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
 centered-table-cell()
   display: table-cell
   width: 100%
@@ -58,16 +64,15 @@ button:hover
   background: #4281bc
   linear-gradient top,  #4281bc 0%, #195992 100%
 
-#small-logo
+#logo-small
+  background-image: url(images/ui/logo.png);
+  background-size-cover()
   width: 160px
   height: 37px
 
 #login-overlay
   background-image: url(images/ui/bgnologo.jpg);
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+  background-size-cover()
   z-index: 1000
   position: absolute
   top: 0
@@ -75,7 +80,6 @@ button:hover
   left: 0
   width: 100%
   height: 100%
-
 
 
 #login-window
@@ -92,7 +96,6 @@ button:hover
   background-color:rgba(0,0,0,0.7);
 
 
-
 #game
   // Use the full screen
   position: absolute
@@ -100,6 +103,7 @@ button:hover
   bottom: 0
   left: 0
   right: 0
+
 
 #lobby
   border: 3px solid #525e67
@@ -113,7 +117,6 @@ button:hover
   margin-left: -300px
   margin-top: -190px
   background-color:rgba(0,0,0,0.7);
-
 
 
 #game-table
