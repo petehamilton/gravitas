@@ -13,6 +13,7 @@
     <script type="text/javascript" src="js/lib/jquery.js"></script>
     <script type="text/javascript" src="js/lib/jquery.cookie.js"></script>
     <script type='text/javascript' src='js/lib/knockout.js'></script>
+    <script type='text/javascript' src="js/lib/sonic.js"></script>
 
     <script type='text/coffeescript' src='js/ko-extenders.coffee'></script>
 
@@ -24,6 +25,8 @@
     <script type="text/coffeescript" src="js/ball_view.coffee"></script>
     <script type="text/coffeescript" src="js/vortex.coffee"></script>
     <script type="text/coffeescript" src="main.coffee"></script>
+
+
   </head>
 
   <body>
@@ -58,26 +61,31 @@
 
           <div id="lobby-window" class="box">
             <div class="logo left"></div>
-            <div id="nick"><span data-bind="text: username" placeholder="Username"></span></div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Username</th>
-                  <th>Rating</th>
-                </tr>
-              </thead>
-              <tbody data-bind="foreach: connectedPlayers">
-                <tr>
-                  <td><span data-bind="text: username"></span></td>
-                  <td><span data-bind="text: rating"></span></td>
-                </tr>
-              </tbody>
-            </table>
-            <br />
+            <div id="nick"><span data-bind="text: username" placeholder="Username"></span></div><br>
+            <div id="spinner" class="spinner"></div><div id="spinner-label">Waiting for four other players</div>
+            <div id="assembly">
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Rating</th>
+                  </tr>
+                </thead>
+                <tbody data-bind="foreach: connectedPlayers">
+                  <tr>
+                    <td><span data-bind="text: username"></span></td>
+                    <td><span data-bind="text: rating"></span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <br />
+               <label>Total connected: <label data-bind="text: connectedPlayers().length"></label></label><br />
+            </div>
 
 
-            <label>Total connected: <label data-bind="text: connectedPlayers().length"></label></label><br />
-            <div class="buttons">
+
+            <div id="buttons">
               <button data-bind="click: connectNew">
                 Add a player
               </button>
@@ -143,6 +151,65 @@
       </div>
 
     </div>
+     <!-- Awesome triangle spinners -->
+    <script>
+
+      var spinner1 = new Sonic({
+          width: 18,
+          height: 18,
+
+          stepsPerFrame: 3,
+          trailLength: .7,
+          pointDistance: .02,
+          fps: 30,
+
+          step: 'fader',
+
+          setup: function() {
+              this._.lineWidth = 3;
+          },
+
+          path: [
+            ['line', 1, 17, 8, 5],
+            ['line', 8, 5, 16, 17],
+            ['line', 16, 17, 1, 17]
+          ]
+      });
+
+      var spinner2 = new Sonic({
+          width: 18,
+          height: 18,
+
+          stepsPerFrame: 3,
+          trailLength: .7,
+          pointDistance: .02,
+          fps: 30,
+
+          step: 'fader',
+
+          setup: function() {
+              this._.lineWidth = 3;
+          },
+
+          path: [
+            ['line', 1, 5, 8, 17],
+            ['line', 8, 17, 16, 5],
+            ['line', 16, 5, 1, 5]
+          ]
+      });
+
+
+      $(function(){
+        spinner1.play();
+
+        spinner2.play();
+
+        $('.spinner').append(spinner1.canvas);
+        $('.spinner').append(spinner2.canvas);
+      });
+
+    </script>
+
   </body>
 
 </html>

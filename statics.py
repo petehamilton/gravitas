@@ -15,6 +15,9 @@ STATICS = {
 	'client/js/lib/knockout.js': 'http://cloud.github.com/downloads/SteveSanderson/knockout/knockout-2.1.0.js',
 	'client/js/lib/knockout.mapping.js': 'https://raw.github.com/SteveSanderson/knockout.mapping/master/build/output/knockout.mapping-latest.js',
 
+	'client/js/lib/sonic.js': 'https://raw.github.com/padolsey/Sonic/master/src/sonic.js',
+
+
 	# 'lib/jsschema.js': 'https://raw.github.com/nh2/jsschema/schemafields/jsschema.js',
 	# 'runtogether.py': 'https://raw.github.com/nh2/runtogether/master/runtogether.py',
 
