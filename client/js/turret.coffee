@@ -34,24 +34,31 @@ class @Turret
     @turret_sprite = @paper.image(@image, @offset_center.x, @offset_center.y, width, height)
                       .transform("r#{@angle},#{@center.x},#{@center.y}")
 
-
-
     #hp indicator
-    @updateHpIndicator(40)
-    hp_radius = config.hp_radius
+    @hp_radius = config.hp_radius
+    healthdata_display = [9999, 1]
 
     @hp_pos = switch @position
-      when 0 then {x: 1.5*hp_radius, y: 1.5*hp_radius}
-      when 1 then {x: @paper.width-1.5*hp_radius, y: 1.5*hp_radius}
-      when 2 then {x: @paper.width-1.5*hp_radius, y: @paper.height-1.5*hp_radius}
-      when 3 then {x: 1.5*hp_radius, y: @paper.height-1.5*hp_radius}
+      when 0 then {x: 1.5*@hp_radius, y: 1.5*@hp_radius}
+      when 1 then {x: @paper.width-1.5*@hp_radius, y: 1.5*@hp_radius}
+      when 2 then {x: @paper.width-1.5*@hp_radius, y: @paper.height-1.5*@hp_radius}
+      when 3 then {x: 1.5*@hp_radius, y: @paper.height-1.5*@hp_radius}
 
-    @hp_indicator = @paper.piechart(@hp_pos.x, @hp_pos.y, hp_radius, @healthdata_display, {colors:["#57ff53","#ae0800"], smooth: true })
+    @updateHpIndicator(66)
 
+    @hp_indicator.each ->
+      @sector.scale 0, 0, @cx, @cy
+      @sector.animate
+        transform: "s1 1 " + @cx + " " + @cy
+      , 1000, "bounce"
 
+  # Updates the HP indicator
   updateHpIndicator: (newHealth) ->
+    @hp_indicator? @hp_indicator.remove
     @health = newHealth
-    @healthdata_display = [ @health, (100-@health)]
+    healthdata_display = [ @health*10, (100-@health)*10+1]
+    @hp_indicator = @paper.piechart(@hp_pos.x, @hp_pos.y, @hp_radius, healthdata_display,
+      {colors:["#57ff53","#ae0800"], smooth: true, stroke: "#57ff53"})
 
   # Turns the turret according to the mouse position.
   # Returns the angle in degrees.
