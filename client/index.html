@@ -30,10 +30,10 @@
 
     <div id="login-overlay" class="screen" data-bind="fadeVisible: !gameStarted()">
 
-      <div class="centered-table">
+      <div class="centered-table" data-bind="fadeVisible: !loggedIn()">
         <div class="centered-table-cell">
 
-          <div id="login-window" data-bind="fadeVisible: !loggedIn()" class="box">
+          <div id="login-window" class="box">
             <div class="logo"></div>
             <p><label for="userName" class="label">Username:</label>
             <input id="userName" data-bind="value: username" name="userName" maxlength="320" type="text" tabindex="1" class="input" /></p>
@@ -46,10 +46,15 @@
             </button>
           </div>
 
-          <div id="lobby-window" data-bind="fadeVisible: !gameStarted() && loggedIn()" class="box">
+        </div>
+      </div>
+
+      <div class="centered-table" data-bind="fadeVisible: !gameStarted() && loggedIn()">
+        <div class="centered-table-cell">
+
+          <div id="lobby-window" class="box">
             <div class="logo left"></div>
             <div class="nick"><span data-bind="text: username">Username</span></div>
-
             <table>
                 <thead>
                   <tr>
@@ -85,8 +90,6 @@
       </div>
 
     </div>
-
-
 
 
     <div id="game" class="screen">
