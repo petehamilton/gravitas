@@ -58,7 +58,7 @@
         </table>
         <br />
 
-       <label><b>Total connected: <label data-bind="text: connectedPlayers().length"></label></label><br />
+        <label>Total connected: <label data-bind="text: connectedPlayers().length"></label></label><br />
         <button data-bind="click: connectNew">
             Add a player
         </button>
@@ -87,6 +87,8 @@
       </div>
 
       <div id="controls">
+
+        <div class="divlabel">dev</div>
 
         <p id="lag_indicator" data-bind="css: { lag: lag }">Lag indicator</p>
 
