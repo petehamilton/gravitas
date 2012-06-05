@@ -58,7 +58,7 @@
 
           <div id="lobby-window" class="box">
             <div class="logo left"></div>
-            <div class="nick"><span data-bind="text: username">Username</span></div>
+            <div id="nick"><span data-bind="text: username" placeholder="Username"></span></div>
             <table>
               <thead>
                 <tr>
@@ -75,18 +75,21 @@
             </table>
             <br />
 
+
             <label>Total connected: <label data-bind="text: connectedPlayers().length"></label></label><br />
-            <button data-bind="click: connectNew">
-              Add a player
-            </button>
+            <div class="buttons">
+              <button data-bind="click: connectNew">
+                Add a player
+              </button>
 
-            <button data-bind="click: pingServer">
-              Ping Server
-            </button>
+              <button data-bind="click: pingServer">
+                Ping Server
+              </button>
 
-            <button data-bind="click: startGame">
-              Start Game
-            </button>
+              <button data-bind="click: startGame">
+                Start Game
+              </button>
+            </div>
 
           </div>
 
