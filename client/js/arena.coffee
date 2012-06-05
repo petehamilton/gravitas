@@ -15,11 +15,11 @@ class @Arena
     # Tell the game about the changed player angle to send it to the server
     @game.onOwnAngle angle
 
-  mousePressed: ->
+  mousePressed: (x, y) ->
     # Tell the game about the player clicking their mouse
     @game.startGravityGun()
 
-  mouseReleased: ->
+  mouseReleased: (x, y) ->
     # Tell the game about the player clicking their mouse
     @game.stopGravityGun()
 

@@ -72,16 +72,15 @@ main = ->
   mouseMoveThrottler = new FpsThrottler config.fps
   $('#paper').mousemove (e) ->
     mouseMoveThrottler.throttle ->
-      arena.mouseMoved(e.offsetX, e.offsetY)
-
+      arena.mouseMoved e.offsetX, e.offsetY
 
   # listen to mouse events
   $(paper.canvas).mousedown (e) ->
-    arena.mousePressed()
+    arena.mousePressed e.offsetX, e.offsetY
 
   # listen to mouse events
   $(paper.canvas).mouseup (e) ->
-    arena.mouseReleased()
+    arena.mouseReleased e.offsetX, e.offsetY
 
   # Use game as toplevel knockout ViewModel
   ko.applyBindings game

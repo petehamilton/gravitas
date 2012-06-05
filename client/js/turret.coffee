@@ -7,11 +7,14 @@ class @Turret
 
     @image = "../images/double_turret.png"
 
-    @center = switch @position
-      when 0 then {x: 0, y: 0}
-      when 1 then {x: @paper.width, y: 0}
-      when 2 then {x: @paper.width, y: @paper.height}
-      when 3 then {x: 0, y: @paper.height}
+    makeTurretOffset = (x, y) =>
+      switch @position
+        when 0 then { x: x, y: y }
+        when 1 then { x: @paper.width - y, y: x }
+        when 2 then { x: @paper.width - x, y: @paper.height - y }
+        when 3 then { x: y, y: @paper.height - x }
+
+    @center = makeTurretOffset 0, 0
 
     xoffset = 30
     yoffset = 50
@@ -39,11 +42,7 @@ class @Turret
     @max_health = config.max_health
     healthdata_display = [9999, 1]
 
-    @hp_pos = switch @position
-      when 0 then {x: 1.5*@hp_radius, y: 1.5*@hp_radius}
-      when 1 then {x: @paper.width-1.5*@hp_radius, y: 1.5*@hp_radius}
-      when 2 then {x: @paper.width-1.5*@hp_radius, y: @paper.height-1.5*@hp_radius}
-      when 3 then {x: 1.5*@hp_radius, y: @paper.height-1.5*@hp_radius}
+    @hp_pos = makeTurretOffset 1.5*@hp_radius, 1.5*@hp_radius
 
     @updateHpIndicator(66)
 

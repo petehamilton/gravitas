@@ -18,6 +18,10 @@ nextPlayerId = ->
   cur_player_index %= PLAYER_IDS.length
   tmp
 
+# Creates an object mapping from player ID to value created by `fn`.
+playerIdDict = (fn) ->
+  dict ([i, fn(i)] for i in PLAYER_IDS)
+
 
 class @ArenaModel
 
