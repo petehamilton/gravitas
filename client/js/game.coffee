@@ -108,17 +108,6 @@ class @Game
     if player != @player()
       @arena.setTurretRotation(player, angle)
 
-  zip: (args...) ->
-    lengthArray = (arr.length for arr in args)
-    length = Math.max(lengthArray...)
-    for i in [0...length]
-      arr[i] for arr in args
-
-  moveBalls: (coords) ->
-    coord_balls = @zip(coords, @balls)
-    for coord, ball in coord_balls
-      ball.attr({x: coord.x, y: coord.y})
-
 
   updateBalls: (server_balls) ->
 
