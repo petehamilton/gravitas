@@ -35,11 +35,15 @@
 
           <div id="login-window" class="box">
             <div class="logo"></div>
-            <p><label for="userName" class="label">Username:</label>
-            <input id="userName" data-bind="value: username" name="userName" maxlength="320" type="text" tabindex="1" class="input" /></p>
+            <p>
+              <label for="userName" class="label">Username:</label>
+              <input id="userName" data-bind="value: username" name="userName" maxlength="320" type="text" tabindex="1" class="input" />
+            </p>
 
-            <p><label for="password" class="label">Password:</label>
-            <input id="password" data-bind="value: password" name="password" maxlength="16" type="password" tabindex="2" autocomplete="off" class="input" /></p>
+            <p>
+              <label for="password" class="label">Password:</label>
+              <input id="password" data-bind="value: password" name="password" maxlength="16" type="password" tabindex="2" autocomplete="off" class="input" />
+            </p>
 
             <button data-bind="click: logIn">
               Log In
@@ -56,24 +60,24 @@
             <div class="logo left"></div>
             <div class="nick"><span data-bind="text: username">Username</span></div>
             <table>
-                <thead>
-                  <tr>
-                    <th>Username</th>
-                    <th>Rating</th>
-                  </tr>
-                </thead>
-                <tbody data-bind="foreach: connectedPlayers">
-                  <tr>
-                    <td><span data-bind="text: username"></span></td>
-                    <td><span data-bind="text: rating"></span></td>
-                  </tr>
-                </tbody>
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Rating</th>
+                </tr>
+              </thead>
+              <tbody data-bind="foreach: connectedPlayers">
+                <tr>
+                  <td><span data-bind="text: username"></span></td>
+                  <td><span data-bind="text: rating"></span></td>
+                </tr>
+              </tbody>
             </table>
             <br />
 
             <label>Total connected: <label data-bind="text: connectedPlayers().length"></label></label><br />
             <button data-bind="click: connectNew">
-                Add a player
+              Add a player
             </button>
 
             <button data-bind="click: pingServer">
