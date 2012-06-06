@@ -1,4 +1,4 @@
-{ config, dict, log, even, degToRad, partition } = require './utils'
+{ config, dict, log, even, degToRad, partition, flatten } = require './utils'
 pbm = require './ball_model'
 assert = require 'assert'
 
@@ -27,8 +27,9 @@ playerIdDict = (fn) ->
 class @ArenaModel
 
   constructor: ->
-    starting_coords = @calculateStartPoints()
-    @balls = for {x, y} in starting_coords
+    {ball_positions, triangles} = @calculateStartPointsAndTriangles()
+
+    @balls = for {x, y} in flatten ball_positions
       new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
 
     @angles = playerIdDict (i) -> 0
@@ -37,12 +38,22 @@ class @ArenaModel
 
 
   # Calculates starting points for all the balls
-  calculateStartPoints: ->
+  # Triangles are in a data structure such that
+  # triangle =
+  #   a : {x : 0, y : 0}
+  #   b : {x : 0, y : 1}
+  #   c : {x : 1, y : 1}
+  # where a, b, c are the corners
+  calculateStartPointsAndTriangles: ->
+
+    # Calculates how many rows from the center a given row is
+    rowsFromCenter = (row) ->
+      Math.abs(BALL_LEVELS - 1 - row)
 
     # Calculates the number of balls for a given row
     ballsForRow = (row) ->
       max_index = BALL_LEVELS - 1
-      offset = Math.abs (max_index - row)
+      offset = rowsFromCenter row
       max_index - offset + BALL_LEVELS
 
     dist_between_balls = config.dist_between_balls
@@ -52,13 +63,15 @@ class @ArenaModel
     start_coords = []
     rows = BALL_LEVELS * 2 - 1
 
-    for row in [0..(rows-1)]
+    # Calculate starting points
+    # ball_positions = ((null for col in [0...(ballsForRow row)]) for row in [0...rows])
+    ball_positions = []
+    for row in [0...rows]
+      ball_positions[row] = []
       cols = ballsForRow row
-      rows_from_center = Math.abs(BALL_LEVELS - 1 - row)
-
-      for col in [0..cols-1]
-        start_coords.push
-          # TODO style
+      rows_from_center = rowsFromCenter row
+      for col in [0..cols]
+        ball_positions[row][col] =
           x : center_point.x +
               (col - Math.floor(cols / 2)) * dist_between_balls +
               if even cols
@@ -67,7 +80,32 @@ class @ArenaModel
                 0
           y : Math.round (center_point.y + dist_components.dy * (row - Math.floor(rows / 2)))
 
-    return start_coords
+
+    triangles = []
+    # Calculate triangles
+    for row in [0...rows]
+      cols = ballsForRow row
+      rows_from_center = rowsFromCenter row
+
+      for col in [0...cols]
+        half_col = Math.floor(col / 2)
+        triangles.push
+          a :
+            x : row
+            y : half_col
+          b :
+            x : row + 1
+            y : half_col + 1
+          c :
+            if even(col)
+              x : row + 1
+              y : half_col
+            else
+              x : row
+              y : half_col + 1
+
+    ball_positions: ball_positions
+    triangles: triangles
 
 
   setAngle: (player, angle) ->
