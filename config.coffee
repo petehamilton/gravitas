@@ -47,7 +47,7 @@ config =
   default_users:
     x: ''
     niklas: 'niklas'
-    lukazs: 'lukasz'
+    lukasz: 'lukasz'
     peter: 'peter'
     sarah: 'sarah'
     mark: 'mark'
