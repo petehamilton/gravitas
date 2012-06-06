@@ -63,19 +63,21 @@
 
           <div id="lobby-window" class="box">
             <div class="logo left"></div>
-            <div id="nick"><span data-bind="text: username" placeholder="Username"></span></div><br>
-            <div id="spinner" class="spinner"></div><div id="spinner-label">This is your user profile</div>
+            <div id="nick">Username<span data-bind="text: username" placeholder="Username"></span><div id="rating">1673</div></div>
+            <br>
+            <div id="spinner-label">This is your user profile</div>
             <div id="lobby-content">
 
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
 
 
-            <div id="buttons">
+            </div>
+              <div id="buttons">
               <button data-bind="click: assemblyClick">
                 Play
               </button>
             </div>
 
-          </div>
 
         </div>
       </div>
@@ -89,7 +91,7 @@
 
           <div id="assembly-window" class="box">
             <div class="logo left"></div>
-            <div id="nick"><span data-bind="text: username" placeholder="Username"></span></div><br>
+            <div id="nick">Username<span data-bind="text: username" placeholder="Username"></span><div id="rating">1673</div></div><br>
             <div id="spinner" class="spinner"></div><div id="spinner-label">Waiting for four other players</div>
             <div id="assembly-content">
 
@@ -114,9 +116,7 @@
 
 
             <div id="buttons">
-              <button data-bind="click: assemblyExitClick">
-                Leave
-              </button>
+
 
               <button data-bind="click: connectNew">
                 Add a player
@@ -124,6 +124,10 @@
 
               <button data-bind="click: pingServer">
                 Ping Server
+              </button>
+
+              <button data-bind="click: assemblyExitClick">
+                Leave
               </button>
 
               <button data-bind="click: startGame">

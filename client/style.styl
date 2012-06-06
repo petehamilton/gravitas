@@ -76,16 +76,6 @@ button
   left: 0
   right: 0
 
-#spinner
-#spinner-label
-  vertical-align: middle
-  padding-top: 15px
-  padding-bottom: 40px
-  display: inline-block
-  font-size: 15px
-  color: #bccddc
-  font-variant:small-caps;
-
 
 
 // For centering divs vertically: (from http://stackoverflow.com/a/6182661)
@@ -134,6 +124,16 @@ button
   display: inline-block
 
 
+#spinner
+#spinner-label
+  vertical-align: middle
+  padding-top: 15px
+  padding-bottom: 40px
+  display: inline-block
+  font-size: 15px
+  color: #bccddc
+  font-variant:small-caps;
+
 #login-overlay
   background-image: url(images/ui/bgnologo.jpg)
   background-size-cover()
@@ -148,13 +148,25 @@ button
     width: 600px
     min-height: 380px
 
+    #lobby-content
+      padding-left: 30px
+      color: #bccddc
+      font-size: 11px
+      width: 70%
+
     #nick
+      display: inline-block
       position: absolute
       top: 10px
       right: 15px
-      diplay: inline-block
-      font-size: 24px
+      font-size: 20px
       color: #fff
+      font-variant: small-caps
+
+    #rating
+      display: inline-block
+      font-size: 24px
+      color: #9fc181
       font-variant: small-caps
 
     #buttons
