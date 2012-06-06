@@ -29,6 +29,8 @@ class @ArenaModel
   constructor: ->
     {ball_positions, triangles} = @calculateStartPointsAndTriangles()
 
+    random_triangles = @pickRandomTriangles triangles
+
     @balls = for {x, y} in flatten ball_positions
       new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
 
@@ -36,13 +38,42 @@ class @ArenaModel
 
     @stored_balls = playerIdDict (i) -> null
 
+  # Picks random triangles to rotate
+  pickRandomTriangles: (triangles) ->
+
+    # Calculates if any point of the triangle is already
+    # in triangles and returns false if so
+    pointNotAlreadyInTriangles = (triangles, triangle) ->
+      for rand_triangle in triangles
+        for point in triangle
+          {x: x_p, y: y_p} = point
+          for {x: x_r, y: y_r} in rand_triangle
+            if( x_p == x_r and y_p == y_r )
+              return false
+
+      true
+
+
+    temp_triangles = triangles.slice 0
+    rand_triangles = []
+
+    while temp_triangles.length != 0
+      index = Math.floor(Math.random() * (temp_triangles.length - 1))
+      triangle = temp_triangles[index]
+      temp_triangles.splice(index, 1)
+      if pointNotAlreadyInTriangles(rand_triangles, triangle)
+        rand_triangles.push triangle
+
+    rand_triangles
+
 
   # Calculates starting points for all the balls
   # Triangles are in a data structure such that
-  # triangle =
-  #   a : {x : 0, y : 0}
-  #   b : {x : 0, y : 1}
-  #   c : {x : 1, y : 1}
+  # triangle = [
+  #   {x : 0, y : 0},
+  #   {x : 0, y : 1},
+  #   {x : 1, y : 1},
+  # ]
   # where a, b, c are the corners
   calculateStartPointsAndTriangles: ->
 
@@ -89,20 +120,14 @@ class @ArenaModel
 
       for col in [0...cols]
         half_col = Math.floor(col / 2)
-        triangles.push
-          a :
-            x : row
-            y : half_col
-          b :
-            x : row + 1
-            y : half_col + 1
-          c :
-            if even(col)
-              x : row + 1
-              y : half_col
-            else
-              x : row
-              y : half_col + 1
+        triangles.push(
+          [{ x : row,    y : half_col }
+          {x : row + 1, y : half_col + 1}
+          if even(col)
+            { x : row + 1, y : half_col}
+          else
+            {x : row, y : half_col + 1}
+          ])
 
     ball_positions: ball_positions
     triangles: triangles
