@@ -120,21 +120,14 @@ class @ArenaModel
 
       for col in [0...cols]
         half_col = Math.floor(col / 2)
-        a =
-          x : row
-          y : half_col
-        b =
-          x : row + 1
-          y : half_col + 1
-        c =
+        triangles.push(
+          [{ x : row,    y : half_col }
+          {x : row + 1, y : half_col + 1}
           if even(col)
-            x : row + 1
-            y : half_col
+            { x : row + 1, y : half_col}
           else
-            x : row
-            y : half_col + 1
-
-        triangles.push [a, b, c]
+            {x : row, y : half_col + 1}
+          ])
 
     ball_positions: ball_positions
     triangles: triangles
