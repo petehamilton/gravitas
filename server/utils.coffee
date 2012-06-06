@@ -22,3 +22,6 @@ exports.partition = (list, iterator) ->
     (if iterator(x, i) then take else reject).push x
     i++
   [take, reject]
+
+exports.flatten = (array) ->
+  [].concat.apply([], array)
