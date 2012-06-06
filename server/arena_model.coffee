@@ -91,17 +91,16 @@ class @ArenaModel
     dist_components = {dx: dist_between_balls / 2, dy: Math.sin(degToRad(60)) * dist_between_balls}
     center_point = { x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2 }
 
-    start_coords = []
+    triangles = []
+    ball_positions = []
     rows = BALL_LEVELS * 2 - 1
 
-    # Calculate starting points
-    # ball_positions = ((null for col in [0...(ballsForRow row)]) for row in [0...rows])
-    ball_positions = []
     for row in [0...rows]
       ball_positions[row] = []
       cols = ballsForRow row
       rows_from_center = rowsFromCenter row
       for col in [0..cols]
+        # calculate positions
         ball_positions[row][col] =
           x : center_point.x +
               (col - Math.floor(cols / 2)) * dist_between_balls +
@@ -111,14 +110,7 @@ class @ArenaModel
                 0
           y : Math.round (center_point.y + dist_components.dy * (row - Math.floor(rows / 2)))
 
-
-    triangles = []
-    # Calculate triangles
-    for row in [0...rows]
-      cols = ballsForRow row
-      rows_from_center = rowsFromCenter row
-
-      for col in [0...cols]
+        # calculate triangles
         half_col = Math.floor(col / 2)
         triangles.push(
           [{ x : row,    y : half_col }
