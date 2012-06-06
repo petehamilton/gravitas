@@ -37,20 +37,20 @@
         <div class="centered-table-cell">
 
           <div id="login-window" class="box">
-            <div class="logo"></div>
-            <p>
-              <label for="userName">Username</label>
-              <input id="userName" type="text" name="userName" maxlength="32" tabindex="1" data-bind="value: username, hasfocus: true" />
-            </p>
+            <form>
+              <div class="logo"></div>
+              <p>
+                <label for="userName">Username</label>
+                <input id="userName" type="text" name="userName" maxlength="32" tabindex="1" data-bind="value: username, event: { keypress: resetAuthStatus }, hasfocus: true" />
+              </p>
 
-            <p>
-              <label for="password">Password</label>
-              <input type="password" id="password" data-bind="value: password" name="password" tabindex="2" autocomplete="off" />
-            </p>
+              <p>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" tabindex="2" data-bind="value: password, event: { keypress: resetAuthStatus }" />
+              </p>
 
-            <button data-bind="click: logIn">
-              Log In
-            </button>
+              <input type="submit" data-bind="click: logIn, value: logInButtonText, css: { error: authFailed }" />
+            </form>
           </div>
 
         </div>
@@ -122,12 +122,12 @@
         <p id="lag_indicator" data-bind="css: { lag: lag }">Lag indicator</p>
 
         <p>
-          <input id="toggleLogin" type="checkbox" />Logged in
+          <input id="toggleLogin" type="checkbox" data-bind="checked: autoLogIn" />Logged in
         </p>
 
 
         <p>
-          <input id="toggleGameStarted" type="checkbox" />Game Started
+          <input id="toggleGameStarted" type="checkbox" data-bind="checked: autoStart" />Game Started
         </p>
 
         <p>

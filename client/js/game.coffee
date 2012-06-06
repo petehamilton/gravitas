@@ -1,63 +1,34 @@
 class @Game
   constructor: (@arena, @player, @server) ->
-    # TODO relocate ko
-    @loggedIn = ko.observable $.cookie("loggedInCookie")
-    @gameStarted = ko.observable $.cookie("gameStartedCookie")
 
-    @username = ko.observable 'Username'
+    # Automatic log-in / start
+    @autoLogIn = makeCookieObservable 'autoLogIn'
+    @autoStart = makeCookieObservable 'autoStart'
+
+    @autoLogIn.subscribe => @autoStart off if not @autoLogIn()
+    @autoStart.subscribe => @autoLogIn on if @autoStart()
+
+    # Log-in / start
+    @loggedIn = ko.observable @autoLogIn()
+    @gameStarted = ko.observable @autoStart()
+
+    # Authentication
+    @username = ko.observable ''
     @password = ko.observable ''
-
-    @logIn = ->
-      @loggedIn true
+    @authFailed = ko.observable false
+    @logInButtonText = ko.computed =>
+      if @authFailed() then 'Auth failed' else 'Log In'
 
     @connectedPlayers = ko.observableArray([
       new connectedPlayer("Player A", 321)
       new connectedPlayer("Player XYZ", 456)
     ])
 
-    #Used to add a new player to the connected players list
-    @connectNew = ->
-      @connectedPlayers.push new connectedPlayer("New", 666)
-
-    $("#toggleLogin").attr('checked', @loggedIn());
-    $("#toggleGameStarted").attr('checked', @gameStarted());
-
-    $("input#toggleLogin").change ->
-      if $(this).is(":checked")
-        $.cookie "loggedInCookie", "true"
-      else
-        $.cookie "loggedInCookie", "true", expires: -1
-        $("#toggleGameStarted").attr('checked', false).change();
-
-    $("input#toggleGameStarted").change ->
-      if $(this).is(":checked")
-        $.cookie "gameStartedCookie", "true"
-        $("#toggleLogin").attr('checked', true).change()
-      else
-        $.cookie "gameStartedCookie", "true", expires: -1
-
-    @startGame = ->
-      @gameStarted true
-
-
-    @pingServer = ->
-      now.pingServer()
-
-
-    ko.bindingHandlers.fadeVisible =
-      init: (element, valueAccessor) ->
-        value = valueAccessor()
-        $(element).toggle ko.utils.unwrapObservable(value)
-
-      update: (element, valueAccessor) ->
-        value = valueAccessor()
-        (if ko.utils.unwrapObservable(value) then $(element).fadeIn() else $(element).fadeOut())
-
-
+    # Whether lag is currently happening
     @lag = ko.observable false
+
+    # Current player ID
     @player = ko.observable(0).extend { convert: parseInt }
-
-
 
     # Balls currently in the game. The key is the ball ID.
     @balls = {}
@@ -72,6 +43,32 @@ class @Game
         write: (val) => @withServer -> syncFn val
       target
 
+
+  resetAuthStatus: =>
+    @authFailed false
+    true  # continue keypress event
+
+  logIn: =>
+    @server.authenticate @username(), @password(), (res) =>
+      log res
+      if res.ok
+        log "login successful"
+        @loggedIn true
+      else
+        log "login failed"
+        @authFailed true
+        @username ''
+        @password ''
+
+  # Used to add a new player to the connected players list
+  connectNew: =>
+    @connectedPlayers.push new connectedPlayer("New", 666)
+
+  startGame: =>
+    @gameStarted true
+
+  pingServer: =>
+    now.pingServer()
 
   #Data structure to hold connected players
   connectedPlayer = (username, rating) ->

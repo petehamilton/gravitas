@@ -43,6 +43,14 @@ config =
   # Number of different levels in 'orbit'
   ball_levels: 3
 
+  # Default users with passwords
+  default_users:
+    x: ''
+    niklas: 'niklas'
+    lukazs: 'lukasz'
+    peter: 'peter'
+    sarah: 'sarah'
+    mark: 'mark'
 
 if exports?
   exports.config = config

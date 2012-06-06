@@ -1,13 +1,35 @@
-mongodb = require "mongodb"
+mongoose = require 'mongoose'
+{config, log, dir} = require './utils'
 
-# server = new mongodb.Server "127.0.0.1", 27017, {}
 
-# new mongodb.Db("gravitas", server, {}).open (error, client) ->
+MONGO_URL = 'mongodb://localhost/gravitas'
 
-  # throw error if error
 
-  # collection = new mongodb.Collection(client, "gravitas_collection")
-  # console.log "database connected"
+# Models
+
+User = mongoose.model 'User', new mongoose.Schema
+  id: mongoose.Schema.ObjectId
+  username:
+    type: String
+    index: true
+  password: String
+
+
+connect = ->
+  mongoose.connect MONGO_URL
+
+
+setup = (callback) ->
+  User.remove {}, (e) ->
+    log "dropped all users"
+
+    for name, pw of config.default_users
+      log "inserting user: #{name}"
+      user = new User
+        username: name
+        password: pw
+      user.save callback
+
 
 configureRoutes = (app) ->
   app.get "/gravitas/all", (req, res, next) ->
@@ -31,4 +53,8 @@ configureRoutes = (app) ->
     res.send req.body
 
 
+exports.MONGO_URL = MONGO_URL
+exports.User = User
+exports.connect = connect
+exports.setup = setup
 exports.configureRoutes = configureRoutes

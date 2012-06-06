@@ -17,11 +17,6 @@ arena = new arena_model.ArenaModel()
 everyone = null
 
 
-fixId = (obj) ->
-  obj._id = mongodb.ObjectID obj._id
-  obj
-
-
 configureNow = (everyone) ->
 
   nowjs.on 'connect', ->
@@ -33,10 +28,18 @@ configureNow = (everyone) ->
   everyone.now.pingServer = ->
     console.log "pong"
 
-  everyone.now.dbGetAll = () ->
-    collection.find().toArray (err, results) ->
-      console.dir results
-      everyone.now.dbReceiveAll results
+  everyone.now.getUsers = (callback) ->
+    db.User.find {}, (err, docs) ->
+      callback docs
+
+  everyone.now.authenticate = (user, pw, callback) ->
+    db.User.findOne { username: user, password: pw }, (err, u) ->
+      if err or not u
+        callback { ok: false }
+      else
+        log "user #{u.username} authenticated"
+        # TODO send auth token
+        callback { ok: true }
 
   # TODO check if we can replace dbInsert and dbUpdate by one dbSave
   everyone.now.dbInsert = (obj) ->
@@ -100,6 +103,8 @@ createApp = ->
 run = ->
 
   app = createApp()
+
+  db.connect()
   db.configureRoutes app
 
   everyone = nowjs.initialize(app, { socketio: {'browser client minification': true} })

@@ -21,7 +21,8 @@ body
   background-color: black
 
 
-input
+input[type=text]
+input[type=password]
   color: #000
   padding: 7px
   font-size: 14px
@@ -44,21 +45,28 @@ tr
   font-size: 12px
   text-transform: uppercase
 
+input[type=submit]
 button
-  border: 1px solid #21619b
   color: #b7d1dc
   border-radius: 3px
   box-shadow: 0 0 5px #000
+  // TODO mixin
+  border: 1px solid #21619b
   background: #11519b8
   linear-gradient top, #11519b 0%, #013770 100%
 
+  &:hover
+  &:focus
+    border-color: #3f7fb9
+    color: #fff
+    background: #4281bc
+    linear-gradient top, #4281bc 0%, #195992 100%
 
-button:hover
-button:focus
-  border-color: #3f7fb9
-  color: #fff
-  background: #4281bc
-  linear-gradient top,  #4281bc 0%, #195992 100%
+  &.error
+  &.error
+    // TODO Lukasz tune colour
+    background: red
+    linear-gradient top, red 0%, red 100%
 
 
 .screen
