@@ -101,9 +101,10 @@ class @ArenaModel
       rows_from_center = rowsFromCenter row
       for col in [0..cols]
         # calculate positions
+        half_col = Math.floor(col / 2)
         ball_positions[row][col] =
           x : center_point.x +
-              (col - Math.floor(cols / 2)) * dist_between_balls +
+              (col - half_col) * dist_between_balls +
               if even cols
                 dist_components.dx
               else
@@ -111,7 +112,6 @@ class @ArenaModel
           y : Math.round (center_point.y + dist_components.dy * (row - Math.floor(rows / 2)))
 
         # calculate triangles
-        half_col = Math.floor(col / 2)
         triangles.push(
           [{ x : row,    y : half_col }
           {x : row + 1, y : half_col + 1}
