@@ -11,6 +11,8 @@ class @Game
     # Log-in / start
     @loggedIn = ko.observable @autoLogIn()
     @gameStarted = ko.observable @autoStart()
+    @assembly = ko.observable false
+
 
     # Authentication
     @username = ko.observable ''
@@ -48,6 +50,8 @@ class @Game
     @authFailed false
     true  # continue keypress event
 
+
+
   logIn: =>
     @server.authenticate @username(), @password(), (res) =>
       log res
@@ -60,6 +64,12 @@ class @Game
         @username ''
         @password ''
 
+  assemblyClick: =>
+    @assembly true
+
+  assemblyExitClick: =>
+    @assembly false
+
   # Used to add a new player to the connected players list
   connectNew: =>
     @connectedPlayers.push new connectedPlayer("New", 666)
@@ -69,6 +79,8 @@ class @Game
 
   pingServer: =>
     now.pingServer()
+
+
 
   #Data structure to hold connected players
   connectedPlayer = (username, rating) ->

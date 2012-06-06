@@ -36,6 +36,7 @@
       <div class="centered-table" data-bind="fadeVisible: !loggedIn()">
         <div class="centered-table-cell">
 
+      <!-- Login window -->
           <div id="login-window" class="box">
             <form>
               <div class="logo"></div>
@@ -56,14 +57,41 @@
         </div>
       </div>
 
-      <div class="centered-table" data-bind="fadeVisible: !gameStarted() && loggedIn()">
+      <!-- Lobby window -->
+      <div class="centered-table" data-bind="fadeVisible: !gameStarted() && loggedIn() && !assembly() ">
         <div class="centered-table-cell">
 
           <div id="lobby-window" class="box">
             <div class="logo left"></div>
             <div id="nick"><span data-bind="text: username" placeholder="Username"></span></div><br>
+            <div id="spinner" class="spinner"></div><div id="spinner-label">This is your user profile</div>
+            <div id="lobby-content">
+
+
+
+            <div id="buttons">
+              <button data-bind="click: assemblyClick">
+                Play
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Assembly Div -->
+
+      <div class="centered-table" data-bind="fadeVisible: !gameStarted() && loggedIn() && assembly()">
+        <div class="centered-table-cell">
+
+          <div id="assembly-window" class="box">
+            <div class="logo left"></div>
+            <div id="nick"><span data-bind="text: username" placeholder="Username"></span></div><br>
             <div id="spinner" class="spinner"></div><div id="spinner-label">Waiting for four other players</div>
-            <div id="assembly">
+            <div id="assembly-content">
 
               <table>
                 <thead>
@@ -86,6 +114,10 @@
 
 
             <div id="buttons">
+              <button data-bind="click: assemblyExitClick">
+                Leave
+              </button>
+
               <button data-bind="click: connectNew">
                 Add a player
               </button>
@@ -105,7 +137,6 @@
       </div>
 
     </div>
-
 
     <div id="game" class="screen">
 
