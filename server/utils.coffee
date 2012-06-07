@@ -29,3 +29,10 @@ exports.flatten = (array) ->
 exports.assert = (bool, msg) ->
   if not bool
     throw new Error('assertion failed' + if msg? then ' ' + msg else '')
+
+exports.negativeMod = (num, div) ->
+  tmp = num % div
+  if tmp < 0
+    div + tmp
+  else
+    tmp

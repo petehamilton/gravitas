@@ -1,4 +1,4 @@
-{ config, dict, log, even, degToRad, partition, flatten, assert } = require './utils'
+{ config, dict, log, even, degToRad, partition, flatten, assert, negativeMod } = require './utils'
 pbm = require './ball_model'
 assert = require 'assert'
 
@@ -40,7 +40,7 @@ class @ArenaModel
     @balls = for {x, y} in flatten ball_positions
       new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
 
-    # @rotateTriangles(random_triangles, ball_positions)
+    @rotateTriangles random_triangles, ball_positions
 
     @angles = playerIdDict (i) -> 0
 
@@ -210,9 +210,9 @@ class @ArenaModel
         ball = findBall(x, y)
         assert(ball, "Error cannot find plasma ball for triangle point")
         if direction == DIRECTIONS.LEFT
-          { x: x_new, y: y_new } = triangle[index - 1 % triangle_points]
+          { x: x_new, y: y_new } = triangle[negativeMod(index - 1, triangle_points)]
         else
-          { x: x_new, y: y_new } = triangle[index + 1 % triangle_points]
+          { x: x_new, y: y_new } = triangle[negativeMod(index + 1, triangle_points)]
         ball.x = x_new
         ball.y = y_new
 
