@@ -45,6 +45,7 @@ class @ArenaModel
 
     @stored_balls = playerIdDict (i) -> null
 
+
   # Picks random triangles to rotate
   pickRandomTriangles: (triangles) ->
 
@@ -97,14 +98,18 @@ class @ArenaModel
       offset = rowsFromCenter row
       max_index - offset + BALL_LEVELS
 
+
     ballRows = ->
       BALL_LEVELS * 2 - 1
+
 
     triangleRows = ->
       ballRows() - 1
 
+
     trianglesForRow = (row) ->
       ballsForRow(row) - 1  + ballsForRow(row + 1) - 1
+
 
     dist_between_balls = config.dist_between_balls
     dist_components = {dx: dist_between_balls / 2, dy: Math.sin(degToRad(60)) * dist_between_balls}
@@ -173,8 +178,6 @@ class @ArenaModel
           { x: x_new, y: y_new } = triangle[index + 1 % triangle_points]
         ball.x = x_new
         ball.y = y_new
-
-
 
 
   setAngle: (player, angle) ->
