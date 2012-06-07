@@ -1,4 +1,4 @@
-{ config, dict, log, even, degToRad, partition, flatten } = require './utils'
+{ config, dict, log, even, degToRad, partition, flatten, assert } = require './utils'
 pbm = require './ball_model'
 assert = require 'assert'
 
@@ -7,6 +7,11 @@ PLAYER_IDS = config.player_ids
 BALL_SIZE = config.ball_size
 ARENA_SIZE = config.arena_size
 BALL_LEVELS = config.ball_levels
+
+DIRECTIONS =
+  LEFT: 0
+  RIGHT: 1
+
 
 
 next_ball_id = 0
@@ -33,6 +38,8 @@ class @ArenaModel
 
     @balls = for {x, y} in flatten ball_positions
       new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
+
+    # @rotateTriangles(random_triangles, ball_positions)
 
     @angles = playerIdDict (i) -> 0
 
@@ -62,7 +69,9 @@ class @ArenaModel
       triangle = temp_triangles[index]
       temp_triangles.splice(index, 1)
       if pointNotAlreadyInTriangles(rand_triangles, triangle)
-        rand_triangles.push triangle
+        rand_triangles.push
+          triangle: triangle
+          direction: Math.round Math.random()
 
     rand_triangles
 
@@ -81,11 +90,21 @@ class @ArenaModel
     rowsFromCenter = (row) ->
       Math.abs(BALL_LEVELS - 1 - row)
 
+
     # Calculates the number of balls for a given row
     ballsForRow = (row) ->
       max_index = BALL_LEVELS - 1
       offset = rowsFromCenter row
       max_index - offset + BALL_LEVELS
+
+    ballRows = ->
+      BALL_LEVELS * 2 - 1
+
+    triangleRows = ->
+      ballRows() - 1
+
+    trianglesForRow = (row) ->
+      ballsForRow(row) - 1  + ballsForRow(row + 1) - 1
 
     dist_between_balls = config.dist_between_balls
     dist_components = {dx: dist_between_balls / 2, dy: Math.sin(degToRad(60)) * dist_between_balls}
@@ -93,25 +112,27 @@ class @ArenaModel
 
     triangles = []
     ball_positions = []
-    rows = BALL_LEVELS * 2 - 1
+    rows = ballRows()
 
     for row in [0...rows]
       ball_positions[row] = []
       cols = ballsForRow row
       rows_from_center = rowsFromCenter row
-      for col in [0..cols]
-        # calculate positions
-        half_col = Math.floor(col / 2)
+
+      for col in [0...cols]
         ball_positions[row][col] =
           x : center_point.x +
-              (col - half_col) * dist_between_balls +
+              (col - Math.floor(cols / 2)) * dist_between_balls +
               if even cols
                 dist_components.dx
               else
                 0
           y : Math.round (center_point.y + dist_components.dy * (row - Math.floor(rows / 2)))
 
-        # calculate triangles
+    for row in [0...triangleRows()]
+      cols = trianglesForRow row
+      for col in [0...cols]
+        half_col = Math.floor(col / 2)
         triangles.push(
           [{ x : row,    y : half_col }
           {x : row + 1, y : half_col + 1}
@@ -123,6 +144,37 @@ class @ArenaModel
 
     ball_positions: ball_positions
     triangles: triangles
+
+
+  rotateTriangles: (triangles, ball_positions) ->
+
+    # Finds the ball in @balls for a given point in the form
+    # {x: ..., y: ...}
+    # TODO: Is there a quicker way than looping through?
+    # Can we do some sort of dictionary lookup?
+    findBall = (x, y) =>
+      for ball in @balls
+        { x: x_b, y: y_b } = ball
+        if x == x_b and y == y_b
+          return ball
+      null
+
+
+    triangle_points = 3
+    for {triangle, direction} in triangles
+      for index in [0...triangle_points]
+        { x, y } = triangle[index]
+        { x, y } = ball_positions[x][y]
+        ball = findBall(x, y)
+        assert(ball, "Error cannot find plasma ball for triangle point")
+        if direction == DIRECTIONS.LEFT
+          { x: x_new, y: y_new } = triangle[index - 1 % triangle_points]
+        else
+          { x: x_new, y: y_new } = triangle[index + 1 % triangle_points]
+        ball.x = x_new
+        ball.y = y_new
+
+
 
 
   setAngle: (player, angle) ->

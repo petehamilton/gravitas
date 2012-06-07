@@ -25,3 +25,7 @@ exports.partition = (list, iterator) ->
 
 exports.flatten = (array) ->
   [].concat.apply([], array)
+
+exports.assert = (bool, msg) ->
+  if not bool
+    throw new Error('assertion failed' + if msg? then ' ' + msg else '')
