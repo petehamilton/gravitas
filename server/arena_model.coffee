@@ -34,6 +34,7 @@ class @ArenaModel
   constructor: ->
     { ball_positions, triangles } = @calculateStartPointsAndTriangles()
 
+
     random_triangles = @pickRandomTriangles triangles
 
     @balls = for {x, y} in flatten ball_positions
@@ -52,7 +53,7 @@ class @ArenaModel
     # Calculates if any point of the triangle is already
     # in triangles and returns false if so
     pointNotAlreadyInTriangles = (triangles, triangle) ->
-      for rand_triangle in triangles
+      for {triangle: rand_triangle} in triangles
         for point in triangle
           {x: x_p, y: y_p} = point
           for {x: x_r, y: y_r} in rand_triangle
