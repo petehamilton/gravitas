@@ -32,7 +32,7 @@ playerIdDict = (fn) ->
 class @ArenaModel
 
   constructor: ->
-    {ball_positions, triangles} = @calculateStartPointsAndTriangles()
+    { ball_positions, triangles } = @calculateStartPointsAndTriangles()
 
     random_triangles = @pickRandomTriangles triangles
 
@@ -111,11 +111,39 @@ class @ArenaModel
       ballsForRow(row) - 1  + ballsForRow(row + 1) - 1
 
 
+    # Calculates the points for a triangle with two points
+    # at the bottom and one at the top
+    calculateTrianglePoints = (row, col, latterhalf = false) ->
+      half_col = Math.floor(col / 2)
+
+      [
+        if latterhalf
+          { x : row, y : half_col + 1 }
+        else
+          { x : row, y: half_col }
+        { x : row + 1, y : half_col + 1 }
+        { x : row + 1, y : half_col }
+      ]
+
+
+    # Calculates the points for a triangle with two points
+    # at the top and one at the bottom
+    calculateUpsideDownTrianglePoints = (row, col, latterhalf = false) ->
+      half_col = Math.floor(col / 2)
+      [
+        { x: row,     y : half_col }
+        { x: row,     y : half_col + 1 }
+        if latterhalf
+          { x: row + 1, y : half_col }
+        else
+          { x: row + 1, y : half_col + 1}
+      ]
+
+
     dist_between_balls = config.dist_between_balls
     dist_components = {dx: dist_between_balls / 2, dy: Math.sin(degToRad(60)) * dist_between_balls}
     center_point = { x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2 }
 
-    triangles = []
     ball_positions = []
     rows = ballRows()
 
@@ -134,18 +162,27 @@ class @ArenaModel
                 0
           y : Math.round (center_point.y + dist_components.dy * (row - Math.floor(rows / 2)))
 
-    for row in [0...triangleRows()]
+
+    triangles = []
+    rows = triangleRows()
+    half_rows = Math.floor(rows / 2)
+
+    for row in [0...rows]
       cols = trianglesForRow row
       for col in [0...cols]
         half_col = Math.floor(col / 2)
-        triangles.push(
-          [{ x : row,    y : half_col }
-          {x : row + 1, y : half_col + 1}
-          if even(col)
-            { x : row + 1, y : half_col}
+        triangles.push (
+          if row < half_rows
+            if even col
+              calculateTrianglePoints row, col
+            else
+              calculateUpsideDownTrianglePoints row, col
           else
-            {x : row, y : half_col + 1}
-          ])
+            if even col
+              calculateUpsideDownTrianglePoints row, col, true
+            else
+              calculateTrianglePoints row, col, true
+        )
 
     ball_positions: ball_positions
     triangles: triangles
@@ -163,7 +200,6 @@ class @ArenaModel
         if x == x_b and y == y_b
           return ball
       null
-
 
     triangle_points = 3
     for {triangle, direction} in triangles
