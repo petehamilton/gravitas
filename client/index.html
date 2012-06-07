@@ -75,7 +75,7 @@
                 <a href="#" class="glow">s</a>
               </div>
             </div>
-            <br>
+            <br />
             <div id="lobby-content">
 
               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
@@ -102,8 +102,18 @@
           <div id="assembly-window" class="box">
             <div class="logo left"></div>
              <div id="nick">
-              <span data-bind="text: username" placeholder="Username"></span><span id="rating" data-bind="text: userRating"></span><br>
-            </div><br />
+               <span data-bind="text: username" placeholder="Username"></span>
+               <span id="rating" data-bind="style: { color: userRatingColor() }, text: userRating()">
+                 1700
+               </span><br>
+               <div id="navigation">
+                 <a href="#" class="glow">A</a>
+                 <a href="#" class="glow">C</a>
+                 <a href="#" class="glow">v</a>
+                 <a href="#" class="glow">s</a>
+               </div>
+             </div>
+            <br />
             <div id="spinner" class="spinner"></div><div id="spinner-label">Waiting for four other players</div>
             <div id="assembly-content">
 
