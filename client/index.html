@@ -66,7 +66,6 @@
             <div id="nick">
               <span data-bind="text: username" placeholder="Username"></span>
               <span id="rating" data-bind="style: { color: userRatingColor() }, text: userRating()">
-                1700
               </span><br>
               <div id="navigation">
                 <a href="#" class="glow">A</a>
@@ -104,14 +103,6 @@
              <div id="nick">
                <span data-bind="text: username" placeholder="Username"></span>
                <span id="rating" data-bind="style: { color: userRatingColor() }, text: userRating()">
-                 1700
-               </span><br>
-               <div id="navigation">
-                 <a href="#" class="glow">A</a>
-                 <a href="#" class="glow">C</a>
-                 <a href="#" class="glow">v</a>
-                 <a href="#" class="glow">s</a>
-               </div>
              </div>
             <br />
             <div id="spinner" class="spinner"></div><div id="spinner-label">Waiting for four other players</div>
@@ -271,13 +262,6 @@
         $('.spinner').append(spinner1.canvas);
         $('.spinner').append(spinner2.canvas);
       });
-
-      $("span.rating").each(function(){
-          var r = Math.min(100,parseInt(this.innerHTML,10)*2);
-          var g = Math.min(100,200-parseInt(this.innerHTML,10)*2);
-          this.style.color = "rgba(" + r + "%," + g + "%,0%, 0.5)"
-      });
-
     </script>
 
   </body>
