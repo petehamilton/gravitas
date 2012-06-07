@@ -27,7 +27,12 @@ class @Game
     ])
 
     # Logged in user rating
-    @userRating = 1234
+    @userRating = ko.observable 1554
+    @userRatingColor = ko.computed(->
+      userRatingRed = ((@userRating()/2200)*255)
+      userRatingGreen = (255 - userRatingRed)
+      "rgba("+Math.round(userRatingRed)+","+Math.round(userRatingGreen)+",0,0.7)"
+    , this )
 
     # Whether lag is currently happening
     @lag = ko.observable false
