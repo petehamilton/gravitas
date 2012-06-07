@@ -15,7 +15,7 @@ class @Game
 
 
     # Authentication
-    @username = ko.observable ''
+    @username = ko.observable 'Winston'
     @password = ko.observable ''
     @authFailed = ko.observable false
     @logInButtonText = ko.computed =>
@@ -25,6 +25,9 @@ class @Game
       new connectedPlayer("Player A", 321)
       new connectedPlayer("Player XYZ", 456)
     ])
+
+    # Logged in user rating
+    @userRating = 1234
 
     # Whether lag is currently happening
     @lag = ko.observable false

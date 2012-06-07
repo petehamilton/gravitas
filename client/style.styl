@@ -9,6 +9,27 @@ background-size-cover()
   -o-background-size: cover
   background-size: cover
 
+playbutton(fontSize)
+  font-size: fontSize
+  padding-left: 15px
+  padding-right: 15px
+  color: #fff2fa
+  //linear-gradient top, #e4a0cb 0%, #704268 100%
+  linear-gradient top, #e5983c 0%, #a63500 100%
+  font-weight: normal
+  border: 1px solid #f7b465
+
+@font-face {
+    font-family: 'HeydingsIconsRegular';
+    src: url('fonts/heydings_icons-webfont.eot');
+    src: url('fonts/heydings_icons-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/heydings_icons-webfont.woff') format('woff'),
+         url('fonts/heydings_icons-webfont.ttf') format('truetype'),
+         url('fonts/heydings_icons-webfont.svg#HeydingsIconsRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
 
 body
   margin: 0
@@ -47,6 +68,7 @@ tr
 
 input[type=submit]
 button
+  font-family: Century Gothic, sans-serif
   color: #b7d1dc
   border-radius: 3px
   box-shadow: 0 0 5px #000
@@ -79,6 +101,24 @@ button
   left: 0
   right: 0
 
+
+a.glow
+a.glow:hover
+a.glow:focus
+  text-decoration: none
+  color: inherit
+  text-shadow: none
+  -webkit-transition: 500ms linear 0s
+  -moz-transition: 500ms linear 0s
+  -o-transition: 500ms linear 0s
+  transition: 500ms linear 0s
+  outline: 0 none
+
+a.glow:hover
+a.glow:focus
+  color: #fff
+  text-shadow: -1px 1px 3px #e4a0cb, 1px -1px 3px #fff
+  //linear-gradient top, #e4a0cb 0%, #704268 100%
 
 
 // For centering divs vertically: (from http://stackoverflow.com/a/6182661)
@@ -158,25 +198,54 @@ button
       width: 70%
 
     #nick
+      text-align: right
       display: inline-block
       position: absolute
       top: 10px
       right: 15px
-      font-size: 20px
+      font-size: 24px
       color: #fff
       font-variant: small-caps
 
     #rating
-      display: inline-block
-      font-size: 24px
+      font-size: 28px
       color: #9fc181
       font-variant: small-caps
+
+    #navigation
+      font-family:'HeydingsIconsRegular'
+      display: inline-block
+      color: #bccddc
+      font-size: 26px
+      font-variant: normal
 
     #buttons
       position: absolute
       bottom: 10px
       right: 15px
       diplay: inline-block
+
+    #playbutton
+      playbutton(24px)
+
+
+    #startbutton
+      playbutton(24px)
+
+    #startbutton:hover
+    #playbutton:hover
+      linear-gradient top, #fcd468 0%, #e16202 100%
+
+    #leavebutton
+      font-size: 24px
+      linear-gradient top, #c50304 0%, #560003 100%
+      //linear-gradient top, #ee0608 0%, #920006 100%
+
+      border: 1px solid #d52122
+      font-weight: normal
+
+    #leavebutton:hover
+      linear-gradient top, #ee0608 0%, #920006 100%
 
 
 
