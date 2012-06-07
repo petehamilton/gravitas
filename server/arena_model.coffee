@@ -32,15 +32,13 @@ playerIdDict = (fn) ->
 class @ArenaModel
 
   constructor: ->
-    { ball_positions, triangles } = @calculateStartPointsAndTriangles()
+    { @ball_positions, triangles } = @calculateStartPointsAndTriangles()
 
 
-    random_triangles = @pickRandomTriangles triangles
+    @random_triangles = @pickRandomTriangles triangles
 
-    @balls = for {x, y} in flatten ball_positions
+    @balls = for {x, y} in flatten @ball_positions
       new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
-
-    @rotateTriangles random_triangles, ball_positions
 
     @angles = playerIdDict (i) -> 0
 
@@ -189,7 +187,7 @@ class @ArenaModel
     triangles: triangles
 
 
-  rotateTriangles: (triangles, ball_positions) ->
+  rotateTriangles: ->
 
     # Finds the ball in @balls for a given point in the form
     # {x: ..., y: ...}
@@ -203,10 +201,10 @@ class @ArenaModel
       null
 
     triangle_points = 3
-    for {triangle, direction} in triangles
+    for {triangle, direction} in @random_triangles
       for index in [0...triangle_points]
         { x, y } = triangle[index]
-        { x, y } = ball_positions[x][y]
+        { x, y } = @ball_positions[x][y]
         ball = findBall(x, y)
         assert(ball, "Error cannot find plasma ball for triangle point")
         if direction == DIRECTIONS.LEFT
