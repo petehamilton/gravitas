@@ -32,10 +32,9 @@ playerIdDict = (fn) ->
 class @ArenaModel
 
   constructor: ->
-    @ball_positions = @calculateStartPoints()
-    @triangles = @calculateTriangles()
-
-    # @random_triangles = @pickRandomTriangles triangles
+    @ball_positions  = @calculateStartPoints()
+    @triangles       = @calculateTriangles()
+    @ball_neighbours = @calculateBallNeighbours()
 
     @balls = for {x, y} in flatten @ball_positions
       new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
@@ -120,6 +119,40 @@ class @ArenaModel
           y : Math.round (center_point.y + dist_components.dy * (row - Math.floor(rows / 2)))
 
     ball_positions
+
+
+  # Calculates balls neighbours
+  # Must be called after calculateTrainglePoints
+  calculateBallNeighbours: ->
+
+    # Inserts into list only if x_n and x_y are not
+    # already in the neighbours list
+    insertNeighbours = (x, y, x_n, y_n, list) ->
+      unless list[x][y]?
+        list[x][y] = []
+
+      for { x: x_p, y: y_p } in list[x][y]
+        if x_p == x_n and y_p == y_n
+          return
+
+      list[x][y].push { x: x_n, y: y_n }
+
+
+    # setup
+    ball_neighbours = []
+    for row in [0...@ballRows()]
+      ball_neighbours[row] = []
+
+    for triangle in @triangles
+      for { x: x_p, y: y_p } in triangle
+        for { x: x_n, y: y_n } in triangle
+          if x_n != x_p or y_n != y_p
+            insertNeighbours(x_p, y_p, x_n, y_n, ball_neighbours)
+
+
+    ball_neighbours
+
+
 
   # Calculates all possible triangles in the ball structure.
   # triangles are of the format:
