@@ -32,9 +32,9 @@ playerIdDict = (fn) ->
 class @ArenaModel
 
   constructor: ->
-    { @ball_positions, triangles } = @calculateStartPointsAndTriangles()
+    { @ball_positions, @triangles } = @calculateStartPointsAndTriangles()
 
-    @random_triangles = @pickRandomTriangles triangles
+    # @random_triangles = @pickRandomTriangles triangles
 
     @balls = for {x, y} in flatten @ball_positions
       new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
@@ -199,9 +199,10 @@ class @ArenaModel
           return ball
       null
 
+    random_triangles = @pickRandomTriangles @triangles
     triangle_points = 3
     balls_to_move = []
-    for {triangle, direction} in @random_triangles
+    for {triangle, direction} in random_triangles
       for index in [0...triangle_points]
         { x, y } = triangle[index]
         { x, y } = @ball_positions[x][y]
