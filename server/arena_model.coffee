@@ -224,19 +224,18 @@ class @ArenaModel
 
     triangles
 
+  # Finds the ball in @balls for a given point in the form
+  # {x: ..., y: ...}
+  # TODO: Is there a quicker way than looping through?
+  # Can we do some sort of dictionary lookup?
+  findBall: (x, y) ->
+    for ball in @balls
+      { x: x_b, y: y_b } = ball
+      if x == x_b and y == y_b
+        return ball
+    null
 
   rotateTriangles: ->
-
-    # Finds the ball in @balls for a given point in the form
-    # {x: ..., y: ...}
-    # TODO: Is there a quicker way than looping through?
-    # Can we do some sort of dictionary lookup?
-    findBall = (x, y) =>
-      for ball in @balls
-        { x: x_b, y: y_b } = ball
-        if x == x_b and y == y_b
-          return ball
-      null
 
     random_triangles = @pickRandomTriangles @triangles
     triangle_points = 3
@@ -245,7 +244,7 @@ class @ArenaModel
       for index in [0...triangle_points]
         { x, y } = triangle[index]
         { x, y } = @ball_positions[x][y]
-        ball = findBall(x, y)
+        ball = @findBall(x, y)
         # assert(ball, "Error cannot find plasma ball for triangle point")
         if ball?
           if direction == DIRECTIONS.LEFT
