@@ -11,7 +11,9 @@ exports.dir = (obj) ->
 
 exports.dict = (arr) ->
   d = {}
-  for key, value in arr
+  for entry in arr
+    key = entry[0]
+    value = entry[1]
     d[key] = value
   d
 
