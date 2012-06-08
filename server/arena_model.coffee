@@ -206,17 +206,18 @@ class @ArenaModel
         { x, y } = triangle[index]
         { x, y } = @ball_positions[x][y]
         ball = findBall(x, y)
-        assert(ball, "Error cannot find plasma ball for triangle point")
-        if direction == DIRECTIONS.LEFT
-          { x: x_new, y: y_new } = triangle[negativeMod(index - 1, triangle_points)]
-          { x: x_new, y: y_new } = @ball_positions[x_new][y_new]
-        else
-          { x: x_new, y: y_new } = triangle[negativeMod(index + 1, triangle_points)]
-          { x: x_new, y: y_new } = @ball_positions[x_new][y_new]
-        balls_to_move.push
-          ball: ball
-          x: x_new
-          y: y_new
+        # assert(ball, "Error cannot find plasma ball for triangle point")
+        if ball?
+          if direction == DIRECTIONS.LEFT
+            { x: x_new, y: y_new } = triangle[negativeMod(index - 1, triangle_points)]
+            { x: x_new, y: y_new } = @ball_positions[x_new][y_new]
+          else
+            { x: x_new, y: y_new } = triangle[negativeMod(index + 1, triangle_points)]
+            { x: x_new, y: y_new } = @ball_positions[x_new][y_new]
+          balls_to_move.push
+            ball: ball
+            x: x_new
+            y: y_new
 
     # console.log "Balls to move", balls_to_move
     for { ball, x, y } in balls_to_move
