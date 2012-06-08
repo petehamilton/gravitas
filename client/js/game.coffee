@@ -112,11 +112,18 @@ class @Game
     @withServer =>
       @server.stopGravityGun @player()
 
+  moveBall: (x, y, duration, ball_model) ->
+    log "Moving ball"
+    ball_view = @balls[ball_model.id]
+    assert(ball_view, "Error ball_view not found")
+    ball_view.moveTo(x, y, duration)
+
   pulled: (player, ball_model) ->
     log "player #{player} pulled", ball_model
-    ball_view = @balls[ball_model.id]
     {x, y} = @arena.getBallStorePosition player
-    ball_view.pullTo x, y
+    duration = config.pull_time_ms
+    @moveBall(x, y, duration, ball_model)
+
 
   shot: (player, ball_model, angle) ->
     new Audio("sounds/fire.wav").play()
@@ -134,6 +141,10 @@ class @Game
     if player != @player()
       @arena.setTurretRotation(player, angle)
 
+  moveBalls: (sever_balls) ->
+    for ball_model in server_balls
+      { x, y } = ball_model
+      moveBall(x, y, 500, ball_model)
 
   updateBalls: (server_balls) ->
     # TODO take care of deleted balls

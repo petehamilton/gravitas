@@ -50,9 +50,7 @@ class @BallView
     @image.remove()
 
 
-  pullTo: (x, y, callback) ->
-    duration = config.pull_time_ms
-
+  moveTo: (x, y, duration, callback) ->
     @image.animate { x: corner(x), y: corner(y) }, duration, 'backOut', callback
 
 
