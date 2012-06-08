@@ -224,18 +224,20 @@ class @ArenaModel
 
     triangles
 
-  # Finds the ball in @balls for a given point in the form
-  # {x: ..., y: ...}
-  # TODO: Is there a quicker way than looping through?
-  # Can we do some sort of dictionary lookup?
-  findBall: (x, y) ->
-    for ball in @balls
-      { x: x_b, y: y_b } = ball
-      if x == x_b and y == y_b
-        return ball
-    null
 
   rotateTriangles: ->
+
+    # Finds the ball in @balls for a given point in the form
+    # {x: ..., y: ...}
+    # TODO: Is there a quicker way than looping through?
+    # Can we do some sort of dictionary lookup?
+    findBall = (x, y) =>
+      for ball in @balls
+        { x: x_b, y: y_b } = ball
+        if x == x_b and y == y_b
+          return ball
+      null
+
 
     random_triangles = @pickRandomTriangles @triangles
     triangle_points = 3
@@ -244,7 +246,7 @@ class @ArenaModel
       for index in [0...triangle_points]
         { x, y } = triangle[index]
         { x, y } = @ball_positions[x][y]
-        ball = @findBall(x, y)
+        ball = findBall(x, y)
         # assert(ball, "Error cannot find plasma ball for triangle point")
         if ball?
           if direction == DIRECTIONS.LEFT
@@ -263,12 +265,32 @@ class @ArenaModel
       ball.x = x
       ball.y = y
 
+  # x and y are relative to the area. Transposes them relative
+  # to grid layout, then chooses a ball to move
+  replaceBall: (x, y) ->
+
+    # Finds ball in ball_positions
+    findBall = (x, y) =>
+      for row in [0...@ball_positions.length]
+        for col in [0...@ball_positions[row].length]
+          { x: x_b, y: y_b } = @ball_positions[row][col]
+          if x == x_b and y == y_b
+            return { x: row, y: col }
+      return null
+
+    transposed = findBall(x, y)
+    assert(transposed, "Error finding ball to replace pulled ball")
+
+    neighbours = @ball_neighbours[transposed.x][transposed.y]
+    neighbour = Math.floor(Math.random() * (neighbours.length - 1))
+    neighbour.x = x
+    neighbour.y = y
 
   setAngle: (player, angle) ->
     @angles[player] = angle
 
 
-  pull: (player, x, y, pullCallback) ->
+  pull: (player, x, y, pullCallback, replaceBallCallback) ->
     # TODO remove X, Y only allow pulling balls in line
     r = config.pull_radius
 
@@ -285,7 +307,15 @@ class @ArenaModel
 
       # Remove pulled ball from available balls
       log "player #{player} pulled ball #{b.id} at", [b.x, b.y]
+
+      old_x = b.x
+      old_y = b.y
+
       pullCallback b
+
+      @replaceBall(old_x, old_y)
+      # TOOD: Ask Niklas why this won't allow ball pulling
+      # replaceBallCallback()
 
       @stored_balls[player] = b
 

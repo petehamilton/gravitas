@@ -41,7 +41,7 @@ config =
   dist_between_balls: 60
 
   # Number of different levels in 'orbit'
-  ball_levels: 3
+  ball_levels: 2
 
   # Default users with passwords
   default_users:

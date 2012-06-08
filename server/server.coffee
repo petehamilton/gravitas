@@ -84,13 +84,20 @@ configureNow = (everyone) ->
     everyone.now.receiveAngle(player, angle)
 
   everyone.now.startGravityGun = (player, x, y) ->
-    # TODO remove X, Y only allow pulling balls in line
-    arena.pull player, x, y, (pulled_ball) ->
+
+    pullCallBack = (pulled_ball) ->
       everyone.now.receivePull player, pulled_ball
 
+    replaceBallCallBack = () ->
+        everyone.now.receiveBallMoves(arena.balls)
+
+    # TODO remove X, Y only allow pulling balls in line
+    arena.pull player, x, y, pullCallBack, replaceBallCallBack
+
   everyone.now.stopGravityGun = (player) ->
-    arena.shoot player, (shot_ball, angle) ->
-      everyone.now.receiveShot player, shot_ball, angle
+    arena.shoot player, ((shot_ball, angle) ->
+          everyone.now.receiveShot player, shot_ball, angle),
+
 
 createApp = ->
   app = express.createServer()
@@ -111,7 +118,7 @@ run = ->
   console.log everyone.now.setAngle
 
   setInterval () =>
-    log "Roatating"
+    log "Rotating"
     arena.rotateTriangles()
     everyone.now.receiveBallMoves(arena.balls)
   , 3000
