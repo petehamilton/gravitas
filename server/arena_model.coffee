@@ -34,7 +34,6 @@ class @ArenaModel
   constructor: ->
     { @ball_positions, triangles } = @calculateStartPointsAndTriangles()
 
-
     @random_triangles = @pickRandomTriangles triangles
 
     @balls = for {x, y} in flatten @ball_positions
@@ -201,6 +200,7 @@ class @ArenaModel
       null
 
     triangle_points = 3
+    balls_to_move = []
     for {triangle, direction} in @random_triangles
       for index in [0...triangle_points]
         { x, y } = triangle[index]
@@ -209,10 +209,19 @@ class @ArenaModel
         assert(ball, "Error cannot find plasma ball for triangle point")
         if direction == DIRECTIONS.LEFT
           { x: x_new, y: y_new } = triangle[negativeMod(index - 1, triangle_points)]
+          { x: x_new, y: y_new } = @ball_positions[x_new][y_new]
         else
           { x: x_new, y: y_new } = triangle[negativeMod(index + 1, triangle_points)]
-        ball.x = x_new
-        ball.y = y_new
+          { x: x_new, y: y_new } = @ball_positions[x_new][y_new]
+        balls_to_move.push
+          ball: ball
+          x: x_new
+          y: y_new
+
+    # console.log "Balls to move", balls_to_move
+    for { ball, x, y } in balls_to_move
+      ball.x = x
+      ball.y = y
 
 
   setAngle: (player, angle) ->
