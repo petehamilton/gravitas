@@ -32,7 +32,8 @@ playerIdDict = (fn) ->
 class @ArenaModel
 
   constructor: ->
-    { @ball_positions, @triangles } = @calculateStartPointsAndTriangles()
+    @ball_positions = @calculateStartPoints()
+    @triangles = @calculateTriangles()
 
     # @random_triangles = @pickRandomTriangles triangles
 
@@ -75,38 +76,67 @@ class @ArenaModel
     rand_triangles
 
 
+  # Calculates how many rows from the center a given row
+  # in the plasma ball structure is
+  rowsFromCenter: (row) ->
+    Math.abs(BALL_LEVELS - 1 - row)
+
+
+  # Calculates the number of balls for a given row
+  ballsForRow: (row) ->
+    max_index = BALL_LEVELS - 1
+    offset = @rowsFromCenter row
+    max_index - offset + BALL_LEVELS
+
+
+  # Calculates the number of rows of the plasma ball structure
+  ballRows: ->
+    BALL_LEVELS * 2 - 1
+
+
   # Calculates starting points for all the balls
-  # Triangles are in a data structure such that
+  calculateStartPoints: ->
+
+    dist_between_balls = config.dist_between_balls
+    dist_components = {dx: dist_between_balls / 2, dy: Math.sin(degToRad(60)) * dist_between_balls}
+    center_point = { x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2 }
+
+    ball_positions = []
+    rows = @ballRows()
+
+    for row in [0...rows]
+      ball_positions[row] = []
+      cols = @ballsForRow row
+      rows_from_center = @rowsFromCenter row
+
+      for col in [0...cols]
+        ball_positions[row][col] =
+          x : center_point.x +
+              (col - Math.floor(cols / 2)) * dist_between_balls +
+              if even cols
+                dist_components.dx
+              else
+                0
+          y : Math.round (center_point.y + dist_components.dy * (row - Math.floor(rows / 2)))
+
+    ball_positions
+
+  # Calculates all possible triangles in the ball structure.
+  # triangles are of the format:
   # triangle = [
   #   {x : 0, y : 0},
   #   {x : 0, y : 1},
   #   {x : 1, y : 1},
   # ]
   # where a, b, c are the corners
-  calculateStartPointsAndTriangles: ->
+  calculateTriangles: ->
 
-    # Calculates how many rows from the center a given row is
-    rowsFromCenter = (row) ->
-      Math.abs(BALL_LEVELS - 1 - row)
-
-
-    # Calculates the number of balls for a given row
-    ballsForRow = (row) ->
-      max_index = BALL_LEVELS - 1
-      offset = rowsFromCenter row
-      max_index - offset + BALL_LEVELS
+    triangleRows = =>
+      @ballRows() - 1
 
 
-    ballRows = ->
-      BALL_LEVELS * 2 - 1
-
-
-    triangleRows = ->
-      ballRows() - 1
-
-
-    trianglesForRow = (row) ->
-      ballsForRow(row) - 1  + ballsForRow(row + 1) - 1
+    trianglesForRow = (row) =>
+      @ballsForRow(row) - 1  + @ballsForRow(row + 1) - 1
 
 
     # Calculates the points for a triangle with two points
@@ -138,29 +168,6 @@ class @ArenaModel
       ]
 
 
-    dist_between_balls = config.dist_between_balls
-    dist_components = {dx: dist_between_balls / 2, dy: Math.sin(degToRad(60)) * dist_between_balls}
-    center_point = { x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2 }
-
-    ball_positions = []
-    rows = ballRows()
-
-    for row in [0...rows]
-      ball_positions[row] = []
-      cols = ballsForRow row
-      rows_from_center = rowsFromCenter row
-
-      for col in [0...cols]
-        ball_positions[row][col] =
-          x : center_point.x +
-              (col - Math.floor(cols / 2)) * dist_between_balls +
-              if even cols
-                dist_components.dx
-              else
-                0
-          y : Math.round (center_point.y + dist_components.dy * (row - Math.floor(rows / 2)))
-
-
     triangles = []
     rows = triangleRows()
     half_rows = Math.floor(rows / 2)
@@ -182,8 +189,7 @@ class @ArenaModel
               calculateTrianglePoints row, col, true
         )
 
-    ball_positions: ball_positions
-    triangles: triangles
+    triangles
 
 
   rotateTriangles: ->
