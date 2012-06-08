@@ -141,10 +141,10 @@ class @Game
     if player != @player()
       @arena.setTurretRotation(player, angle)
 
-  moveBalls: (sever_balls) ->
+  moveBalls: (server_balls) ->
     for ball_model in server_balls
       { x, y } = ball_model
-      moveBall(x, y, 500, ball_model)
+      @moveBall(x, y, 500, ball_model)
 
   updateBalls: (server_balls) ->
     # TODO take care of deleted balls
