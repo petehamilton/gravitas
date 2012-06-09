@@ -197,9 +197,7 @@ class @Game
   updateBalls: (server_balls) ->
     # TODO take care of deleted balls
     for ball_model in server_balls
-
       ball_view = @balls[ball_model.id]
-
       if ball_view?
         # Ball already has a view, update model
         ball_view.setModel ball_model
