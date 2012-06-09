@@ -7,11 +7,9 @@ PLAYER_IDS = config.player_ids
 BALL_SIZE = config.ball_size
 ARENA_SIZE = config.arena_size
 BALL_LEVELS = config.ball_levels
-
 DIRECTIONS =
   LEFT: 0
   RIGHT: 1
-
 
 
 next_ball_id = 0
@@ -23,6 +21,7 @@ nextPlayerId = ->
   tmp = PLAYER_IDS[cur_player_index++]
   cur_player_index %= PLAYER_IDS.length
   tmp
+
 
 # Creates an object mapping from player ID to value created by `fn`.
 playerIdDict = (fn) ->
@@ -298,6 +297,7 @@ class @ArenaModel
     neighbour.x = x
     neighbour.y = y
 
+
   setAngle: (player, angle) ->
     @angles[player] = angle
 
@@ -337,4 +337,3 @@ class @ArenaModel
       log "player #{player} shoots ball #{b.id} of kind #{b.type.kind} with angle #{angle}"
       shotCallback b, angle
       delete @stored_balls[player]
-
