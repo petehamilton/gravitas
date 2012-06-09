@@ -134,10 +134,9 @@ run = ->
   console.log everyone.now.setAngle
 
   setInterval () =>
-    log "Rotating"
     arena.rotateTriangles()
     everyone.now.receiveBallMoves(arena.balls)
-  , 3000
+  , config.rotation_interval
 
   i = 180
   clock = setInterval () =>

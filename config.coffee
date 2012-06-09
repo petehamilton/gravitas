@@ -43,6 +43,9 @@ config =
   # Number of different levels in 'orbit'
   ball_levels: 3
 
+  # Milliseconds between ball rotations
+  rotation_interval: 1000
+  
   # Default users with passwords
   default_users:
     x: ''
