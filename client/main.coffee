@@ -87,6 +87,9 @@ main = ->
   $(paper.canvas).mouseup (e) ->
     arena.mouseReleased e.offsetX, e.offsetY
 
+  # Add a countdown timer
+  $('#countdownTimer').countdown({until: +180, format: 'MS'});
+
   # Use game as toplevel knockout ViewModel
   ko.applyBindings game
 
