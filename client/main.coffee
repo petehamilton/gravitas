@@ -19,10 +19,6 @@
 
 createPaper = (paperId, width, height) ->
   paper = Raphael(paperId, width, height)
-
-  background = paper.rect(0, 0, width, height)
-  background.attr({fill: '#000'})
-
   paper
 
 
