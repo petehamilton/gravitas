@@ -25,6 +25,7 @@ configureNow = (everyone) ->
     # Send initial game parameters
     everyone.now.receiveBalls arena.balls
 
+
   everyone.now.pingServer = ->
     console.log "pong"
 
@@ -88,9 +89,8 @@ configureNow = (everyone) ->
       everyone.now.receivePull player, pulled_ball
 
   everyone.now.stopGravityGun = (player) ->
-    arena.shoot player, (shot_ball, angle) ->
-      everyone.now.receiveShot player, shot_ball, angle
-
+    arena.shoot player, ((shot_ball, angle) ->
+          everyone.now.receiveShot player, shot_ball, angle),
 
 
 createApp = ->
@@ -110,5 +110,11 @@ run = ->
   everyone = nowjs.initialize(app, { socketio: {'browser client minification': true} })
   configureNow everyone
   console.log everyone.now.setAngle
+
+  setInterval () =>
+    log "Rotating"
+    arena.rotateTriangles()
+    everyone.now.receiveBallMoves(arena.balls)
+  , 3000
 
 run()

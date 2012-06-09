@@ -32,9 +32,9 @@ playerIdDict = (fn) ->
 class @ArenaModel
 
   constructor: ->
-    { @ball_positions, triangles } = @calculateStartPointsAndTriangles()
-
-    @random_triangles = @pickRandomTriangles triangles
+    @ball_positions  = @calculateStartPoints()
+    @triangles       = @calculateTriangles()
+    @ball_neighbours = @calculateBallNeighbours()
 
     @balls = for {x, y} in flatten @ball_positions
       new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
@@ -75,38 +75,101 @@ class @ArenaModel
     rand_triangles
 
 
+  # Calculates how many rows from the center a given row
+  # in the plasma ball structure is
+  rowsFromCenter: (row) ->
+    Math.abs(BALL_LEVELS - 1 - row)
+
+
+  # Calculates the number of balls for a given row
+  ballsForRow: (row) ->
+    max_index = BALL_LEVELS - 1
+    offset = @rowsFromCenter row
+    max_index - offset + BALL_LEVELS
+
+
+  # Calculates the number of rows of the plasma ball structure
+  ballRows: ->
+    BALL_LEVELS * 2 - 1
+
+
   # Calculates starting points for all the balls
-  # Triangles are in a data structure such that
+  calculateStartPoints: ->
+
+    dist_between_balls = config.dist_between_balls
+    dist_components = {dx: dist_between_balls / 2, dy: Math.sin(degToRad(60)) * dist_between_balls}
+    center_point = { x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2 }
+
+    ball_positions = []
+    rows = @ballRows()
+
+    for row in [0...rows]
+      ball_positions[row] = []
+      cols = @ballsForRow row
+      rows_from_center = @rowsFromCenter row
+
+      for col in [0...cols]
+        ball_positions[row][col] =
+          x : center_point.x +
+              (col - Math.floor(cols / 2)) * dist_between_balls +
+              if even cols
+                dist_components.dx
+              else
+                0
+          y : Math.round (center_point.y + dist_components.dy * (row - Math.floor(rows / 2)))
+
+    ball_positions
+
+
+  # Calculates balls neighbours
+  # Must be called after calculateTrainglePoints
+  calculateBallNeighbours: ->
+
+    # Inserts into list only if x_n and x_y are not
+    # already in the neighbours list
+    insertNeighbours = (x, y, x_n, y_n, list) ->
+      unless list[x][y]?
+        list[x][y] = []
+
+      for { x: x_p, y: y_p } in list[x][y]
+        if x_p == x_n and y_p == y_n
+          return
+
+      list[x][y].push { x: x_n, y: y_n }
+
+
+    # setup
+    ball_neighbours = []
+    for row in [0...@ballRows()]
+      ball_neighbours[row] = []
+
+    for triangle in @triangles
+      for { x: x_p, y: y_p } in triangle
+        for { x: x_n, y: y_n } in triangle
+          if x_n != x_p or y_n != y_p
+            insertNeighbours(x_p, y_p, x_n, y_n, ball_neighbours)
+
+
+    ball_neighbours
+
+
+
+  # Calculates all possible triangles in the ball structure.
+  # triangles are of the format:
   # triangle = [
   #   {x : 0, y : 0},
   #   {x : 0, y : 1},
   #   {x : 1, y : 1},
   # ]
   # where a, b, c are the corners
-  calculateStartPointsAndTriangles: ->
+  calculateTriangles: ->
 
-    # Calculates how many rows from the center a given row is
-    rowsFromCenter = (row) ->
-      Math.abs(BALL_LEVELS - 1 - row)
-
-
-    # Calculates the number of balls for a given row
-    ballsForRow = (row) ->
-      max_index = BALL_LEVELS - 1
-      offset = rowsFromCenter row
-      max_index - offset + BALL_LEVELS
+    triangleRows = =>
+      @ballRows() - 1
 
 
-    ballRows = ->
-      BALL_LEVELS * 2 - 1
-
-
-    triangleRows = ->
-      ballRows() - 1
-
-
-    trianglesForRow = (row) ->
-      ballsForRow(row) - 1  + ballsForRow(row + 1) - 1
+    trianglesForRow = (row) =>
+      @ballsForRow(row) - 1  + @ballsForRow(row + 1) - 1
 
 
     # Calculates the points for a triangle with two points
@@ -138,29 +201,6 @@ class @ArenaModel
       ]
 
 
-    dist_between_balls = config.dist_between_balls
-    dist_components = {dx: dist_between_balls / 2, dy: Math.sin(degToRad(60)) * dist_between_balls}
-    center_point = { x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2 }
-
-    ball_positions = []
-    rows = ballRows()
-
-    for row in [0...rows]
-      ball_positions[row] = []
-      cols = ballsForRow row
-      rows_from_center = rowsFromCenter row
-
-      for col in [0...cols]
-        ball_positions[row][col] =
-          x : center_point.x +
-              (col - Math.floor(cols / 2)) * dist_between_balls +
-              if even cols
-                dist_components.dx
-              else
-                0
-          y : Math.round (center_point.y + dist_components.dy * (row - Math.floor(rows / 2)))
-
-
     triangles = []
     rows = triangleRows()
     half_rows = Math.floor(rows / 2)
@@ -182,10 +222,11 @@ class @ArenaModel
               calculateTrianglePoints row, col, true
         )
 
-    ball_positions: ball_positions
-    triangles: triangles
+    triangles
 
 
+  # Rotates triangles randomly. If there isn't a ball in the center a new
+  # one will be spawned
   rotateTriangles: ->
 
     # Finds the ball in @balls for a given point in the form
@@ -199,30 +240,63 @@ class @ArenaModel
           return ball
       null
 
+
+    random_triangles = @pickRandomTriangles @triangles
     triangle_points = 3
     balls_to_move = []
-    for {triangle, direction} in @random_triangles
+    for {triangle, direction} in random_triangles
       for index in [0...triangle_points]
         { x, y } = triangle[index]
         { x, y } = @ball_positions[x][y]
         ball = findBall(x, y)
-        assert(ball, "Error cannot find plasma ball for triangle point")
-        if direction == DIRECTIONS.LEFT
-          { x: x_new, y: y_new } = triangle[negativeMod(index - 1, triangle_points)]
-          { x: x_new, y: y_new } = @ball_positions[x_new][y_new]
-        else
-          { x: x_new, y: y_new } = triangle[negativeMod(index + 1, triangle_points)]
-          { x: x_new, y: y_new } = @ball_positions[x_new][y_new]
-        balls_to_move.push
-          ball: ball
-          x: x_new
-          y: y_new
+        # assert(ball, "Error cannot find plasma ball for triangle point")
+        if ball?
+          if direction == DIRECTIONS.LEFT
+            { x: x_new, y: y_new } = triangle[negativeMod(index - 1, triangle_points)]
+            { x: x_new, y: y_new } = @ball_positions[x_new][y_new]
+          else
+            { x: x_new, y: y_new } = triangle[negativeMod(index + 1, triangle_points)]
+            { x: x_new, y: y_new } = @ball_positions[x_new][y_new]
+          balls_to_move.push
+            ball: ball
+            x: x_new
+            y: y_new
 
     # console.log "Balls to move", balls_to_move
     for { ball, x, y } in balls_to_move
       ball.x = x
       ball.y = y
 
+    center_point = { x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2 }
+    unless findBall(center_point.x, center_point.y)?
+      console.log "Spawning new ball"
+      @spawnNewBall(center_point.x, center_point.y)
+
+
+  # Spawns a new ball at the given coordinates
+  spawnNewBall: (x, y) ->
+    @balls.push(new pbm.BallModel(genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y))
+
+  # x and y are relative to the area. Transposes them relative
+  # to grid layout, then chooses a ball to move
+  replaceBall: (x, y) ->
+
+    # Finds ball in ball_positions
+    findBall = (x, y) =>
+      for row in [0...@ball_positions.length]
+        for col in [0...@ball_positions[row].length]
+          { x: x_b, y: y_b } = @ball_positions[row][col]
+          if x == x_b and y == y_b
+            return { x: row, y: col }
+      return null
+
+    transposed = findBall(x, y)
+    assert(transposed, "Error finding ball to replace pulled ball")
+
+    neighbours = @ball_neighbours[transposed.x][transposed.y]
+    neighbour = Math.floor(Math.random() * (neighbours.length - 1))
+    neighbour.x = x
+    neighbour.y = y
 
   setAngle: (player, angle) ->
     @angles[player] = angle
@@ -245,6 +319,7 @@ class @ArenaModel
 
       # Remove pulled ball from available balls
       log "player #{player} pulled ball #{b.id} at", [b.x, b.y]
+
       pullCallback b
 
       @stored_balls[player] = b
