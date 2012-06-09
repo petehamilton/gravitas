@@ -21,13 +21,12 @@ class @Vortex
     log "vorticies directions", (v.direction for v in @vortices)
 
     @setSpeed(5)
-    # setInterval =>
-    #   @rotateVortices()
-    # , 50
+
 
   rotateVortices: (v) ->
     for v in @vortices
       v.sprite.transform "... r#{@rotational_speed * v.speed * v.direction},#{@canvas.width/2},#{@canvas.height/2}"
+
 
   setSpeed: (speed) ->
     @rotational_speed = speed

@@ -3,9 +3,6 @@ class @Turret
   # Positions are clockwise from top left to bottom left
   # 0 => TL, 1 => TR, 2 => BR, 3 => BL
   constructor: (@position, @paper) ->
-    log "Creating Turret #{@position}"
-
-    @image = "../images/double_turret.png"
 
     makeTurretOffset = (x, y) =>
       switch @position
@@ -13,6 +10,10 @@ class @Turret
         when 1 then { x: @paper.width - y, y: x }
         when 2 then { x: @paper.width - x, y: @paper.height - y }
         when 3 then { x: y, y: @paper.height - x }
+
+    log "Creating Turret #{@position}"
+
+    @image = "../images/double_turret.png"
 
     @center = makeTurretOffset 0, 0
 
@@ -25,7 +26,6 @@ class @Turret
       when 3 then {x: -xoffset, y: @paper.height - yoffset}
 
     @angle = @position * 90 + 45
-
 
     # simple body (circle!)
     @body_sprite = @paper.circle(@center.x, @center.y, 80)
@@ -54,6 +54,7 @@ class @Turret
         transform: "s1 1 " + @cx + " " + @cy
       , 1000, "bounce"
 
+
   # Updates the HP indicator
   updateHpIndicator: (newHealth) ->
     @hp_indicator? @hp_indicator.remove
@@ -66,6 +67,7 @@ class @Turret
     healthdata_display = [ @health+1, (100-@health)+1]
     @hp_indicator = @paper.piechart(@hp_pos.x, @hp_pos.y, @hp_radius, healthdata_display,
       {colors:["#57ff53","#ae0800"], smooth: true, stroke: "#57ff53"})
+
 
   # Turns the turret according to the mouse position.
   # Returns the angle in degrees.
@@ -85,6 +87,7 @@ class @Turret
     angle_degrees = angle * (180 / Math.PI)
     @setRotation angle_degrees
     angle_degrees
+
 
   # sets the turret rotation based on the given angle (in degrees)
   setRotation: (angle) ->

@@ -4,8 +4,9 @@ class @Arena
     @crosshair = new Crosshair(paper)
 
 
-   setGame: (game) ->
-     @game = game
+  setGame: (game) ->
+    @game = game
+
 
   mouseMoved: (x, y) ->
     # The turret view calculates the angle and updates itself
@@ -15,16 +16,20 @@ class @Arena
     # Tell the game about the changed player angle to send it to the server
     @game.onOwnAngle angle
 
+
   mousePressed: (x, y) ->
     # Tell the game about the player clicking their mouse
     @game.startGravityGun x, y
+
 
   mouseReleased: (x, y) ->
     # Tell the game about the player clicking their mouse
     @game.stopGravityGun()
 
+
   setTurretRotation: (turret, angle) ->
     @turrets[turret].setRotation angle
+
 
   getBallStorePosition: (player) ->
     @turrets[player].getBallStorePos()

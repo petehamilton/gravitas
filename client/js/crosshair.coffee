@@ -10,6 +10,7 @@ class @Crosshair
 
     @crosshair_sprite = @paper.image(@image, 0, 0, CROSS_SIZE, CROSS_SIZE)
 
+
   mouseMoved: (mx, my) ->
     @crosshair_sprite.attr
       x: mx - (CROSS_SIZE / 2)
