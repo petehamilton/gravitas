@@ -1,7 +1,7 @@
 
 SEG_WIDTH = 34
 SEG_HEIGHT = 50
-class @CountdownTimerView
+class @CountdownTimer
   constructor: (@paper, @x, @y) ->
     image = "../images/countdownGlowing.png"
     @seconds = 0

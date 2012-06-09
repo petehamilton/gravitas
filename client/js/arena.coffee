@@ -3,7 +3,7 @@ class @Arena
     @turrets = (new Turret(p, @paper) for p in [0..3])
     @crosshair = new Crosshair(paper)
 
-    @clock = new CountdownTimerView(@paper, 215, 70)
+    @clock = new CountdownTimer(@paper, 215, 70)
 
 
   setGame: (game) ->
