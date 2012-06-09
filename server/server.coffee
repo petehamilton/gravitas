@@ -7,7 +7,6 @@ db = require './db'
 {config, log, dir} = require './utils'
 
 # Server configuration
-
 MODEL_FPS = config.model_fps
 BALLS_ENABLED = config.balls_enabled
 
@@ -29,9 +28,11 @@ configureNow = (everyone) ->
   everyone.now.pingServer = ->
     console.log "pong"
 
+
   everyone.now.getUsers = (callback) ->
     db.User.find {}, (err, docs) ->
       callback docs
+
 
   everyone.now.authenticate = (user, pw, callback) ->
     db.User.findOne { username: user, password: pw }, (err, u) ->
@@ -42,15 +43,18 @@ configureNow = (everyone) ->
         # TODO send auth token
         callback { ok: true }
 
+
   # TODO check if we can replace dbInsert and dbUpdate by one dbSave
   everyone.now.dbInsert = (obj) ->
     console.log "inserting", obj
     collection.insert obj, -> everyone.now.dbInsertDone()
 
+
   everyone.now.dbUpdate = (obj) ->
     console.log "updating", obj
     fixId obj
     collection.save obj, -> everyone.now.dbUploadDone()
+
 
   everyone.now.dbRemove = (obj) ->
     console.log "removing", obj
@@ -58,9 +62,11 @@ configureNow = (everyone) ->
     collection.remove { _id: obj._id }, ->
       everyone.now.dbRemoveDone()
 
+
   everyone.now.dbDrop = () ->
     console.log "dropping DB"
     collection.remove {}
+
 
   everyone.now.fixAllStringIds = () ->
     console.log "fixing all string IDs"
@@ -71,6 +77,7 @@ configureNow = (everyone) ->
         collection.remove { _id: obj._id }
         collection.save fixId(obj)
 
+
   everyone.now.logServer = (msg) ->
     console.log msg
 
@@ -79,14 +86,17 @@ configureNow = (everyone) ->
     console.log "chat message: #{msg}"
     everyone.now.displayMessage msg
 
+
   everyone.now.setAngle = (player, angle) ->
     arena.setAngle player, angle
     everyone.now.receiveAngle(player, angle)
+
 
   everyone.now.startGravityGun = (player, x, y) ->
     # TODO remove X, Y only allow pulling balls in line
     arena.pull player, x, y, (pulled_ball) ->
       everyone.now.receivePull player, pulled_ball
+
 
   everyone.now.stopGravityGun = (player) ->
     arena.shoot player, ((shot_ball, angle) ->
