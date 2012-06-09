@@ -142,7 +142,6 @@ run = ->
   i = 180
   clock = setInterval () =>
     i -= 1
-    log "Clock #{i}"
     everyone.now.receiveClock i
     if i == 0
       clearInterval clock
