@@ -225,6 +225,8 @@ class @ArenaModel
     triangles
 
 
+  # Rotates triangles randomly. If there isn't a ball in the center a new
+  # one will be spawned
   rotateTriangles: ->
 
     # Finds the ball in @balls for a given point in the form
@@ -265,6 +267,16 @@ class @ArenaModel
       ball.x = x
       ball.y = y
 
+    center_point = { x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2 }
+    unless findBall(center_point.x, center_point.y)?
+      console.log "Spawning new ball"
+      @spawnNewBall(center_point.x, center_point.y)
+
+
+  # Spawns a new ball at the given coordinates
+  spawnNewBall: (x, y) ->
+    @balls.push(new pbm.BallModel(genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y))
+
   # x and y are relative to the area. Transposes them relative
   # to grid layout, then chooses a ball to move
   replaceBall: (x, y) ->
@@ -290,7 +302,7 @@ class @ArenaModel
     @angles[player] = angle
 
 
-  pull: (player, x, y, pullCallback, replaceBallCallback) ->
+  pull: (player, x, y, pullCallback) ->
     # TODO remove X, Y only allow pulling balls in line
     r = config.pull_radius
 
@@ -308,14 +320,7 @@ class @ArenaModel
       # Remove pulled ball from available balls
       log "player #{player} pulled ball #{b.id} at", [b.x, b.y]
 
-      old_x = b.x
-      old_y = b.y
-
       pullCallback b
-
-      @replaceBall(old_x, old_y)
-      # TOOD: Ask Niklas why this won't allow ball pulling
-      # replaceBallCallback()
 
       @stored_balls[player] = b
 

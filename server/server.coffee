@@ -84,15 +84,9 @@ configureNow = (everyone) ->
     everyone.now.receiveAngle(player, angle)
 
   everyone.now.startGravityGun = (player, x, y) ->
-
-    pullCallBack = (pulled_ball) ->
-      everyone.now.receivePull player, pulled_ball
-
-    replaceBallCallBack = () ->
-        everyone.now.receiveBallMoves(arena.balls)
-
     # TODO remove X, Y only allow pulling balls in line
-    arena.pull player, x, y, pullCallBack, replaceBallCallBack
+    arena.pull player, x, y, (pulled_ball) ->
+      everyone.now.receivePull player, pulled_ball
 
   everyone.now.stopGravityGun = (player) ->
     arena.shoot player, ((shot_ball, angle) ->

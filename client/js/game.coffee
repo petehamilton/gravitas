@@ -35,6 +35,7 @@ class @Game
     # Balls currently in the game. The key is the ball ID.
     @balls = {}
 
+
     # Model observable that has a corresponding `.view` observable.
     # Changes to the ".view" are sent to the server using `syncFn`.
     # The `target` observable is to reflect the (shared) actual state,
@@ -51,7 +52,6 @@ class @Game
     true  # continue keypress event
 
 
-
   logIn: =>
     @server.authenticate @username(), @password(), (res) =>
       log res
@@ -64,28 +64,33 @@ class @Game
         @username ''
         @password ''
 
+
   assemblyClick: =>
     @assembly true
 
+
   assemblyExitClick: =>
     @assembly false
+
 
   # Used to add a new player to the connected players list
   connectNew: =>
     @connectedPlayers.push new connectedPlayer("New", 666)
 
+
   startGame: =>
     @gameStarted true
 
+
   pingServer: =>
     now.pingServer()
-
 
 
   #Data structure to hold connected players
   connectedPlayer = (username, rating) ->
     @username = username
     @rating = rating
+
 
   # Makes sure the server connection is esablished before executing fn.
   # Otherwise sets the lag indicator.
@@ -96,10 +101,12 @@ class @Game
       @lag off
       fn()
 
+
   # Sets the turret angle of the current player.
   onOwnAngle: (angle) ->
     @withServer =>
       @server.setAngle @player(), angle
+
 
   # Starts the gravity gun of the current player
   startGravityGun: (x, y) ->
@@ -107,16 +114,26 @@ class @Game
     @withServer =>
       @server.startGravityGun @player(), x, y
 
+
   # Stops the turret angle of the current player.
   stopGravityGun: (x, y) ->
     @withServer =>
       @server.stopGravityGun @player()
 
+
+  moveBalls: (server_balls) ->
+    for ball_model in server_balls
+      { x, y } = ball_model
+      @moveBall(x, y, 500, ball_model)
+
+
   moveBall: (x, y, duration, ball_model) ->
-    log "Moving ball"
     ball_view = @balls[ball_model.id]
-    assert(ball_view, "Error ball_view not found")
-    ball_view.moveTo(x, y, duration)
+    if ball_view?
+      ball_view.moveTo(x, y, duration)
+    else
+      @balls[ball_model.id] = new BallView(ball_model, @arena.paper)
+
 
   pulled: (player, ball_model) ->
     log "player #{player} pulled", ball_model
@@ -141,10 +158,6 @@ class @Game
     if player != @player()
       @arena.setTurretRotation(player, angle)
 
-  moveBalls: (server_balls) ->
-    for ball_model in server_balls
-      { x, y } = ball_model
-      @moveBall(x, y, 500, ball_model)
 
   updateBalls: (server_balls) ->
     # TODO take care of deleted balls
