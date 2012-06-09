@@ -26,13 +26,9 @@ corner = (ball_center) ->
 class @BallView
   constructor: (@ball_model, @paper) ->
     log "Creating Ball"
-
-    # Set up graphics
-
     sprite_path = getSpritePath @ball_model.type, config
-
-    @image = @paper.image(sprite_path, corner(@ball_model.x), corner(@ball_model.y), SIZE, SIZE)
-
+    @image = @paper.image(sprite_path, corner(@ball_model.x), corner(@ball_model.y), SIZE, SIZE).transform "s0"
+    @image.animate({transform:"s1"}, 1000, "elastic");
     @update()
 
 
