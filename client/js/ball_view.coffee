@@ -1,5 +1,4 @@
 SPRITE_FOLDER = "../images/balls/"
-
 SIZE = config.ball_size
 
 
