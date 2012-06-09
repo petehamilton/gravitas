@@ -1,8 +1,13 @@
 exports.config = require('../config').config
 
-exports.log = (args...) -> console.log args...
 
-exports.dir = (obj) -> console.log(JSON.stringify obj)
+exports.log = (args...) ->
+  console.log args...
+
+
+exports.dir = (obj) ->
+  console.log(JSON.stringify obj)
+
 
 exports.dict = (arr) ->
   d = {}
@@ -10,9 +15,14 @@ exports.dict = (arr) ->
     d[key] = value
   d
 
-exports.even = (num) -> num % 2 == 0
 
-exports.degToRad = (deg) -> (deg * Math.PI) / 180
+exports.even = (num) ->
+  num % 2 == 0
+
+
+exports.degToRad = (deg) ->
+  (deg * Math.PI) / 180
+
 
 exports.partition = (list, iterator) ->
   take = []
@@ -23,12 +33,15 @@ exports.partition = (list, iterator) ->
     i++
   [take, reject]
 
+
 exports.flatten = (array) ->
   [].concat.apply([], array)
+
 
 exports.assert = (bool, msg) ->
   if not bool
     throw new Error('assertion failed' + if msg? then ' ' + msg else '')
+
 
 exports.negativeMod = (num, div) ->
   tmp = num % div
