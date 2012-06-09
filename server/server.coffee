@@ -3,6 +3,7 @@ express = require 'express'
 nowjs = require 'now'
 arena_model = require './arena_model'
 pbm = require './ball_model'
+spm = require './shield_powerup_model'
 db = require './db'
 {config, log, dir} = require './utils'
 
@@ -99,9 +100,20 @@ configureNow = (everyone) ->
 
 
   everyone.now.stopGravityGun = (player) ->
-    arena.shoot player, ((shot_ball, angle) ->
-          everyone.now.receiveShot player, shot_ball, angle),
+    arena.shoot player, (shot_ball, angle) ->
+          everyone.now.receiveShot player, shot_ball, angle
 
+
+  everyone.now.setPowerup = (player, powerup_type) ->
+    activateCallback = () ->
+      everyone.now.receiveActivatePowerup(player, 'shield')
+    deactivateCallback = () ->
+      everyone.now.receiveDeactivatePowerup(player)
+
+    arena.setPowerup(player, powerup_type, activateCallback, deactivateCallback)
+
+  everyone.now.usePowerup = (player) ->
+    arena.usePowerup player
 
 createApp = ->
   app = express.createServer()

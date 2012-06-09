@@ -1,6 +1,5 @@
 class @Game
   constructor: (@arena, @player, @server) ->
-
     # Automatic log-in / start
     @autoLogIn = makeCookieObservable 'autoLogIn'
     @autoStart = makeCookieObservable 'autoStart'
@@ -43,6 +42,8 @@ class @Game
     # Balls currently in the game. The key is the ball ID.
     @balls = {}
 
+    # Powerups for each player. The key is the player ID
+    @powerups = ({i: null} for i in [0..4])
 
     # Model observable that has a corresponding `.view` observable.
     # Changes to the ".view" are sent to the server using `syncFn`.
@@ -71,6 +72,7 @@ class @Game
         @authFailed true
         @username ''
         @password ''
+    @loggedIn true #TODO: Remove me, I'm for testing only.
 
 
   assemblyClick: =>
@@ -165,6 +167,31 @@ class @Game
   setAngle: (player, angle) ->
     if player != @player()
       @arena.setTurretRotation(player, angle)
+
+  # Set the powerup for the current player
+  setPowerup: (powerup_type) ->
+    @withServer =>
+      @server.setPowerup @player(), powerup_type
+
+  # Implement/use the current player's powerup
+  usePowerup: () ->
+    @withServer =>
+      @server.usePowerup @player()
+
+  # Activates the player's current powerup
+  activatePowerup: (player, powerup_type) ->
+    log "Player #{player} uses their #{powerup_type} powerup"
+    p = switch powerup_type
+      when "shield" then new ShieldPowerupView(player, @arena.paper)
+    @powerups[player] = p
+    p.activate()
+
+  # Deactivates the player's current powerup
+  deactivatePowerup: (player) ->
+    log "Player #{player} loses their powerup"
+    p = @powerups[player]
+    @powerups[player] = null
+    p.deactivate()
 
 
   updateBalls: (server_balls) ->

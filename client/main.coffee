@@ -37,6 +37,8 @@ setupNow = (game) ->
   now.receivePull = (args...) -> game.pulled args...
   now.receiveShot = (args...) -> game.shot args...
   now.receiveBallMoves = (args...) -> game.moveBalls args...
+  now.receiveActivatePowerup = (args...) -> game.activatePowerup args...
+  now.receiveDeactivatePowerup = (args...) -> game.deactivatePowerup args...
 
 setupChat = ->
 
@@ -86,6 +88,14 @@ main = ->
   # listen to mouse events
   $(paper.canvas).mouseup (e) ->
     arena.mouseReleased e.offsetX, e.offsetY
+
+  # listen to key presses (powerup use)
+  $(document).keydown (e) ->
+    switch e.keyCode
+      when 32 # Spacebar
+        arena.spacebarPressed()
+      when 83 # 's'
+        arena.sPressed()
 
   # Use game as toplevel knockout ViewModel
   ko.applyBindings game

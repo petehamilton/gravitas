@@ -1,5 +1,6 @@
 { config, dict, log, even, degToRad, partition, flatten, assert, negativeMod } = require './utils'
 pbm = require './ball_model'
+spm = require './shield_powerup_model'
 assert = require 'assert'
 
 
@@ -41,6 +42,8 @@ class @ArenaModel
     @angles = playerIdDict (i) -> 0
 
     @stored_balls = playerIdDict (i) -> null
+
+    @powerups = playerIdDict (i) -> null
 
 
   # Picks random triangles to rotate
@@ -337,3 +340,22 @@ class @ArenaModel
       log "player #{player} shoots ball #{b.id} of kind #{b.type.kind} with angle #{angle}"
       shotCallback b, angle
       delete @stored_balls[player]
+
+
+  setPowerup: (player, powerup_type, activateCallback, deactivateCallback) ->
+    log "player #{player} has collected a #{powerup_type} powerup"
+    powerup = switch powerup_type
+      when "shield"
+        new spm.ShieldPowerupModel player, activateCallback, deactivateCallback
+    
+    @powerups[player] = powerup
+
+
+  usePowerup: (player, powerupCallback) ->
+    p = @powerups[player]
+    console.log p
+    if not p
+      log "player #{player} tries to use their powerup, but doesn't have one!"
+    else
+      log "player #{player} uses their powerup"
+      p.activate()
