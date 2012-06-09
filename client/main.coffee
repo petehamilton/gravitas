@@ -35,6 +35,7 @@ setupNow = (game) ->
   now.receiveBallMoves = (args...) -> game.moveBalls args...
   now.receiveActivatePowerup = (args...) -> game.activatePowerup args...
   now.receiveDeactivatePowerup = (args...) -> game.deactivatePowerup args...
+  now.receiveClock = (args...) -> game.clockTick args...
 
 setupChat = ->
 
@@ -61,7 +62,6 @@ main = ->
   paper = createPaper 'paper', config.arena_size.x, config.arena_size.y
 
   vortex = new Vortex(paper)
-
 
   # create game
   arena = new Arena(paper)

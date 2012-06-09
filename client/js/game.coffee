@@ -204,3 +204,6 @@ class @Game
       else
         # Create a new view for this ball. This calls update() for us already.
         @balls[ball_model.id] = new BallView(ball_model, @arena.paper)
+
+  clockTick: (i) ->
+    @arena.clock.update i

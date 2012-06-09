@@ -139,4 +139,11 @@ run = ->
     everyone.now.receiveBallMoves(arena.balls)
   , 3000
 
+  i = 180
+  setInterval () =>
+    i -= 1
+    log "Clock #{i}"
+    everyone.now.receiveClock i
+  , 1000
+
 run()
