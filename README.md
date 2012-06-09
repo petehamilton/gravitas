@@ -35,8 +35,9 @@ Basic setup
 * install [homebrew] (https://github.com/mxcl/homebrew)
 * run ```brew install node``` to install node.js
 * run ```curl http://npmjs.org/install.sh | sh```
-* run ```npm install -g coffee-script``` to install coffeescript
+* run ```npm install -g coffee-script``` to install coffeescript *(no -g if don't want global)*
 * run ```npm install -g stylus``` to install [stylus](http://learnboost.github.com/stylus/)
+* run ```npm install -g mongoose``` to install [mongoose](https://github.com/LearnBoost/mongoose)
 * run ```brew install wget``` to ensure the make file can download the libraries
 * run ```make``` inside the project root to install all the library files
 
