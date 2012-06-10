@@ -288,11 +288,7 @@ class @ArenaModel
       if b.type.kind == config.ball_kinds.powerup
         @setPowerup(player, b.type.powerup_kind, activatePowerupCallback, deactivatePowerupCallback)
 
-      center = switch player
-        when 0 then { x: 0, y: 0 }
-        when 1 then { x: config.arena_size.x, y: 0 }
-        when 2 then { x: config.arena_size.x, y: config.arena_size.y }
-        when 3 then { x: 0, y: config.arena_size.y }
+      center = config.player_centers[player]
 
       log "player #{player} pulled ball #{b.id} at", [b.x, b.y]
 

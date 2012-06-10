@@ -5,27 +5,20 @@ class @Turret
   # Positions are clockwise from top left to bottom left
   # 0 => TL, 1 => TR, 2 => BR, 3 => BL
   constructor: (@position, @paper) ->
-
-    makeTurretOffset = (x, y) =>
-      switch @position
-        when 0 then { x: x, y: y }
-        when 1 then { x: @paper.width - y, y: x }
-        when 2 then { x: @paper.width - x, y: @paper.height - y }
-        when 3 then { x: y, y: @paper.height - x }
-
     log "Creating Turret #{@position}"
 
     @image = "../images/double_turret.png"
 
-    @center = makeTurretOffset 0, 0
+    @center = config.player_centers[@position]
 
-    x_offset = TURRET_OFFSET.x
-    y_offset = TURRET_OFFSET.y
-    @offset_center = switch @position
-      when 0 then { x: -x_offset              , y: -y_offset }
-      when 1 then { x: @paper.width - x_offset, y: -y_offset }
-      when 2 then { x: @paper.width - x_offset, y: @paper.height - y_offset }
-      when 3 then { x: -x_offset              , y: @paper.height - y_offset }
+    makeTurretOffset = (x, y) =>
+      switch @position
+        when 0 then { x: @center.x + x, y: @center.y + y }
+        when 1 then { x: @center.x - x, y: @center.y + y }
+        when 2 then { x: @center.x - x, y: @center.y - y }
+        when 3 then { x: @center.x + x, y: @center.y - y }
+
+    @offset_center = {x: @center.x - TURRET_OFFSET.x, y: @center.y - TURRET_OFFSET.y}
 
     @angle = @position * 90 + 45
 

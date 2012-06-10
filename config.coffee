@@ -1,4 +1,8 @@
 TURRET_HEIGHT = 100
+CANVAS_WIDTH = 600
+CANVAS_HEIGHT = 600
+PLAYER_CENTER_OFFSET_X = 40
+PLAYER_CENTER_OFFSET_Y = 40
 
 config =
   fps: 50
@@ -24,8 +28,8 @@ config =
   player_ids: [0..3]
 
   arena_size:
-    x: 600
-    y: 600
+    x: CANVAS_WIDTH
+    y: CANVAS_HEIGHT
 
   balls_enabled: true
 
@@ -65,6 +69,14 @@ config =
 
   # Milliseconds between ticks (i.e. 1 second)
   clock_interval: 1000
+
+  # Player Centers, used for ball pulling, turret rotation etc
+  player_centers:
+    0: { x: PLAYER_CENTER_OFFSET_X, y: PLAYER_CENTER_OFFSET_Y}
+    1: { x: CANVAS_WIDTH - PLAYER_CENTER_OFFSET_X, y: PLAYER_CENTER_OFFSET_Y }
+    2: { x: CANVAS_WIDTH - PLAYER_CENTER_OFFSET_X, y: CANVAS_HEIGHT - PLAYER_CENTER_OFFSET_Y }
+    3: { x: PLAYER_CENTER_OFFSET_X, y: CANVAS_HEIGHT - PLAYER_CENTER_OFFSET_Y }
+
 
   # Default users with passwords
   default_users:
