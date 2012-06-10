@@ -145,8 +145,7 @@ run = ->
 
   seconds = 180
   clock = setInterval () =>
-    seconds -= 1
-    everyone.now.receiveClock seconds
+    everyone.now.receiveClock --seconds
     if seconds == 0
       clearInterval clock
   , 1000
