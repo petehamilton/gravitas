@@ -143,11 +143,11 @@ run = ->
     everyone.now.receiveBallMoves(arena.balls)
   , config.rotation_interval
 
-  i = 180
+  seconds = 180
   clock = setInterval () =>
-    i -= 1
-    everyone.now.receiveClock i
-    if i == 0
+    seconds -= 1
+    everyone.now.receiveClock seconds
+    if seconds == 0
       clearInterval clock
   , 1000
 
