@@ -260,7 +260,7 @@ class @ArenaModel
 
 
   # Responsible for handling a player pulling a ball.
-  # 
+  #
   # works out which ball needs to be pulled, then calculates where to pull it
   # to (basically the player's corner). Finally calls the pullCallback function
   # with the pulled ball and the target coords as parameters
@@ -270,7 +270,7 @@ class @ArenaModel
   #
   # player        : player who is pulling
   # x, y          : crosshair coords
-  # pullCallback  : passed (pulled_ball, target_x, target_y), called once 
+  # pullCallback  : passed (pulled_ball, target_x, target_y), called once
   #                 coords calculated
   #
   pull: (player, x, y, pullCallback, activatePowerupCallback, deactivatePowerupCallback) ->
@@ -284,28 +284,31 @@ class @ArenaModel
     if selected.length
       b = selected[0]
 
+      powerup = config.ball_kinds.powerup
+
       # TODO: Remove Later when using collision with turret
-      if b.type.kind == config.ball_kinds.powerup
+      if b.type.kind == config.powerup
         @setPowerup(player, b.type.powerup_kind, activatePowerupCallback, deactivatePowerupCallback)
 
-      center = config.player_centers[player]
+      if b.type.kind == config.powerup or b.type.player_id == player
+        center = config.player_centers[player]
 
-      log "player #{player} pulled ball #{b.id} at", [b.x, b.y]
+        log "player #{player} pulled ball #{b.id} at", [b.x, b.y]
 
-      @stored_balls[player] = b
-      @balls = others # All other balls stay
+        @stored_balls[player] = b
+        @balls = others # All other balls stay
 
-      pullCallback b, center.x, center.y
+        pullCallback b, center.x, center.y
 
 
-  # Responsible for handling a player shooting their ball. Calculates ball 
+  # Responsible for handling a player shooting their ball. Calculates ball
   # trajectory and then runs a callback function with target & ball params
   # Does nothing if the player doesn't have any balls
   #
   # player: player to shoot from
   # shotCallback: passed (shot_ball, target_x, target_y)
   #
-  # 1. Identifies a target point ~900px away from the current position 
+  # 1. Identifies a target point ~900px away from the current position
   #    (900 guaruntees it will go off screen).
   # 2. Calculates the target x and y coordinates
   # 3. Deletes the ball from the player's balls
