@@ -24,7 +24,7 @@ class @Turret
 
     # simple body (circle!)
     @body_sprite = @paper.circle(@center.x, @center.y, 80)
-                    .attr({fill: '#CCCCCC'})
+                    .attr({fill: '#00a2ff', opacity: 0.2})
 
     width = config.turret_width
     height = config.turret_height
