@@ -182,7 +182,7 @@ class @Game
   activatePowerup: (player, powerup_type) ->
     log "Player #{player} uses their #{powerup_type} powerup"
     p = switch powerup_type
-      when "shield" then new ShieldPowerupView(player, @arena.paper)
+      when config.powerup_kinds.shield then new ShieldPowerupView(player, @arena.paper)
     @powerups[player] = p
     p.activate()
 

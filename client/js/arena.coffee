@@ -34,12 +34,6 @@ class @Arena
     @game.usePowerup()
 
 
-  # TODO: Remove me, I am for debugging only
-  sPressed: () ->
-    # Tell the game that the player has pressed the S key
-    @game.setPowerup("shield")
-
-
   setTurretRotation: (turret, angle) ->
     @turrets[turret].setRotation angle
 

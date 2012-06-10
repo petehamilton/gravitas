@@ -280,7 +280,8 @@ class @ArenaModel
     random = Math.random()
     if random <= config.powerup_probability
       # TODO Don't know if this gives an even split?
-      powerup_type = Math.round(Math.random() * (config.powerup_kinds.length - 1))
+      powerup_type = Math.round(Math.random() * (config.powerup_count - 1))
+      console.log "Creating powerup of kind", powerup_type
       type = pbm.makePowerupBallType(powerup_type)
     else
       type = pbm.makePlayerBallType(nextPlayerId())
@@ -313,7 +314,7 @@ class @ArenaModel
     @angles[player] = angle
 
 
-  pull: (player, x, y, pullCallback) ->
+  pull: (player, x, y, pullCallback, activatePowerupCallback, deactivatePowerupCallback) ->
     # TODO remove X, Y only allow pulling balls in line
     r = config.pull_radius
 
@@ -327,6 +328,9 @@ class @ArenaModel
 
     if selected.length
       b = selected[0]
+
+      if b.type.kind == config.ball_kinds.powerup
+        @setPowerup(player, b.type.powerup_kind, activatePowerupCallback, deactivatePowerupCallback)
 
       # Remove pulled ball from available balls
       log "player #{player} pulled ball #{b.id} at", [b.x, b.y]
@@ -353,7 +357,7 @@ class @ArenaModel
   setPowerup: (player, powerup_type, activateCallback, deactivateCallback) ->
     log "player #{player} has collected a #{powerup_type} powerup"
     powerup = switch powerup_type
-      when "shield"
+      when config.powerup_kinds.shield
         new spm.ShieldPowerupModel player, activateCallback, deactivateCallback
 
     @powerups[player] = powerup

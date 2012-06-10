@@ -1,3 +1,5 @@
+{ config } = require './utils'
+
 class @ShieldPowerupModel
   constructor: (@player, @activateCallback, @deactivateCallback) ->
     @duration = 3000
@@ -6,7 +8,7 @@ class @ShieldPowerupModel
   # Activate the shield, run the callback which will be a call
   # to everyone.now.xxxxx to trigger client side animations
   activate: () ->
-    @activateCallback()
+    @activateCallback(config.powerup_kinds.shield)
     setTimeout () =>
       @deactivate()
     , @duration

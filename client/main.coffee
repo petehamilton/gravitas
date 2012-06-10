@@ -90,8 +90,7 @@ main = ->
     switch e.keyCode
       when 32 # Spacebar
         arena.spacebarPressed()
-      when 83 # 's'
-        arena.sPressed()
+
 
   # Use game as toplevel knockout ViewModel
   ko.applyBindings game

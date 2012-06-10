@@ -7,13 +7,14 @@ config =
     player: 0
     powerup: 1
 
+  # Powerup effects, when you add a new one increase powerup_count below
   powerup_kinds:
     shield: 0
-    health: 1
+    # health: 1
 
-  powerup_effects:
-    health: 0
-    shield: 1
+  # TODO is there a better way to do this
+  powerup_count: 1
+
 
   # Probability of spawning a powerup
   powerup_probability: 0.2

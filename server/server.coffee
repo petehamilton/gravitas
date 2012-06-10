@@ -95,8 +95,19 @@ configureNow = (everyone) ->
 
   everyone.now.startGravityGun = (player, x, y) ->
     # TODO remove X, Y only allow pulling balls in line
-    arena.pull player, x, y, (pulled_ball) ->
+    activateCallback = (powerup_type) =>
+      everyone.now.receiveActivatePowerup(player, powerup_type)
+
+
+    deactivateCallback = () =>
+      everyone.now.receiveDeactivatePowerup(player)
+
+
+    pullCallback = (pulled_ball) =>
       everyone.now.receivePull player, pulled_ball
+
+
+    arena.pull player, x, y, pullCallback, activateCallback, deactivateCallback
 
 
   everyone.now.stopGravityGun = (player) ->
