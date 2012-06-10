@@ -168,10 +168,6 @@ class @Game
     if player != @player()
       @arena.setTurretRotation(player, angle)
 
-  # Set the powerup for the current player
-  setPowerup: (powerup_type) ->
-    @withServer =>
-      @server.setPowerup @player(), powerup_type
 
   # Implement/use the current player's powerup
   usePowerup: () ->

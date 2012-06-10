@@ -100,6 +100,7 @@ configureNow = (everyone) ->
 
 
     deactivateCallback = () =>
+      arena.powerups[player] = null
       everyone.now.receiveDeactivatePowerup(player)
 
 
@@ -115,16 +116,9 @@ configureNow = (everyone) ->
           everyone.now.receiveShot player, shot_ball, angle
 
 
-  everyone.now.setPowerup = (player, powerup_type) ->
-    activateCallback = () =>
-      everyone.now.receiveActivatePowerup(player, powerup_type)
-    deactivateCallback = () ->
-      everyone.now.receiveDeactivatePowerup(player)
-
-    arena.setPowerup(player, powerup_type, activateCallback, deactivateCallback)
-
   everyone.now.usePowerup = (player) ->
     arena.usePowerup player
+
 
 createApp = ->
   app = express.createServer()
