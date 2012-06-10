@@ -174,6 +174,7 @@ class @Game
     @withServer =>
       @server.usePowerup @player()
 
+
   # Activates the player's current powerup
   activatePowerup: (player, powerup_type) ->
     log "Player #{player} uses their #{powerup_type} powerup"
@@ -181,6 +182,7 @@ class @Game
       when config.powerup_kinds.shield then new ShieldPowerupView(player, @arena.paper)
     @powerups[player] = p
     p.activate()
+
 
   # Deactivates the player's current powerup
   deactivatePowerup: (player) ->
