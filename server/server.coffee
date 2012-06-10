@@ -143,7 +143,7 @@ run = ->
     everyone.now.receiveBallMoves(arena.balls)
   , config.rotation_interval
 
-  seconds = game_time
+  seconds = config.game_time
   clock = setInterval () =>
     everyone.now.receiveClock --seconds
     if seconds == 0

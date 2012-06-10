@@ -62,7 +62,7 @@ config =
   rotation_interval: 1000
 
   # Time for game rounds in seconds
-  game_time
+  game_time: 180
 
   # Milliseconds between ticks (i.e. 1 second)
   clock_interval: 1000
