@@ -368,6 +368,8 @@ class @ArenaModel
     console.log p
     if not p
       log "player #{player} tries to use their powerup, but doesn't have one!"
+    else if p.activated
+      log "player #{player} has already activated their powerup"
     else
       log "player #{player} uses their powerup"
       p.activate()
