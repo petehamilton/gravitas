@@ -1,4 +1,5 @@
-TURRET_HEIGHT = 100
+TURRET_WIDTH = 100
+TURRET_HEIGHT = 50
 CANVAS_WIDTH = 600
 CANVAS_HEIGHT = 600
 PLAYER_CENTER_OFFSET_X = 100
@@ -42,7 +43,7 @@ config =
 
   vortex_mass: 10000
 
-  turret_width: 200
+  turret_width: TURRET_WIDTH
   turret_height: TURRET_HEIGHT
 
   # The offset of the turret picture for the corners.
