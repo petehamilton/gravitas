@@ -105,8 +105,8 @@ configureNow = (everyone) ->
 
 
   everyone.now.setPowerup = (player, powerup_type) ->
-    activateCallback = () ->
-      everyone.now.receiveActivatePowerup(player, 'shield')
+    activateCallback = () =>
+      everyone.now.receiveActivatePowerup(player, powerup_type)
     deactivateCallback = () ->
       everyone.now.receiveDeactivatePowerup(player)
 
