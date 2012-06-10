@@ -61,6 +61,12 @@ config =
   # Milliseconds between ball rotations
   rotation_interval: 1000
 
+  # Time for game rounds in seconds
+  game_time
+
+  # Milliseconds between ticks (i.e. 1 second)
+  clock_interval: 1000
+
   # Default users with passwords
   default_users:
     x: ''

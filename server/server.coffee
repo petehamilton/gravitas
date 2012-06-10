@@ -138,16 +138,17 @@ run = ->
   configureNow everyone
   console.log everyone.now.setAngle
 
-  setInterval () =>
+  ball_rotation = setInterval () =>
     arena.rotateTriangles()
     everyone.now.receiveBallMoves(arena.balls)
   , config.rotation_interval
 
-  seconds = 180
+  seconds = game_time
   clock = setInterval () =>
     everyone.now.receiveClock --seconds
     if seconds == 0
       clearInterval clock
-  , 1000
+      clearInterval ball_rotation
+  , config.clock_interval
 
 run()
