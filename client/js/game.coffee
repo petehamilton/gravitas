@@ -161,6 +161,12 @@ class @Game
   shot: (player, ball_model) ->
     new Audio("sounds/fire.wav").play()
     log "player #{player} shot", ball_model
+
+  # Player shot done, remove ball from canvas
+  #
+  # player : the player who shot
+  # ball_model : The ball which has been shot
+  shotFinished: (player, ball_model) ->
     ball_view = @balls[ball_model.id]
     ball_view.remove =>
       delete @balls[ball_model.id] # TODO check if this allows ball to be GC'd

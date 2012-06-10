@@ -114,11 +114,12 @@ configureNow = (everyone) ->
 
   everyone.now.stopGravityGun = (player) ->
     shootCallback = (shot_ball, x, y) =>
+      everyone.now.receiveShot player, shot_ball
       duration = config.shoot_time_ms
       shot_ball.animateTo x, y, duration, () ->
           everyone.now.receiveBallMoved shot_ball, 0
         , () ->
-          everyone.now.receiveShot player, shot_ball
+          everyone.now.receiveShotFinished player, shot_ball
     arena.shoot player, shootCallback
 
 
