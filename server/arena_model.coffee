@@ -309,18 +309,31 @@ class @ArenaModel
     neighbour.x = x
     neighbour.y = y
 
-
+  # Sets the turrent angle for a player
+  #
+  # player : the player to set the angle for
+  # angle  : the angle to set
   setAngle: (player, angle) ->
     @angles[player] = angle
 
 
+  # Responsible for handling a player pulling a ball.
+  # 
+  # works out which ball needs to be pulled, then calculates where to pull it
+  # to (basically the player's corner). Finally calls the pullCallback function
+  # with the pulled ball and the target coords as parameters
+  #
+  # TODO: activate/deactivate to be removed soon in favour of turret-detection
+  # TODO: Only allow balls to be pulled in straight line
+  #
+  # player        : player who is pulling
+  # x, y          : crosshair coords
+  # pullCallback  : passed (pulled_ball, target_x, target_y), called once 
+  #                 coords calculated
+  #
   pull: (player, x, y, pullCallback, activatePowerupCallback, deactivatePowerupCallback) ->
-    # TODO remove X, Y only allow pulling balls in line
-    r = config.pull_radius
-
-    angle = @angles[player]
-
     # Find the balls that were selected by the pull
+    r = config.pull_radius
     [selected, others] = partition @balls, (b, i) ->
       Math.abs(x - b.x) < r and Math.abs(y - b.y) < r
 
@@ -329,31 +342,63 @@ class @ArenaModel
     if selected.length
       b = selected[0]
 
+      # TODO: Remove Later when using collision with turret
       if b.type.kind == config.ball_kinds.powerup
         @setPowerup(player, b.type.powerup_kind, activatePowerupCallback, deactivatePowerupCallback)
 
-      # Remove pulled ball from available balls
+      center = switch player
+        when 0 then { x: 0, y: 0 }
+        when 1 then { x: config.arena_size.x, y: 0 }
+        when 2 then { x: config.arena_size.x, y: config.arena_size.y }
+        when 3 then { x: 0, y: config.arena_size.y }
+
       log "player #{player} pulled ball #{b.id} at", [b.x, b.y]
 
-      pullCallback b
-
       @stored_balls[player] = b
+      @balls = others # All other balls stay
 
-      # All other balls stay
-      @balls = others
+      pullCallback b, center.x, center.y
 
 
+  # Responsible for handling a player shooting their ball. Calculates ball 
+  # trajectory and then runs a callback function with target & ball params
+  # Does nothing if the player doesn't have any balls
+  #
+  # player: player to shoot from
+  # shotCallback: passed (shot_ball, target_x, target_y)
+  #
+  # 1. Identifies a target point ~900px away from the current position 
+  #    (900 guaruntees it will go off screen).
+  # 2. Calculates the target x and y coordinates
+  # 3. Deletes the ball from the player's balls
+  # 4. Calls the callback function, passing it the ball model and target coords
   shoot: (player, shotCallback) ->
+    #TODO, work out distance to nearest object?
+    # 900 will mean balls always shoot at same speed
+    distance = 900
+
     angle = @angles[player]
+
     b = @stored_balls[player]
     if not b
       log "player #{player} tries to shoot, but has no ball"
     else
       log "player #{player} shoots ball #{b.id} of kind #{b.type.kind} with angle #{angle}"
-      shotCallback b, angle
+      {x: oldX, y: oldY} = b
+      radius = Math.max(config.arena_size.x, config.arena_size.y) * 1.42
+      targetx = oldX + Math.cos(degToRad(angle)) * radius
+      targety = oldY + Math.sin(degToRad(angle)) * radius
       delete @stored_balls[player]
 
+      shotCallback b, targetx, targety
 
+
+  # Gives a powerup to a player
+  #
+  # player              : The player who has received the powerup
+  # powerup_type        : The type of powerup, types defined in config
+  # activateCallback    : Called when the powerup is activated
+  # deactivateCallback  : Called when the powerup is deactivated
   setPowerup: (player, powerup_type, activateCallback, deactivateCallback) ->
     log "player #{player} has collected a #{powerup_type} powerup"
     powerup = switch powerup_type
@@ -363,7 +408,11 @@ class @ArenaModel
     @powerups[player] = powerup
 
 
-  usePowerup: (player, powerupCallback) ->
+  # Activates a player's powerup.
+  # If they don't have one, does nothing
+  #
+  # player : The player using their powerup
+  usePowerup: (player) ->
     p = @powerups[player]
     console.log p
     if not p
