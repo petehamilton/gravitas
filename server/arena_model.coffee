@@ -277,7 +277,15 @@ class @ArenaModel
 
   # Spawns a new ball at the given coordinates
   spawnNewBall: (x, y) ->
-    @balls.push(new pbm.BallModel(genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y))
+    random = Math.random()
+    if random <= config.powerup_probability
+      # TODO Don't know if this gives an even split?
+      powerup_type = Math.round(Math.random() * (config.powerup_kinds.length - 1))
+      type = pbm.makePowerupBallType(powerup_type)
+    else
+      type = pbm.makePlayerBallType(nextPlayerId())
+
+    @balls.push(new pbm.BallModel(genBallId(), type, x, y))
 
   # x and y are relative to the area. Transposes them relative
   # to grid layout, then chooses a ball to move
@@ -347,7 +355,7 @@ class @ArenaModel
     powerup = switch powerup_type
       when "shield"
         new spm.ShieldPowerupModel player, activateCallback, deactivateCallback
-    
+
     @powerups[player] = powerup
 
 

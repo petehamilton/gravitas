@@ -7,9 +7,16 @@ config =
     player: 0
     powerup: 1
 
+  powerup_kinds:
+    shield: 0
+    health: 1
+
   powerup_effects:
     health: 0
     shield: 1
+
+  # Probability of spawning a powerup
+  powerup_probability: 0.2
 
   # Game Information
   model_fps: 30

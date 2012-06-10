@@ -1,8 +1,12 @@
-{config} = require './utils'
+{ config } = require './utils'
 
 exports.makePlayerBallType = (player_id) ->
   kind: config.ball_kinds.player
   player_id: player_id
+
+exports.makePowerupBallType = (powerup_kind) ->
+  kind: config.ball_kinds.powerup
+  powerup_kind: powerup_kind
 
 
 BALL_SIZE = config.ball_size
