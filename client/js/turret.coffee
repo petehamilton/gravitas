@@ -52,7 +52,7 @@ class @Turret
 
     @getBallStorePos = -> makeTurretOffset 30, 30
 
-    @hp_pos = makeTurretOffset 1.5*@hp_radius, 1.5*@hp_radius
+    @hp_pos = makeTurretOffset 0, 0
 
     @updateHpIndicator(66)
 
