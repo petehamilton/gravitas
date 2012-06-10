@@ -57,8 +57,8 @@ class @BallView
     radius = Math.max(config.arena_size.x, config.arena_size.y) * 1.42
 
     stretched_target_pos =
-      x: corner(Math.cos(degToRad(angle)) * radius)
-      y: corner(Math.sin(degToRad(angle)) * radius)
+      x: oldX + corner(Math.cos(degToRad(angle)) * radius)
+      y: oldY + corner(Math.sin(degToRad(angle)) * radius)
 
     # TODO explosion when turret is hit
 
