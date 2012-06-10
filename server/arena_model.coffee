@@ -34,7 +34,6 @@ class @ArenaModel
   constructor: ->
     @ball_positions  = @calculateStartPoints()
     @triangles       = @calculateTriangles()
-    @ball_neighbours = @calculateBallNeighbours()
 
     @balls = for {x, y} in flatten @ball_positions
       new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
@@ -121,39 +120,6 @@ class @ArenaModel
           y : Math.round (center_point.y + dist_components.dy * (row - Math.floor(rows / 2)))
 
     ball_positions
-
-
-  # Calculates balls neighbours
-  # Must be called after calculateTrainglePoints
-  calculateBallNeighbours: ->
-
-    # Inserts into list only if x_n and x_y are not
-    # already in the neighbours list
-    insertNeighbours = (x, y, x_n, y_n, list) ->
-      unless list[x][y]?
-        list[x][y] = []
-
-      for { x: x_p, y: y_p } in list[x][y]
-        if x_p == x_n and y_p == y_n
-          return
-
-      list[x][y].push { x: x_n, y: y_n }
-
-
-    # setup
-    ball_neighbours = []
-    for row in [0...@ballRows()]
-      ball_neighbours[row] = []
-
-    for triangle in @triangles
-      for { x: x_p, y: y_p } in triangle
-        for { x: x_n, y: y_n } in triangle
-          if x_n != x_p or y_n != y_p
-            insertNeighbours(x_p, y_p, x_n, y_n, ball_neighbours)
-
-
-    ball_neighbours
-
 
 
   # Calculates all possible triangles in the ball structure.
@@ -287,27 +253,6 @@ class @ArenaModel
       type = pbm.makePlayerBallType(nextPlayerId())
 
     @balls.push(new pbm.BallModel(genBallId(), type, x, y))
-
-  # x and y are relative to the area. Transposes them relative
-  # to grid layout, then chooses a ball to move
-  replaceBall: (x, y) ->
-
-    # Finds ball in ball_positions
-    findBall = (x, y) =>
-      for row in [0...@ball_positions.length]
-        for col in [0...@ball_positions[row].length]
-          { x: x_b, y: y_b } = @ball_positions[row][col]
-          if x == x_b and y == y_b
-            return { x: row, y: col }
-      return null
-
-    transposed = findBall(x, y)
-    assert(transposed, "Error finding ball to replace pulled ball")
-
-    neighbours = @ball_neighbours[transposed.x][transposed.y]
-    neighbour = Math.floor(Math.random() * (neighbours.length - 1))
-    neighbour.x = x
-    neighbour.y = y
 
 
   setAngle: (player, angle) ->
