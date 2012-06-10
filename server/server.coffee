@@ -133,17 +133,8 @@ createApp = ->
   app
 
 
-run = ->
-
-  app = createApp()
-
-  db.connect()
-  db.configureRoutes app
-
-  everyone = nowjs.initialize(app, { socketio: {'browser client minification': true} })
-  configureNow everyone
-  console.log everyone.now.setAngle
-
+# Start the intervals which control ball rotation and the clock
+startTimers = ->
   ball_rotation = setInterval () =>
     arena.rotateTriangles()
     if connected
@@ -158,5 +149,19 @@ run = ->
       clearInterval clock
       clearInterval ball_rotation
   , config.clock_interval
+
+
+
+run = ->
+
+  app = createApp()
+
+  db.connect()
+  db.configureRoutes app
+
+  everyone = nowjs.initialize(app, { socketio: {'browser client minification': true} })
+  configureNow everyone
+
+  startTimers()
 
 run()
