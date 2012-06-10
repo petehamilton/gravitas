@@ -8,6 +8,7 @@ class @Turret
     log "Creating Turret #{@position}"
 
     @image = "../images/double_turret.png"
+    @pulse_image = "../images/pulse.png"
 
     @center = config.player_centers[@position]
 
@@ -22,9 +23,21 @@ class @Turret
 
     @angle = @position * 90 + 45
 
-    # simple body (circle!)
-    @body_sprite = @paper.circle(@center.x, @center.y, 80)
-                    .attr({fill: '#00a2ff', opacity: 0.2})
+    # 200x200px pulse image
+    pulse_radius = 80
+
+    @body_sprite = @paper.circle(@center.x, @center.y, pulse_radius)
+                    .attr({fill: '#00a2ff', opacity: 0.1})
+
+    @pulse_offset_center = {x: @center.x - pulse_radius, y: @center.y - pulse_radius}
+    @turret_pulse_persist = @paper.image(@pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, pulse_radius*2, pulse_radius*2)
+    @turret_pulse_anim = @paper.image(@pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, pulse_radius*2, pulse_radius*2)
+    @turret_pulse_anim.transform("s0").attr {opacity: 1}
+    pulse_animation = setInterval () =>
+        @turret_pulse_anim.transform("s0").attr {opacity: 1}
+        @turret_pulse_anim.animate({transform:"s1"}, config.turret_pulse_interval*2/3, "<>")
+        @turret_pulse_anim.animate({opacity: 0}, config.turret_pulse_interval, "<>")
+    , config.turret_pulse_interval
 
     width = config.turret_width
     height = config.turret_height
