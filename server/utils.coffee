@@ -51,3 +51,16 @@ exports.negativeMod = (num, div) ->
     div + tmp
   else
     tmp
+
+# Some simple arithmetic tween calculation functions
+# format is (frame #, original_val, change_in_value, total_frames)
+exports.ServerAnimation =
+  easeInOutCubic: (t, b, c, d) ->
+    t /= d/2
+    if t < 1
+      return c/2*t*t*t + b
+    t -= 2
+    return c/2*(t*t*t + 2) + b
+
+  linearTween: (t, b, c, d) ->
+    return c*t/d + b

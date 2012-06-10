@@ -5,7 +5,7 @@ arena_model = require './arena_model'
 pbm = require './ball_model'
 spm = require './shield_powerup_model'
 db = require './db'
-{config, log, dir} = require './utils'
+{config, log, dir, ServerAnimation} = require './utils'
 
 # Server configuration
 MODEL_FPS = config.model_fps
@@ -16,14 +16,14 @@ BALLS_ENABLED = config.balls_enabled
 arena = new arena_model.ArenaModel()
 everyone = null
 
+connected = false
 
 configureNow = (everyone) ->
 
   nowjs.on 'connect', ->
     console.log "client #{@user.clientId} connected"
-
-    # Send initial game parameters
-    everyone.now.receiveBalls arena.balls
+    everyone.now.receiveBallsMoved arena.balls
+    connected = true
 
 
   everyone.now.pingServer = ->
@@ -104,16 +104,22 @@ configureNow = (everyone) ->
       everyone.now.receiveDeactivatePowerup(player)
 
 
-    pullCallback = (pulled_ball) =>
-      everyone.now.receivePull player, pulled_ball
-
+    pullCallback = (pulled_ball, x, y) =>
+      duration = config.pull_time_ms
+      pulled_ball.animateTo x, y, duration, () ->
+          everyone.now.receiveBallMoved pulled_ball, 0
 
     arena.pull player, x, y, pullCallback, activateCallback, deactivateCallback
 
 
   everyone.now.stopGravityGun = (player) ->
-    arena.shoot player, (shot_ball, angle) ->
-          everyone.now.receiveShot player, shot_ball, angle
+    shootCallback = (shot_ball, x, y) =>
+      duration = config.shoot_time_ms
+      shot_ball.animateTo x, y, duration, () ->
+          everyone.now.receiveBallMoved shot_ball, 0
+        , () ->
+          everyone.now.receiveShot player, shot_ball
+    arena.shoot player, shootCallback
 
 
   everyone.now.usePowerup = (player) ->
@@ -140,12 +146,14 @@ run = ->
 
   ball_rotation = setInterval () =>
     arena.rotateTriangles()
-    everyone.now.receiveBallMoves(arena.balls)
+    if connected
+      everyone.now.receiveBallsMoved(arena.balls, config.rotation_time)
   , config.rotation_interval
 
   seconds = config.game_time
   clock = setInterval () =>
-    everyone.now.receiveClock --seconds
+    if connected
+      everyone.now.receiveClock --seconds
     if seconds == 0
       clearInterval clock
       clearInterval ball_rotation

@@ -57,9 +57,8 @@ config =
 
   # Number of different levels in 'orbit'
   ball_levels: 3
-
-  # Milliseconds between ball rotations
-  rotation_interval: 1000
+  rotation_interval: 1000 # Milliseconds between ball rotations
+  rotation_time: 500 # Milliseconds to rotate balls
 
   # Time for game rounds in seconds
   game_time: 180

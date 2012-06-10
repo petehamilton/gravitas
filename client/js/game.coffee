@@ -131,36 +131,39 @@ class @Game
       @server.stopGravityGun @player()
 
 
-  moveBalls: (server_balls) ->
-    for ball_model in server_balls
-      { x, y } = ball_model
-      @moveBall(x, y, 500, ball_model)
-
-
-  moveBall: (x, y, duration, ball_model) ->
+  # Move the view for the given ball model, takes duration ms
+  # For instant movement, pass 0 for duration param
+  #
+  # ball_model : The ball model for the view we wish to move
+  # duration : Animation time
+  moveBall: (ball_model, duration) ->
     ball_view = @balls[ball_model.id]
     if ball_view?
-      ball_view.moveTo(x, y, duration)
+      ball_view.moveTo(ball_model.x, ball_model.y, duration)
     else
       @balls[ball_model.id] = new BallView(ball_model, @arena.paper)
 
 
-  pulled: (player, ball_model) ->
-    log "player #{player} pulled", ball_model
-    {x, y} = @arena.getBallStorePosition player
-    duration = config.pull_time_ms
-    @moveBall(x, y, duration, ball_model)
+  # Move the views for the given ball models, takes duration ms
+  # For instant movement, pass 0 for duration param
+  #
+  # ball_models : The ball models for the views we wish to move
+  # duration : Animation time
+  moveBalls: (ball_models, duration) ->
+    for ball_model in ball_models
+      @moveBall(ball_model, duration)
 
 
-  shot: (player, ball_model, angle) ->
+  # A player has shot a ball, play the sound effect and removes the ball from canvas
+  #
+  # player : the player who shot
+  # ball_model : The ball which has been shot
+  shot: (player, ball_model) ->
     new Audio("sounds/fire.wav").play()
     log "player #{player} shot", ball_model
     ball_view = @balls[ball_model.id]
-    ball_view.shoot angle, =>
-      # TODO delete ball view / let it fly out/explode
-      log "shot done"
-      # TODO check if this allow the ball to be GC'd
-      delete @balls[ball_model.id]
+    ball_view.remove =>
+      delete @balls[ball_model.id] # TODO check if this allows ball to be GC'd
 
 
   # Sets the angle of any player turret.
@@ -169,7 +172,7 @@ class @Game
       @arena.setTurretRotation(player, angle)
 
 
-  # Implement/use the current player's powerup
+  # Use the current player's powerup. Sends signal to server
   usePowerup: () ->
     @withServer =>
       @server.usePowerup @player()
@@ -191,17 +194,6 @@ class @Game
     @powerups[player] = null
     p.deactivate()
 
-
-  updateBalls: (server_balls) ->
-    # TODO take care of deleted balls
-    for ball_model in server_balls
-      ball_view = @balls[ball_model.id]
-      if ball_view?
-        # Ball already has a view, update model
-        ball_view.setModel ball_model
-      else
-        # Create a new view for this ball. This calls update() for us already.
-        @balls[ball_model.id] = new BallView(ball_model, @arena.paper)
-
-  clockTick: (i) ->
-    @arena.clock.update i
+  # Update the arena clock
+  clockTick: (seconds) ->
+    @arena.clock.update seconds

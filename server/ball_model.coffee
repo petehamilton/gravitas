@@ -1,4 +1,4 @@
-{ config } = require './utils'
+{ config, ServerAnimation, log } = require './utils'
 
 exports.makePlayerBallType = (player_id) ->
   kind: config.ball_kinds.player
@@ -18,3 +18,43 @@ class @BallModel
   # - { kind: POWERUP, effect: SHIELD }
   constructor: (@id, @type, @x, @y) ->
     console.log "Creating Ball #{id} at #{[x, y]}"
+
+  # Animates a ball model from it's current position to x, y
+  # This is done by repeated small step increments
+  # 
+  # x                   : Target x coord
+  # y                   : Target y coord
+  # duration            : Duration (ms)
+  # stepCallback        : Called every increment of animation
+  # completionCallback  : Called once animation is complete
+  #                       Not called if animation is overwritten
+  animateTo: (x, y, duration, stepCallback, completionCallback) ->
+    fps = 50 #TODO: Make me a config var?
+    spf = 1000 / fps
+    frames = duration*1.0 / spf
+
+    dx = (x - @x)
+    dy = (y - @y)
+
+    i = 0
+    original_x = @x
+    original_y = @y
+
+    clearInterval @animation
+    @animation = setInterval () =>
+      if i == frames
+        @x = x
+        @y = y
+        completionCallback()
+        clearInterval @animation
+
+      # log ServerAnimation.easeInOutCubic
+      newx = ServerAnimation.easeInOutCubic i, original_x, dx, frames
+      newy = ServerAnimation.easeInOutCubic i, original_y, dy, frames
+      @x = newx
+      @y = newy
+      
+      stepCallback()
+      
+      i += 1
+    , spf
