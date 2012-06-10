@@ -1,3 +1,5 @@
+TURRET_OFFSET = config.turret_offset
+
 class @Turret
 
   # Positions are clockwise from top left to bottom left
@@ -17,13 +19,13 @@ class @Turret
 
     @center = makeTurretOffset 0, 0
 
-    xoffset = 30
-    yoffset = 50
+    x_offset = TURRET_OFFSET.x
+    y_offset = TURRET_OFFSET.y
     @offset_center = switch @position
-      when 0 then {x: -xoffset, y: -yoffset}
-      when 1 then {x: @paper.width - xoffset, y: -yoffset}
-      when 2 then {x: @paper.width - xoffset, y: @paper.height - yoffset }
-      when 3 then {x: -xoffset, y: @paper.height - yoffset}
+      when 0 then { x: -x_offset              , y: -y_offset }
+      when 1 then { x: @paper.width - x_offset, y: -y_offset }
+      when 2 then { x: @paper.width - x_offset, y: @paper.height - y_offset }
+      when 3 then { x: -x_offset              , y: @paper.height - y_offset }
 
     @angle = @position * 90 + 45
 
@@ -72,8 +74,8 @@ class @Turret
   # Turns the turret according to the mouse position.
   # Returns the angle in degrees.
   mouseMoved: (mx, my) ->
-    dx = @offset_center.x - mx
-    dy = @offset_center.y - my
+    dx = @offset_center.x - mx + TURRET_OFFSET.x
+    dy = @offset_center.y - my + TURRET_OFFSET.y
 
     a = Math.atan(Math.abs(dy/dx))
     if dx > 0 and dy > 0

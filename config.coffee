@@ -1,3 +1,5 @@
+TURRET_HEIGHT = 100
+
 config =
   fps: 50
 
@@ -29,7 +31,12 @@ config =
   vortex_mass: 10000
 
   turret_width: 200
-  turret_height: 100
+  turret_height: TURRET_HEIGHT
+
+  # The offset of the turret picture for the corners.
+  turret_offset:
+    x: 30
+    y: TURRET_HEIGHT/2
 
   hp_radius: 10
   max_health: 100
@@ -45,7 +52,7 @@ config =
 
   # Milliseconds between ball rotations
   rotation_interval: 1000
-  
+
   # Default users with passwords
   default_users:
     x: ''
