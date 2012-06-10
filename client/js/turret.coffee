@@ -27,7 +27,7 @@ class @Turret
     pulse_radius = 80
 
     @body_sprite = @paper.circle(@center.x, @center.y, pulse_radius)
-                    .attr({fill: '#00a2ff', opacity: 0.1})
+                    .attr({fill: config.player_colours[@position], opacity: 0.2})
 
     @pulse_offset_center = {x: @center.x - pulse_radius, y: @center.y - pulse_radius}
     @turret_pulse_persist = @paper.image(@pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, pulse_radius*2, pulse_radius*2)
