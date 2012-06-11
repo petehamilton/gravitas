@@ -313,6 +313,7 @@ class @ArenaModel
     angle = player.turret_angle
 
     b = player.stored_balls
+
     if not b
       log "player #{player} tries to shoot, but has no ball"
     else
