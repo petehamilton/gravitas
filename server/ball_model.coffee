@@ -18,6 +18,7 @@ class @BallModel
   # - { kind: POWERUP, effect: SHIELD }
   constructor: (@id, @type, @x, @y) ->
     console.log "Creating Ball #{id} at #{[x, y]}"
+    @floating = true
 
   # Animates a ball model from it's current position to x, y
   # This is done by repeated small step increments

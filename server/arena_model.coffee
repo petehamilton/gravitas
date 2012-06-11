@@ -370,12 +370,15 @@ class @ArenaModel
         contact_radius = p.health*config.shield_radius
         dx = b.x - p.center.x
         dy = b.y - p.center.y
+
         distance = Math.sqrt (dx*dx + dy*dy)
-        angle = ((radToDeg Math.atan2(dx,dy)) + 360) % 360
+        angle = Math.atan2(dy, dx)
+
         if distance < contact_radius
-          collision_x = p.center.x + Math.cos(angle)/contact_radius
-          collision_y = p.center.y + Math.sin(angle)/contact_radius
-          collisionCallback(p, b, collision_x, collision_y)
+          collision_x = p.center.x + Math.cos(angle)*contact_radius
+          collision_y = p.center.y + Math.sin(angle)*contact_radius
+          if b.floating
+            collisionCallback(p, b, collision_x, collision_y)
 
 
   # Handles the collision between a player's shield and a ball
@@ -386,6 +389,8 @@ class @ArenaModel
   # y               : The y coord of impact
   # handledCallback : Called once the collision has been handled
   handleCollision: (player, ball_model, x, y, handledCallback) ->
-    log "Handle Collision: ", player, ball_model, x, y
+    ball_model.floating = false
     ball_model.stopAnimation()
+    ball_model.x = x
+    ball_model.y = y
     handledCallback() if handledCallback

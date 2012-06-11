@@ -158,9 +158,9 @@ startTimers = ->
 
   # Collision checking
   collisionCheck = setInterval () =>
-    arena.checkForCollisions (args...) ->
-      arena.handleCollision(args...)
-
+    arena.checkForCollisions (player, ball_model, x, y) ->
+      arena.handleCollision player, ball_model, x, y, () =>
+        everyone.now.receiveBallMoved ball_model, 0
   , config.collision_check_interval
 
   # Arena clock time
