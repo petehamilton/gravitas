@@ -279,7 +279,7 @@ class @ArenaModel
       powerup = config.ball_kinds.powerup
 
       # TODO: Remove Later when using collision with turret
-      if b.type.kind == config.powerup
+      if b.type.kind == powerup
         @setPowerup(player, b.type.powerup_kind, activatePowerupCallback, deactivatePowerupCallback)
 
       if b.type.kind == powerup or b.type.player_id == player
