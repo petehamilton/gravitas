@@ -38,7 +38,6 @@ class @ArenaModel
 
     # Holds all the active balls that players have shot.
     # TODO: Needs removal of a ball once it goes out of bounds
-    # TODO: Needs deletion on collision
     @active_balls = []
 
 
@@ -379,7 +378,6 @@ class @ArenaModel
         x: player.center.x + Math.cos(angle) * contact_radius
         y: player.center.y + Math.sin(angle) * contact_radius
 
-      @active_balls.splice(@active_balls.indexOf(ball), 1)
       collisionCallback(player, ball, collision_point.x, collision_point.y)
 
     for ball in @active_balls
@@ -395,6 +393,7 @@ class @ArenaModel
           processCollision(ball, player)
 
 
+
   # Handles the collision between a player's shield and a ball
   #
   # player          : The player in the collision
@@ -403,10 +402,11 @@ class @ArenaModel
   # y               : The y coord of impact
   # handledCallback : Called once the collision has been handled
   handleCollision: (player, ball_model, x, y, handledCallback) ->
-    # log ball_model.type.player_id, player.id
     if ball_model.floating and ball_model.type.player_id != player.id
       ball_model.floating = false
       ball_model.stopAnimation()
       ball_model.x = x
       ball_model.y = y
       handledCallback() if handledCallback
+      @active_balls.splice((@active_balls.indexOf ball_model), 1)
+#
