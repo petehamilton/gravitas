@@ -1,3 +1,4 @@
+{ config } = require './utils'
 class @PlayerModel
   constructor: (@id, @colour) ->
     console.log "Creating Player with ID #{@id}"
