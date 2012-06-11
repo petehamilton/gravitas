@@ -152,8 +152,16 @@ startTimers = ->
   ball_rotation = setInterval () =>
     arena.rotateTriangles()
     if connected
+      # 
       everyone.now.receiveBallsMoved(arena.balls, config.rotation_time)
   , config.rotation_interval
+
+  # Collision checking
+  collisionCheck = setInterval () =>
+    arena.checkForCollisions (args...) ->
+      arena.handleCollision(args...)
+
+  , config.collision_check_interval
 
   # Arena clock time
   seconds = config.game_time
@@ -162,15 +170,9 @@ startTimers = ->
       everyone.now.receiveClock --seconds
     if seconds == 0
       clearInterval clock
-      clearInterval ball_rotation
+      clearInterval ball_rotatio
+      clearInterval collisionCheck
   , config.clock_interval
-
-  # Collision checking
-  collisionCheck = setInterval () =>
-    arena.checkForCollisions (args...) ->
-      arena.handleCollision(args...)
-
-  , config.collision_check_interval
 
 
 run = ->
