@@ -29,7 +29,7 @@ class @BallModel
   # completionCallback  : Called once animation is complete
   #                       Not called if animation is overwritten
   animateTo: (x, y, duration, stepCallback, completionCallback) ->
-    fps = 50 #TODO: Make me a config var?
+    fps = config.fps
     spf = 1000 / fps
     frames = duration*1.0 / spf
 

@@ -5,6 +5,8 @@ CANVAS_HEIGHT = 600
 PLAYER_CENTER_OFFSET_X = 100
 PLAYER_CENTER_OFFSET_Y = 100
 
+FPS = 50
+
 config =
   fps: 50
 
@@ -71,6 +73,9 @@ config =
   # Milliseconds between ticks (i.e. 1 second)
   clock_interval: 1000
 
+  # Used for animations etc
+  fps: FPS
+
   # Player Centers, used for ball pulling, turret rotation etc
   player_centers:
     0: { x: PLAYER_CENTER_OFFSET_X, y: PLAYER_CENTER_OFFSET_Y}
@@ -79,6 +84,7 @@ config =
     3: { x: PLAYER_CENTER_OFFSET_X, y: CANVAS_HEIGHT - PLAYER_CENTER_OFFSET_Y }
 
   turret_pulse_interval: 3000
+  collision_check_interval: FPS
 
   player_colours:
     0: "#00a2ff"

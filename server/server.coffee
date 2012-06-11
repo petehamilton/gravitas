@@ -152,7 +152,6 @@ startTimers = ->
   , config.clock_interval
 
 
-
 run = ->
 
   app = createApp()
