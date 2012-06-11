@@ -13,7 +13,6 @@ class @Game
     @gameStarted = ko.observable @autoStart()
     @assembly = ko.observable false
 
-
     # Authentication
     @username = ko.observable ''
     @password = ko.observable ''
