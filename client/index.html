@@ -23,6 +23,7 @@
     <script type="text/coffeescript" src="js/shield_powerup_view.coffee"></script>
     <script type="text/coffeescript" src="js/turret.coffee"></script>
     <script type="text/coffeescript" src="js/arena.coffee"></script>
+    <script type="text/coffeescript" src="js/statistics.coffee"></script>
     <script type="text/coffeescript" src="js/game.coffee"></script>
     <script type="text/coffeescript" src="js/ball_view.coffee"></script>
     <script type="text/coffeescript" src="js/vortex.coffee"></script>
@@ -70,19 +71,56 @@
               <span id="rating" data-bind="style: { color: userRatingColor() }, text: userRating()">
               </span><br>
               <div id="navigation">
-                <a href="#" class="glow">A</a>
-                <a href="#" class="glow">C</a>
-                <a href="#" class="glow">v</a>
-                <a href="#" class="glow">s</a>
+                <a href="#" class="glow" data-bind="click: assemblyGoTo1">A</a>
+                <a href="#" class="glow" data-bind="click: assemblyGoTo2">C</a>
+                <a href="#" class="glow" data-bind="click: assemblyGoTo3">v</a>
+                <a href="#" class="glow" data-bind="click: assemblyGoTo4">s</a>
               </div>
             </div>
             <br />
-            <div id="lobby-content">
+            <div id="lobby-content" data-bind="visible: assemblyContent() == 1">
+             <label class="large">Profile</label><br />
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+
+            </div>
+
+            <div id="lobby-content" data-bind="visible: assemblyContent() == 2">
+             <label class="large">Settings</label><br />
 
               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
 
+            </div>
+
+            <div id="lobby-content" data-bind="visible: assemblyContent() == 3">
+             <label class="large">Statistics</label><br />
+
+              <table>
+                  <tbody>
+                      <tr>
+                          <td><b>Best Score</b></td>
+                          <td>999</td>
+
+                      </tr>
+                      <tr>
+                          <td><b>Games Played</b></td>
+                          <td>123</td>
+                      </tr>
+                      <tr>
+                          <td><b>Time Played</b></td>
+                          <td>999</td>
+                      </tr>
+                  </tbody>
+              </table>
+              <div id="paperStats"></div>
+            </div>
+
+            <div id="lobby-content" data-bind="visible: assemblyContent() == 4">
+             <label class="large">Achievements</label><br />
+
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
 
             </div>
+
               <div id="buttons">
               <button id="playbutton" data-bind="click: assemblyClick">
                 Play

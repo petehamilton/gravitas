@@ -12,6 +12,8 @@ class @Game
     @gameStarted = ko.observable @autoStart()
     @assembly = ko.observable false
 
+    @assemblyContent = ko.observable 1
+
 
     # Authentication
     @username = ko.observable 'Winston'
@@ -55,6 +57,13 @@ class @Game
         read: -> target()
         write: (val) => @withServer -> syncFn val
       target
+
+
+  assemblyGoTo1: => @assemblyContent 1
+  assemblyGoTo2: => @assemblyContent 2
+  assemblyGoTo3: => @assemblyContent 3
+  assemblyGoTo4: => @assemblyContent 4
+
 
 
   resetAuthStatus: =>
