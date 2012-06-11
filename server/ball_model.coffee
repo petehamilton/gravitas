@@ -49,7 +49,6 @@ class @BallModel
         completionCallback() if completionCallback
         @stopAnimation()
 
-      # log ServerAnimation.easeInOutCubic
       newx = ServerAnimation.easeInOutCubic i, original_x, dx, frames
       newy = ServerAnimation.easeInOutCubic i, original_y, dy, frames
       @x = newx
