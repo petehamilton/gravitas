@@ -81,15 +81,41 @@
             </div>
             <br />
             <div id="lobby-content" data-bind="visible: assemblyContent() == 1">
-             <label class="large">Profile</label><br />
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-
+              <label class="large">Profile</label><br />
             </div>
 
             <div id="lobby-content" data-bind="visible: assemblyContent() == 2">
-             <label class="large">Settings</label><br />
+              <label class="large">Settings</label><br />
 
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+            <table>
+              <tbody>
+                <tr>
+                  <td><b>Display Name:</b></td>
+                  <td data-bind="text: username"></td>
+                </tr>
+                  <tr>
+                    <td><b>Email address:</b></td>
+                    <td>user@email.address</td>
+              </tbody>
+            </table>
+            <br/>
+            <label class="large">Change Password</label><br />
+            <table>
+              <tbody>
+                <tr>
+                  <td><b>Old Password:</b></td>
+                  <td><input class="small" type="password" id="oldPassword" tabindex="1" style="{height: 10px}"/></td>
+                </tr>
+                <tr>
+                  <td><b>New Password:</b></td>
+                  <td><input class="small" type="password" id="oldPassword" tabindex="1" style="{height: 10px}"/></td>
+                </tr>
+                <tr>
+                  <td><b>Confirm Password:</b></td>
+                  <td><input class="small" type="password" id="oldPassword" tabindex="1" style="{height: 10px}"/></td>
+                </tr>
+              </tbody>
+            </table>
 
             </div>
 
