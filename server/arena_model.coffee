@@ -373,19 +373,26 @@ class @ArenaModel
   #
   # collisionCallback : Called whenever a collision is detected
   checkForCollisions: (collisionCallback) ->
-    for b in @active_balls
-      for p in @players
-        contact_radius = p.health * config.shield_radius
-        dx = b.x - p.center.x
-        dy = b.y - p.center.y
+
+    processCollision = (ball, player) =>
+      collision_point =
+        x: player.center.x + Math.cos(angle) * contact_radius
+        y: player.center.y + Math.sin(angle) * contact_radius
+
+      @active_balls.splice(@active_balls.indexOf(ball), 1)
+      collisionCallback(player, ball, collision_point.x, collision_point.y)
+
+    for ball in @active_balls
+      for player in @players
+        contact_radius = player.health * config.shield_radius
+        dx = ball.x - player.center.x
+        dy = ball.y - player.center.y
 
         distance = Math.sqrt (dx * dx + dy * dy)
         angle = Math.atan2(dy, dx)
 
         if distance < contact_radius
-          collision_x = p.center.x + Math.cos(angle) * contact_radius
-          collision_y = p.center.y + Math.sin(angle) * contact_radius
-          collisionCallback(p, b, collision_x, collision_y)
+          processCollision(ball, player)
 
 
   # Handles the collision between a player's shield and a ball
