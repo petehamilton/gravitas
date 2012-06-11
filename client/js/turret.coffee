@@ -57,7 +57,6 @@ class @Turret
                       .transform("r#{@angle},#{@center.x},#{@center.y}")
   
   updateHealth: (health) ->
-    log "Update HEalth TURRET"
     @pulse_scale = health
     #TODO: Animate this?
     @turret_pulse_anim.animate({transform:"s#{@pulse_scale}"}, config.shield_damage_speed, "<>")
