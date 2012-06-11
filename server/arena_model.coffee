@@ -319,7 +319,7 @@ class @ArenaModel
 
     #TODO, work out distance to nearest object?
     # 900 will mean balls always shoot at same speed
-    distance = 900
+    distance = 600
 
     angle = player.turret_angle
 
