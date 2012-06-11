@@ -36,6 +36,11 @@ class @ArenaModel
     @balls = for {x, y} in flatten @ball_positions
       new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
 
+    # Holds all the active balls that players have shot.
+    # TODO: Needs removal of a ball once it goes out of bounds
+    # TODO: Needs deletion on collision
+    @active_balls = []
+
 
   # Picks random triangles to rotate
   pickRandomTriangles: (triangles) ->
@@ -329,7 +334,10 @@ class @ArenaModel
       radius = Math.max(config.arena_size.x, config.arena_size.y) * 1.42
       targetx = oldX + Math.cos(degToRad(angle)) * radius
       targety = oldY + Math.sin(degToRad(angle)) * radius
-      # player.stored_balls = []
+
+      # Removes element at index 0
+      player.stored_balls.splice(0, 1)
+      @active_balls.push b
 
       shotCallback b, targetx, targety
 
@@ -365,12 +373,11 @@ class @ArenaModel
   #
   # collisionCallback : Called whenever a collision is detected
   checkForCollisions: (collisionCallback) ->
-    active_balls = []
-    for p in @players
-      active_balls = active_balls.concat p.stored_balls
+    # active_balls = []
+    # for p in @players
+    #   active_balls = active_balls.concat p.stored_balls
 
-
-    for b in active_balls
+    for b in @active_balls
       for p in @players
         contact_radius = p.health*config.shield_radius
         dx = b.x - p.center.x
