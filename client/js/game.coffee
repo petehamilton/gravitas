@@ -63,6 +63,7 @@ class @Game
   assemblyGoTo2: => @assemblyContent 2
   assemblyGoTo3: => @assemblyContent 3
   assemblyGoTo4: => @assemblyContent 4
+  assemblyGoTo5: => @assemblyContent 5
 
 
 
