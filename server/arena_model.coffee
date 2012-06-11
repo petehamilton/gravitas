@@ -37,7 +37,6 @@ class @ArenaModel
       new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
 
     # Holds all the active balls that players have shot.
-    # TODO: Needs removal of a ball once it goes out of bounds
     @active_balls = []
 
 
@@ -317,29 +316,30 @@ class @ArenaModel
   # 3. Deletes the ball from the player's balls
   # 4. Calls the callback function, passing it the ball model and target coords
   shoot: (player, shotCallback) ->
+
     #TODO, work out distance to nearest object?
     # 900 will mean balls always shoot at same speed
     distance = 900
 
     angle = player.turret_angle
 
-    b = player.stored_balls[0]
+    ball = player.stored_balls[0]
 
-    unless b
+    unless ball
       log "player #{player} tries to shoot, but has no ball"
     else
-      log "player #{player} shoots ball #{b.id} of kind #{b.type.kind} with angle #{angle}"
-      { x: oldX, y: oldY } = b
+      log "player #{player} shoots ball #{ball.id} of kind #{ball.type.kind} with angle #{angle}"
+      { x: oldX, y: oldY } = ball
       radius = Math.max(config.arena_size.x, config.arena_size.y) * 1.42
-      targetx = oldX + Math.cos(degToRad(angle)) * radius
-      targety = oldY + Math.sin(degToRad(angle)) * radius
+      target =
+        x: oldX + Math.cos(degToRad(angle)) * radius
+        y: oldY + Math.sin(degToRad(angle)) * radius
 
       # Removes element at index 0
       player.stored_balls.splice(0, 1)
-      @active_balls.push b
+      @active_balls.push ball
 
-      shotCallback b, targetx, targety
-
+      shotCallback ball, target.x, target.y
 
   # Gives a powerup to a player
   #
@@ -353,6 +353,11 @@ class @ArenaModel
       when config.powerup_kinds.shield
         new spm.ShieldPowerupModel activateCallback, deactivateCallback
 
+  # Removes ball from @active_balls if it exists
+  remove: (ball) ->
+    index = @active_balls.indexOf(ball)
+    unless index == -1
+      @active_balls.splice(index, 1)
 
   # Activates a player's powerup.
   # If they don't have one, does nothing
@@ -367,11 +372,13 @@ class @ArenaModel
       log "player #{player} uses their powerup"
       player.powerup.activate()
 
-  # Checks for collisions between each player and the balls
-  # TODO: Optimise this so that only balls being shot are looked at
-  #
+
+  # Checks for collisions between each player and the active balls
   # collisionCallback : Called whenever a collision is detected
-  checkForCollisions: (collisionCallback) ->
+  # Removes balls from active_balls when they go out of the arena bounds
+  processBallPositions: (collisionCallback) ->
+    inBounds = (x, y) ->
+      0 <= x <= ARENA_SIZE.x and 0 <= y <= ARENA_SIZE.y
 
     processCollision = (ball, player) =>
       collision_point =
@@ -381,6 +388,9 @@ class @ArenaModel
       collisionCallback(player, ball, collision_point.x, collision_point.y)
 
     for ball in @active_balls
+      unless inBounds(ball.x, ball.y)
+        @remove(ball)
+
       for player in @players
         contact_radius = player.health * config.shield_radius
         dx = ball.x - player.center.x
@@ -409,5 +419,5 @@ class @ArenaModel
       ball_model.x = x
       ball_model.y = y
       handledCallback() if handledCallback
-      @active_balls.splice((@active_balls.indexOf ball_model), 1)
+      @remove(ball_model)
 #

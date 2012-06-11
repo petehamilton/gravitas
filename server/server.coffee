@@ -132,6 +132,8 @@ configureNow = (everyone) ->
           everyone.now.receiveBallMoved shot_ball, 0
         , () ->
           everyone.now.receiveShotFinished player_id, shot_ball
+
+
     arena.shoot arena.players[player_id], shootCallback
 
 
@@ -152,13 +154,13 @@ startTimers = ->
   ball_rotation = setInterval () =>
     arena.rotateTriangles()
     if connected
-      # 
+      #
       everyone.now.receiveBallsMoved(arena.balls, config.rotation_time)
   , config.rotation_interval
 
   # Collision checking
   collisionCheck = setInterval () =>
-    arena.checkForCollisions (player, ball_model, x, y) ->
+    arena.processBallPositions (player, ball_model, x, y) ->
       arena.handleCollision player, ball_model, x, y, () =>
         everyone.now.receiveBallMoved ball_model, 0
         everyone.now.receiveHealthUpdate player.id, player.health
