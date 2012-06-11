@@ -373,10 +373,6 @@ class @ArenaModel
   #
   # collisionCallback : Called whenever a collision is detected
   checkForCollisions: (collisionCallback) ->
-    # active_balls = []
-    # for p in @players
-    #   active_balls = active_balls.concat p.stored_balls
-
     for b in @active_balls
       for p in @players
         contact_radius = p.health*config.shield_radius
