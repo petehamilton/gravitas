@@ -12,3 +12,5 @@ staticfetcher.py
 runtogether.py
 
 server/node_modules
+
+.DS_STORE
