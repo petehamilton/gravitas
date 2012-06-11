@@ -282,7 +282,7 @@ class @ArenaModel
       if b.type.kind == powerup
         @setPowerup(player, b.type.powerup_kind, activatePowerupCallback, deactivatePowerupCallback)
 
-      if b.type.kind == powerup or b.type.player_id == player
+      if b.type.kind == powerup or b.type.player_id == player.id
         pullSoundCallback()
 
         center = config.player_centers[player.id]
