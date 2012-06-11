@@ -40,13 +40,13 @@ class @BallModel
     original_x = @x
     original_y = @y
 
-    clearInterval @animation
+    @stopAnimation()
     @animation = setInterval () =>
       if i == frames
         @x = x
         @y = y
         completionCallback() if completionCallback
-        clearInterval @animation
+        @stopAnimation()
 
       # log ServerAnimation.easeInOutCubic
       newx = ServerAnimation.easeInOutCubic i, original_x, dx, frames
@@ -58,3 +58,6 @@ class @BallModel
       
       i += 1
     , spf
+
+  stopAnimation: () ->
+    clearInterval @animation

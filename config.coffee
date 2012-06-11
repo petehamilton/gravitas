@@ -83,6 +83,8 @@ config =
   turret_pulse_interval: 3000
   collision_check_interval: FPS
 
+  shield_radius: 80
+
   player_colours:
     0: "#00a2ff"
     1: "#fc00ff"

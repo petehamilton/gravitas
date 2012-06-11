@@ -26,6 +26,10 @@ exports.degToRad = (deg) ->
   (deg * Math.PI) / 180
 
 
+exports.radToDeg = (rad) ->
+  (rad * 180) / Math.PI
+
+
 exports.partition = (list, iterator) ->
   take = []
   reject = []

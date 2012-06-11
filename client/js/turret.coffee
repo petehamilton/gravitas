@@ -24,7 +24,7 @@ class @Turret
     @angle = @position * 90 + 45
 
     # 200x200px pulse image
-    pulse_radius = 80
+    pulse_radius = config.shield_radius
 
     @body_sprite = @paper.circle(@center.x, @center.y, pulse_radius)
                     .attr({fill: config.player_colours[@position], opacity: 0.2})

@@ -1,4 +1,4 @@
-{ config, dict, log, even, degToRad, partition, flatten, assert, negativeMod } = require './utils'
+{ config, dict, log, even, degToRad, partition, flatten, assert, negativeMod, radToDeg } = require './utils'
 pbm = require './ball_model'
 plm = require './player_model'
 spm = require './shield_powerup_model'
@@ -287,7 +287,7 @@ class @ArenaModel
 
         log "player #{player} pulled ball #{b.id} at", [b.x, b.y]
 
-        player.stored_balls = b
+        player.stored_balls = [b]
         @balls = others # All other balls stay
 
         pullCallback b, center.x, center.y
@@ -312,7 +312,7 @@ class @ArenaModel
 
     angle = player.turret_angle
 
-    b = player.stored_balls
+    b = player.stored_balls[0]
 
     if not b
       log "player #{player} tries to shoot, but has no ball"
@@ -322,7 +322,7 @@ class @ArenaModel
       radius = Math.max(config.arena_size.x, config.arena_size.y) * 1.42
       targetx = oldX + Math.cos(degToRad(angle)) * radius
       targety = oldY + Math.sin(degToRad(angle)) * radius
-      delete player.stored_balls
+      player.stored_balls = []
 
       shotCallback b, targetx, targety
 
@@ -353,3 +353,32 @@ class @ArenaModel
       log "player #{player} uses their powerup"
       player.powerup.activate()
 
+  # Checks for collisions between each player and the balls
+  # TODO: Optimise this so that only balls being shot are looked at
+  # 
+  # collisionCallback : Called whenever a collision is detected
+  checkForCollisions: (collisionCallback) ->
+    for p in @players
+      for b in p.stored_balls
+        contact_radius = p.health*config.shield_radius
+        dx = b.x - p.center.x
+        dy = b.y - p.center.y
+        distance = Math.sqrt (dx*dx + dy*dy)
+        angle = ((radToDeg Math.atan2(dx,dy)) + 360) % 360
+        if distance < contact_radius
+          collision_x = p.center.x + Math.cos(angle)/contact_radius
+          collision_y = p.center.y + Math.sin(angle)/contact_radius
+          collisionCallback(p, b, collision_x, collision_y)
+
+
+  # Handles the collision between a player's shield and a ball
+  # 
+  # player          : The player in the collision
+  # ball_model      : The ball which has collided with the player
+  # x               : The x coord of impact
+  # y               : The y coord of impact
+  # handledCallback : Called once the collision has been handled 
+  handleCollision: (player, ball_model, x, y, handledCallback) ->
+    log "Handle Collision: ", player, ball_model, x, y
+    ball_model.stopAnimation()
+    handledCallback() if handledCallback
