@@ -87,8 +87,8 @@ config =
 
   player_colours:
     0: "#00a2ff"
-    1: "#fc00ff"
-    2: "#72ff00"
+    1: "#72ff00"
+    2: "#fc00ff"
     3: "#fcff00"
 
   # Default users with passwords
