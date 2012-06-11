@@ -1,7 +1,7 @@
 @log = (args...) -> console.log args...
 @dir = (obj) -> console.log(JSON.stringify obj)
 @assert = (bool, msg) ->
-  if not bool
+  unless bool
     throw new Error('assertion failed' + if msg? then ' ' + msg else '')
 
 @assertPlayerId = (player_id) ->

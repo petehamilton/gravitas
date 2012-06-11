@@ -109,10 +109,10 @@ configureNow = (everyone) ->
           everyone.now.receiveBallMoved pulled_ball, 0
 
     validPullSoundCallback = =>
-      everyone.now.receiveValidPullSound(player)
+      everyone.now.receiveValidPullSound(player.id)
 
     invalidPullSoundCallback = =>
-      everyone.now.receiveInvalidPullSound(player)
+      everyone.now.receiveInvalidPullSound(player.id)
 
     arena.pull(player,
                x,

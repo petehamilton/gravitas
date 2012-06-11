@@ -45,7 +45,7 @@ exports.flatten = (array) ->
 
 
 exports.assert = (bool, msg) ->
-  if not bool
+  unless bool
     throw new Error('assertion failed' + if msg? then ' ' + msg else '')
 
 

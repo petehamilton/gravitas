@@ -4,7 +4,7 @@ class @Game
     @autoLogIn = makeCookieObservable 'autoLogIn'
     @autoStart = makeCookieObservable 'autoStart'
 
-    @autoLogIn.subscribe => @autoStart off if not @autoLogIn()
+    @autoLogIn.subscribe => @autoStart off unless @autoLogIn()
     @autoStart.subscribe => @autoLogIn on if @autoStart()
 
     # Log-in / start
@@ -37,7 +37,8 @@ class @Game
     @lag = ko.observable false
 
     # Current player ID
-    @getPlayerId = ko.observable(0).extend { convert: parseInt }
+    # TODO where is the dodgy player reference?
+    @player = @getPlayerId = ko.observable(0).extend { convert: parseInt }
 
     # Balls currently in the game. The key is the ball ID.
     @balls = {}
@@ -120,13 +121,13 @@ class @Game
 
   # Plays pull sound only if player equals the current player
   validPullSound: (player) ->
-    if player.id == @getPlayerId()
+    if player == @getPlayerId()
       new Audio("sounds/pull.wav").play()
 
 
   # Plays invalid pull sound only if player equals the current player
   invalidPullSound: (player) ->
-    if player.id == @getPlayerId()
+    if player == @getPlayerId()
       new Audio("sounds/funk.wav").play()
 
 

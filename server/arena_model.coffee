@@ -291,6 +291,7 @@ class @ArenaModel
         log "player #{player} pulled ball #{b.id} at", [b.x, b.y]
 
         player.stored_balls = [b]
+
         @balls = others # All other balls stay
 
         pullCallback b, center.x, center.y
@@ -320,11 +321,11 @@ class @ArenaModel
 
     b = player.stored_balls[0]
 
-    if not b
+    unless b
       log "player #{player} tries to shoot, but has no ball"
     else
       log "player #{player} shoots ball #{b.id} of kind #{b.type.kind} with angle #{angle}"
-      {x: oldX, y: oldY} = b
+      { x: oldX, y: oldY } = b
       radius = Math.max(config.arena_size.x, config.arena_size.y) * 1.42
       targetx = oldX + Math.cos(degToRad(angle)) * radius
       targety = oldY + Math.sin(degToRad(angle)) * radius
@@ -351,7 +352,7 @@ class @ArenaModel
   #
   # player : The player using their powerup
   usePowerup: (player) ->
-    if not player.powerup
+    unless player.powerup
       log "player #{player} tries to use their powerup, but doesn't have one!"
     else if player.powerup.activated
       log "player #{player} has already activated their powerup"
@@ -361,7 +362,7 @@ class @ArenaModel
 
   # Checks for collisions between each player and the balls
   # TODO: Optimise this so that only balls being shot are looked at
-  # 
+  #
   # collisionCallback : Called whenever a collision is detected
   checkForCollisions: (collisionCallback) ->
     for p in @players
@@ -378,12 +379,12 @@ class @ArenaModel
 
 
   # Handles the collision between a player's shield and a ball
-  # 
+  #
   # player          : The player in the collision
   # ball_model      : The ball which has collided with the player
   # x               : The x coord of impact
   # y               : The y coord of impact
-  # handledCallback : Called once the collision has been handled 
+  # handledCallback : Called once the collision has been handled
   handleCollision: (player, ball_model, x, y, handledCallback) ->
     log "Handle Collision: ", player, ball_model, x, y
     ball_model.stopAnimation()
