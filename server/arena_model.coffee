@@ -365,8 +365,12 @@ class @ArenaModel
   #
   # collisionCallback : Called whenever a collision is detected
   checkForCollisions: (collisionCallback) ->
+    active_balls = []
     for p in @players
-      for b in p.stored_balls
+      active_balls.concat p.stored_balls
+
+    for b in active_balls
+      for p in @players
         contact_radius = p.health*config.shield_radius
         dx = b.x - p.center.x
         dy = b.y - p.center.y
@@ -377,8 +381,7 @@ class @ArenaModel
         if distance < contact_radius
           collision_x = p.center.x + Math.cos(angle)*contact_radius
           collision_y = p.center.y + Math.sin(angle)*contact_radius
-          if b.floating
-            collisionCallback(p, b, collision_x, collision_y)
+          collisionCallback(p, b, collision_x, collision_y)
 
 
   # Handles the collision between a player's shield and a ball
@@ -389,8 +392,10 @@ class @ArenaModel
   # y               : The y coord of impact
   # handledCallback : Called once the collision has been handled
   handleCollision: (player, ball_model, x, y, handledCallback) ->
-    ball_model.floating = false
-    ball_model.stopAnimation()
-    ball_model.x = x
-    ball_model.y = y
-    handledCallback() if handledCallback
+    # log ball_model.type.player_id, player.id
+    if ball_model.floating and ball_model.type.player_id != player.id
+      ball_model.floating = false
+      ball_model.stopAnimation()
+      ball_model.x = x
+      ball_model.y = y
+      handledCallback() if handledCallback
