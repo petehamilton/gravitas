@@ -8,7 +8,8 @@ PLAYER_CENTER_OFFSET_Y = 100
 FPS = 50
 
 config =
-  fps: 50
+  # Used for animations etc
+  fps: FPS
 
   ball_kinds:
     player: 0
@@ -27,7 +28,6 @@ config =
   powerup_probability: 0.2
 
   # Game Information
-  model_fps: 30
   player_ids: [0..3]
 
   arena_size:
@@ -72,9 +72,6 @@ config =
 
   # Milliseconds between ticks (i.e. 1 second)
   clock_interval: 1000
-
-  # Used for animations etc
-  fps: FPS
 
   # Player Centers, used for ball pulling, turret rotation etc
   player_centers:

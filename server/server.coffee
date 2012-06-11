@@ -8,7 +8,6 @@ db = require './db'
 {config, log, dir, ServerAnimation} = require './utils'
 
 # Server configuration
-MODEL_FPS = config.model_fps
 BALLS_ENABLED = config.balls_enabled
 
 # Global Variables
