@@ -40,3 +40,7 @@ class @Arena
 
   getBallStorePosition: (player) ->
     @turrets[player].getBallStorePos()
+
+
+  updateHealth: (player, health) ->
+    @turrets[player].updateHealth health

@@ -84,6 +84,7 @@ config =
   collision_check_interval: FPS
 
   shield_radius: 80
+  shield_damage_speed: 500
 
   player_colours:
     0: "#00a2ff"

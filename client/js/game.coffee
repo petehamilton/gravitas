@@ -215,3 +215,7 @@ class @Game
   # Update the arena clock
   clockTick: (seconds) ->
     @arena.clock.update seconds
+
+  # Update the health for the given player
+  updateHealth: (player, health) ->
+    @arena.updateHealth(player, health)

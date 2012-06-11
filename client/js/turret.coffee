@@ -23,59 +23,46 @@ class @Turret
 
     @angle = @position * 90 + 45
 
-    # 200x200px pulse image
-    pulse_radius = config.shield_radius
+    @shield_radius = config.shield_radius
 
-    @body_sprite = @paper.circle(@center.x, @center.y, pulse_radius)
-                    .attr({fill: config.player_colours[@position], opacity: 0.2})
+    # Translucent shield background
+    @turret_pulse_background = @paper.circle(@center.x, @center.y, @shield_radius)
+    @turret_pulse_background.attr
+      fill: config.player_colours[@position]
+      opacity: 0.2
 
-    @pulse_offset_center = {x: @center.x - pulse_radius, y: @center.y - pulse_radius}
-    @turret_pulse_persist = @paper.image(@pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, pulse_radius*2, pulse_radius*2)
-    @turret_pulse_anim = @paper.image(@pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, pulse_radius*2, pulse_radius*2)
+    # Pulses
+    pulse_width = @shield_radius * 2
+    pulse_height = @shield_radius * 2
+    @pulse_scale = 1
+    @pulse_offset_center = {x: @center.x - @shield_radius, y: @center.y - @shield_radius}
+
+    # Static
+    @turret_pulse_persist = @paper.image @pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, pulse_width, pulse_height
+
+    # Animated Pulse
+    @turret_pulse_anim = @paper.image(@pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, @shield_radius*2, @shield_radius*2)
     @turret_pulse_anim.transform("s0").attr {opacity: 1}
+
     pulse_animation = setInterval () =>
         @turret_pulse_anim.transform("s0").attr {opacity: 1}
-        @turret_pulse_anim.animate({transform:"s1"}, config.turret_pulse_interval*2/3, "<>")
+        @turret_pulse_anim.animate({transform:"s#{@pulse_scale}"}, config.turret_pulse_interval*2/3, "<>")
         @turret_pulse_anim.animate({opacity: 0}, config.turret_pulse_interval, "<>")
     , config.turret_pulse_interval
 
+    # Turret itself
     width = config.turret_width
     height = config.turret_height
-
     @turret_sprite = @paper.image(@image, @offset_center.x, @offset_center.y, width, height)
                       .transform("r#{@angle},#{@center.x},#{@center.y}")
-
-    #hp indicator
-    @hp_radius = config.hp_radius
-    @max_health = config.max_health
-    healthdata_display = [9999, 1]
-
-    @getBallStorePos = -> makeTurretOffset 30, 30
-
-    @hp_pos = makeTurretOffset 0, 0
-
-    @updateHpIndicator(66)
-
-    @hp_indicator.each ->
-      @sector.scale 0, 0, @cx, @cy
-      @sector.animate
-        transform: "s1 1 " + @cx + " " + @cy
-      , 1000, "bounce"
-
-
-  # Updates the HP indicator
-  updateHpIndicator: (newHealth) ->
-    @hp_indicator? @hp_indicator.remove
-    if newHealth > @max_health
-      @health = @max_health
-    else if newHealth < 0
-      @health = 0
-    else
-      @health = newHealth
-    healthdata_display = [ @health+1, (100-@health)+1]
-    @hp_indicator = @paper.piechart(@hp_pos.x, @hp_pos.y, @hp_radius, healthdata_display,
-      {colors:["#57ff53","#ae0800"], smooth: true, stroke: "#57ff53"})
-
+  
+  updateHealth: (health) ->
+    log "Update HEalth TURRET"
+    @pulse_scale = health
+    #TODO: Animate this?
+    @turret_pulse_anim.animate({transform:"s#{@pulse_scale}"}, config.shield_damage_speed, "<>")
+    @turret_pulse_persist.animate({transform:"s#{@pulse_scale}"}, config.shield_damage_speed, "<>")
+    @turret_pulse_background.animate({transform:"s#{@pulse_scale}"}, config.shield_damage_speed, "<>")
 
   # Turns the turret according to the mouse position.
   # Returns the angle in degrees.
