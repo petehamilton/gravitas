@@ -25,6 +25,7 @@ class @Turret
 
     @shield_radius = config.shield_radius
 
+
     # Translucent shield background
     @turret_pulse_background = @paper.circle(@center.x, @center.y, @shield_radius)
     @turret_pulse_background.attr
@@ -34,6 +35,7 @@ class @Turret
     # Pulses
     pulse_width = @shield_radius * 2
     pulse_height = @shield_radius * 2
+    @pulse_speed = 1
     @pulse_scale = 1
     @pulse_offset_center = {x: @center.x - @shield_radius, y: @center.y - @shield_radius}
 
@@ -44,11 +46,15 @@ class @Turret
     @turret_pulse_anim = @paper.image(@pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, @shield_radius*2, @shield_radius*2)
     @turret_pulse_anim.transform("s0").attr {opacity: 1}
 
-    pulse_animation = setInterval () =>
+    animate_pulse = () =>
+      setTimeout () =>
         @turret_pulse_anim.transform("s0").attr {opacity: 1}
-        @turret_pulse_anim.animate({transform:"s#{@pulse_scale}"}, config.turret_pulse_interval*2/3, "<>")
-        @turret_pulse_anim.animate({opacity: 0}, config.turret_pulse_interval, "<>")
-    , config.turret_pulse_interval
+        @turret_pulse_anim.animate({transform:"s#{@pulse_scale}"}, config.turret_pulse_interval*2/3*@pulse_speed, "<>")
+        @turret_pulse_anim.animate({opacity: 0}, config.turret_pulse_interval*@pulse_speed, "<>")
+        animate_pulse()
+      , config.turret_pulse_interval * @pulse_speed
+
+    animate_pulse()
 
     # Turret itself
     width = config.turret_width

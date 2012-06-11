@@ -211,7 +211,7 @@ class @Game
     p = switch powerup_type
       when config.powerup_kinds.shield then new ShieldPowerupView(player, @arena.paper)
     @powerups[player] = p
-    p.activate()
+    p.activate(@arena.turrets[player])
 
 
   # Deactivates the player's current powerup
@@ -219,7 +219,7 @@ class @Game
     log "Player #{player} loses their powerup"
     p = @powerups[player]
     @powerups[player] = null
-    p.deactivate()
+    p.deactivate(@arena.turrets[player])
 
   # Update the arena clock
   clockTick: (seconds) ->
