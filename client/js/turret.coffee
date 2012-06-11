@@ -9,6 +9,7 @@ class @Turret
 
     @image = "../images/double_turret.png"
     @pulse_image = "../images/pulse.png"
+    @blast_shield_image = "../images/pulse_shield.png"
 
     @center = config.player_centers[@position]
 
@@ -41,6 +42,10 @@ class @Turret
 
     # Static
     @turret_pulse_persist = @paper.image @pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, pulse_width, pulse_height
+
+    # Blast Shield
+    @blast_shield = @paper.image @blast_shield_image, @pulse_offset_center.x, @pulse_offset_center.y, pulse_width, pulse_height
+    @blast_shield.attr {opacity: 0}
 
     # Animated Pulse
     @turret_pulse_anim = @paper.image(@pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, @shield_radius*2, @shield_radius*2)
@@ -93,6 +98,15 @@ class @Turret
   setRotation: (angle) ->
     @angle = angle
     @turret_sprite.transform("R#{@angle},#{@center.x},#{@center.y}")
+
+  generateBlastShield: () ->
+    @blast_shield.transform "s#{@pulse_scale}"
+    @blast_shield.animate {opacity: 1}, 500, ''
+
+
+  killBlastShield: () ->
+    @blast_shield.animate {opacity: 0}, 500, ''
+
 
   # Does a damage animation
   damage: (ball_view, x, y) ->
