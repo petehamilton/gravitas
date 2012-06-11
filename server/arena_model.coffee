@@ -329,7 +329,7 @@ class @ArenaModel
       radius = Math.max(config.arena_size.x, config.arena_size.y) * 1.42
       targetx = oldX + Math.cos(degToRad(angle)) * radius
       targety = oldY + Math.sin(degToRad(angle)) * radius
-      player.stored_balls = []
+      # player.stored_balls = []
 
       shotCallback b, targetx, targety
 
@@ -367,7 +367,8 @@ class @ArenaModel
   checkForCollisions: (collisionCallback) ->
     active_balls = []
     for p in @players
-      active_balls.concat p.stored_balls
+      active_balls = active_balls.concat p.stored_balls
+
 
     for b in active_balls
       for p in @players
