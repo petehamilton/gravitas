@@ -1,7 +1,7 @@
 { config } = require './utils'
 
 class @ShieldPowerupModel
-  constructor: (@player, @activateCallback, @deactivateCallback) ->
+  constructor: (@activateCallback, @deactivateCallback) ->
     @duration = 3000
     @activated = false
 

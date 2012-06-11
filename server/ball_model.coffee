@@ -45,7 +45,7 @@ class @BallModel
       if i == frames
         @x = x
         @y = y
-        completionCallback()
+        completionCallback() if completionCallback
         clearInterval @animation
 
       # log ServerAnimation.easeInOutCubic

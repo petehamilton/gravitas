@@ -87,21 +87,21 @@ configureNow = (everyone) ->
     everyone.now.displayMessage msg
 
 
-  everyone.now.setAngle = (player, angle) ->
+  everyone.now.setAngle = (player_id, angle) ->
+    player = arena.players[player_id]
     arena.setAngle player, angle
-    everyone.now.receiveAngle(player, angle)
+    everyone.now.receiveAngle(player_id, angle)
 
 
-  everyone.now.startGravityGun = (player, x, y) ->
+  everyone.now.startGravityGun = (player_id, x, y) ->
+    player = arena.players[player_id]
     # TODO remove X, Y only allow pulling balls in line
     activateCallback = (powerup_type) =>
-      everyone.now.receiveActivatePowerup(player, powerup_type)
-
+      everyone.now.receiveActivatePowerup(player_id, powerup_type)
 
     deactivateCallback = () =>
-      arena.powerups[player] = null
-      everyone.now.receiveDeactivatePowerup(player)
-
+      player.powerup = null
+      everyone.now.receiveDeactivatePowerup(player_id)
 
     pullCallback = (pulled_ball, x, y) =>
       duration = config.pull_time_ms
@@ -111,19 +111,19 @@ configureNow = (everyone) ->
     arena.pull player, x, y, pullCallback, activateCallback, deactivateCallback
 
 
-  everyone.now.stopGravityGun = (player) ->
+  everyone.now.stopGravityGun = (player_id) ->
     shootCallback = (shot_ball, x, y) =>
-      everyone.now.receiveShot player, shot_ball
+      everyone.now.receiveShot player_id, shot_ball
       duration = config.shoot_time_ms
       shot_ball.animateTo x, y, duration, () ->
           everyone.now.receiveBallMoved shot_ball, 0
         , () ->
-          everyone.now.receiveShotFinished player, shot_ball
-    arena.shoot player, shootCallback
+          everyone.now.receiveShotFinished player_id, shot_ball
+    arena.shoot arena.players[player_id], shootCallback
 
 
-  everyone.now.usePowerup = (player) ->
-    arena.usePowerup player
+  everyone.now.usePowerup = (player_id) ->
+    arena.usePowerup arena.players[player_id]
 
 
 createApp = ->

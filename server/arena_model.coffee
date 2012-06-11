@@ -1,5 +1,6 @@
 { config, dict, log, even, degToRad, partition, flatten, assert, negativeMod } = require './utils'
 pbm = require './ball_model'
+plm = require './player_model'
 spm = require './shield_powerup_model'
 assert = require 'assert'
 
@@ -24,25 +25,16 @@ nextPlayerId = ->
   tmp
 
 
-# Creates an object mapping from player ID to value created by `fn`.
-playerIdDict = (fn) ->
-  dict ([i, fn(i)] for i in PLAYER_IDS)
-
-
 class @ArenaModel
 
   constructor: ->
+    @players = (new plm.PlayerModel(i, config.player_colours[i]) for i in PLAYER_IDS)
+    log @players
     @ball_positions  = @calculateStartPoints()
     @triangles       = @calculateTriangles()
 
     @balls = for {x, y} in flatten @ball_positions
       new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
-
-    @angles = playerIdDict (i) -> 0
-
-    @stored_balls = playerIdDict (i) -> null
-
-    @powerups = playerIdDict (i) -> null
 
 
   # Picks random triangles to rotate
@@ -256,7 +248,7 @@ class @ArenaModel
 
 
   setAngle: (player, angle) ->
-    @angles[player] = angle
+    player.turret_angle = angle
 
 
   # Responsible for handling a player pulling a ball.
@@ -290,12 +282,12 @@ class @ArenaModel
       if b.type.kind == config.powerup
         @setPowerup(player, b.type.powerup_kind, activatePowerupCallback, deactivatePowerupCallback)
 
-      if b.type.kind == config.powerup or b.type.player_id == player
-        center = config.player_centers[player]
+      if b.type.kind == config.powerup or b.type.player_id == player.id
+        center = config.player_centers[player.id]
 
         log "player #{player} pulled ball #{b.id} at", [b.x, b.y]
 
-        @stored_balls[player] = b
+        player.stored_balls = b
         @balls = others # All other balls stay
 
         pullCallback b, center.x, center.y
@@ -318,9 +310,9 @@ class @ArenaModel
     # 900 will mean balls always shoot at same speed
     distance = 900
 
-    angle = @angles[player]
+    angle = player.turret_angle
 
-    b = @stored_balls[player]
+    b = player.stored_balls
     if not b
       log "player #{player} tries to shoot, but has no ball"
     else
@@ -329,7 +321,7 @@ class @ArenaModel
       radius = Math.max(config.arena_size.x, config.arena_size.y) * 1.42
       targetx = oldX + Math.cos(degToRad(angle)) * radius
       targety = oldY + Math.sin(degToRad(angle)) * radius
-      delete @stored_balls[player]
+      delete player.stored_balls
 
       shotCallback b, targetx, targety
 
@@ -342,24 +334,21 @@ class @ArenaModel
   # deactivateCallback  : Called when the powerup is deactivated
   setPowerup: (player, powerup_type, activateCallback, deactivateCallback) ->
     log "player #{player} has collected a #{powerup_type} powerup"
-    powerup = switch powerup_type
+    player.powerup = switch powerup_type
       when config.powerup_kinds.shield
-        new spm.ShieldPowerupModel player, activateCallback, deactivateCallback
-
-    @powerups[player] = powerup
+        new spm.ShieldPowerupModel activateCallback, deactivateCallback
 
 
   # Activates a player's powerup.
   # If they don't have one, does nothing
-  #
+  # 
   # player : The player using their powerup
   usePowerup: (player) ->
-    p = @powerups[player]
-    console.log p
-    if not p
+    if not player.powerup
       log "player #{player} tries to use their powerup, but doesn't have one!"
-    else if p.activated
+    else if player.powerup.activated
       log "player #{player} has already activated their powerup"
     else
       log "player #{player} uses their powerup"
-      p.activate()
+      player.powerup.activate()
+
