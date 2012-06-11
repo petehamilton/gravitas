@@ -375,16 +375,16 @@ class @ArenaModel
   checkForCollisions: (collisionCallback) ->
     for b in @active_balls
       for p in @players
-        contact_radius = p.health*config.shield_radius
+        contact_radius = p.health * config.shield_radius
         dx = b.x - p.center.x
         dy = b.y - p.center.y
 
-        distance = Math.sqrt (dx*dx + dy*dy)
+        distance = Math.sqrt (dx * dx + dy * dy)
         angle = Math.atan2(dy, dx)
 
         if distance < contact_radius
-          collision_x = p.center.x + Math.cos(angle)*contact_radius
-          collision_y = p.center.y + Math.sin(angle)*contact_radius
+          collision_x = p.center.x + Math.cos(angle) * contact_radius
+          collision_y = p.center.y + Math.sin(angle) * contact_radius
           collisionCallback(p, b, collision_x, collision_y)
 
 
