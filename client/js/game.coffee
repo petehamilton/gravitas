@@ -118,9 +118,14 @@ class @Game
       @server.setAngle @player(), angle
 
 
+  # Plays pull sound only if player equals the current player
+  pullSound: (player) ->
+    if player == @player()
+      new Audio("sounds/pull.wav").play()
+
+
   # Starts the gravity gun of the current player
   startGravityGun: (x, y) ->
-    new Audio("sounds/pull.wav").play()
     @withServer =>
       @server.startGravityGun @player(), x, y
 

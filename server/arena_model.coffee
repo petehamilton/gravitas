@@ -265,7 +265,7 @@ class @ArenaModel
   # pullCallback  : passed (pulled_ball, target_x, target_y), called once
   #                 coords calculated
   #
-  pull: (player, x, y, pullCallback, activatePowerupCallback, deactivatePowerupCallback) ->
+  pull: (player, x, y, pullCallback, activatePowerupCallback, deactivatePowerupCallback, pullSoundCallback) ->
     # Find the balls that were selected by the pull
     r = config.pull_radius
     [selected, others] = partition @balls, (b, i) ->
@@ -283,6 +283,8 @@ class @ArenaModel
         @setPowerup(player, b.type.powerup_kind, activatePowerupCallback, deactivatePowerupCallback)
 
       if b.type.kind == config.powerup or b.type.player_id == player.id
+        pullSoundCallback()
+
         center = config.player_centers[player.id]
 
         log "player #{player} pulled ball #{b.id} at", [b.x, b.y]
@@ -342,7 +344,7 @@ class @ArenaModel
 
   # Activates a player's powerup.
   # If they don't have one, does nothing
-  # 
+  #
   # player : The player using their powerup
   usePowerup: (player) ->
     if not player.powerup

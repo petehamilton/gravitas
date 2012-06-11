@@ -108,7 +108,10 @@ configureNow = (everyone) ->
       pulled_ball.animateTo x, y, duration, () ->
           everyone.now.receiveBallMoved pulled_ball, 0
 
-    arena.pull player, x, y, pullCallback, activateCallback, deactivateCallback
+    pullSoundCallback = =>
+      everyone.now.receivePullSound(player)
+
+    arena.pull player, x, y, pullCallback, activateCallback, deactivateCallback, pullSoundCallback
 
 
   everyone.now.stopGravityGun = (player_id) ->
