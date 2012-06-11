@@ -119,9 +119,17 @@ class @Game
 
 
   # Plays pull sound only if player equals the current player
-  pullSound: (player) ->
-    if player == @getPlayerId()
+  validPullSound: (player) ->
+    log "Valid sound"
+    if player.id == @getPlayerId()
       new Audio("sounds/pull.wav").play()
+
+
+  # Plays invalid pull sound only if player equals the current player
+  invalidPullSound: (player) ->
+    log "invalid sound"
+    if player.id == @getPlayerId()
+      new Audio("sounds/funk.wav").play()
 
 
   # Starts the gravity gun of the current player
