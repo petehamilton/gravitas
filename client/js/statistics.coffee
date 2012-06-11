@@ -1,13 +1,22 @@
 class @Statistics
   constructor: (@paper) ->
 
-    @drawPieChart(43,31)
-    t = paper.text(200, 80, "RATING CHANGES")
-    t.attr fill: "#68727b", 'font-weight': "bold", 'font-size': 12, 'font-family': "Century Gothic, sans-serif"
+    @pieChart = @drawPieChart(43,31)
+    graphLabel = paper.text(200, 80, "RATING CHANGES")
+    graphLabel.attr fill: "#68727b", 'font-weight': "bold", 'font-size': 12, 'font-family': "Century Gothic, sans-serif"
 
+    @ratingValues = [ 1121, 943, 1200, 1366, 1665, 1732, 1554 ]
+    @graph = @drawLineGraph(@ratingValues)
 
+  # Draws the win:loss piechart
+  drawPieChart: (winsNumber,lossNumber) ->
+    @piechart? @piechart.remove
+    @piechart = @paper.piechart(125, 30, 30, [winsNumber,lossNumber],
+      {legend: ["%% - win", "%% - loss"], legendpos: "west", legendcolor: '#68727b', colors:["#50a20e","#a20e0f"], smooth: true, stroke: "#000"})
 
-    ratingValues = [ 1121, 943, 1200, 1366, 1665, 1732, 1554 ]
+  # Draws the rating line graph
+  drawLineGraph: (ratingValues) ->
+    @graph? @graph.remove
     xAxisValues = []
     i = ratingValues.length
     while i > 0
@@ -16,15 +25,15 @@ class @Statistics
       xAxisValues.push date.getTime()
       i--
 
-    chart = paper.linechart(20, 80, 400, 100, xAxisValues, ratingValues,
+    chart = @paper.linechart(20, 80, 400, 100, xAxisValues, ratingValues,
       colors: [ "#50a20e" ]
       nostroke: false
       axis: "0 0 1 1"
       symbol: "circle"
       smooth: true
     ).hoverColumn(->
-      @tags = paper.set()
-      @tags.push paper.label(@x, @y[0], @values[0], 160, 10).insertBefore(this).attr([{ fill: "#fff" }, {fill: this.symbols[0].attr("fill") }])
+      @tags = @paper.set()
+      @tags.push @paper.label(@x, @y[0], @values[0], 160, 10).insertBefore(this).attr([{ fill: "#fff" }, {fill: this.symbols[0].attr("fill") }])
     , ->
       @tags and @tags.remove()
     )
@@ -42,12 +51,3 @@ class @Statistics
 
     $.each chart.axis[1].text.items, (i, label) ->
       label.attr fill: "#68727b"
-
-  # Updates the HP indicator
-  drawPieChart: (winsNumber,lossNumber) ->
-    @piechart = @paper.piechart(125, 30, 30, [winsNumber,lossNumber],
-      {legend: ["%% - win", "%% - loss"], legendpos: "west", legendcolor: '#68727b', colors:["#50a20e","#a20e0f"], smooth: true, stroke: "#000"})
-
-
-
-
