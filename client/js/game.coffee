@@ -229,3 +229,7 @@ class @Game
   # Update the health for the given player
   updateHealth: (player, health) ->
     @arena.updateHealth(player, health)
+
+  # Deal with a damagin collision
+  collisionDamage: (player, ball_model, x, y) ->
+    @arena.collisionDamage player, ball_model, x, y

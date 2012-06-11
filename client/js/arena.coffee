@@ -44,3 +44,6 @@ class @Arena
 
   updateHealth: (player, health) ->
     @turrets[player].updateHealth health
+
+  collisionDamage: (player_id, ball_model, x, y) ->
+    @turrets[player_id].damage(@game.balls[ball_model.id], x, y)

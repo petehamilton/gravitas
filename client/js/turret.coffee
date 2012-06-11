@@ -93,3 +93,21 @@ class @Turret
   setRotation: (angle) ->
     @angle = angle
     @turret_sprite.transform("R#{@angle},#{@center.x},#{@center.y}")
+
+  # Does a damage animation
+  damage: (ball_view, x, y) ->
+    corner_damage = (ball_center, r) ->
+      ball_center - r/2 - config.ball_size/2
+    corner_ball = (ball_center) ->
+      ball_center + config.ball_size/2
+
+    
+    r = 50
+    damage_pulse_anim = @paper.image(@pulse_image, corner_damage(x,r), corner_damage(y,r), 2*r, 2*r).transform("s0")
+    damage_pulse_anim.animate {transform:"s0.8", opacity: 0.6}, 200, '', () =>
+      damage_pulse_anim.animate {transform:"s1", opacity: 0}, 500, ''
+      ball_view.image.animate({transform:"T#{corner_ball(@offset_center.x - x)},#{corner_ball(@offset_center.y - y)}"}, 800, "")
+      ball_view.image.animate({opacity: 0}, 300, "")
+
+
+
