@@ -12,7 +12,7 @@ class @Arena
 
   mouseMoved: (x, y) ->
     # The turret view calculates the angle and updates itself
-    angle = @turrets[@game.player()].mouseMoved(x, y)
+    angle = @turrets[@game.getPlayerId()].mouseMoved(x, y)
     @crosshair.mouseMoved(x, y)
 
     # Tell the game about the changed player angle to send it to the server

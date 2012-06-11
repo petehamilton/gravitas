@@ -37,7 +37,7 @@ class @Game
     @lag = ko.observable false
 
     # Current player ID
-    @player = ko.observable(0).extend { convert: parseInt }
+    @getPlayerId = ko.observable(0).extend { convert: parseInt }
 
     # Balls currently in the game. The key is the ball ID.
     @balls = {}
@@ -115,25 +115,25 @@ class @Game
   # Sets the turret angle of the current player.
   onOwnAngle: (angle) ->
     @withServer =>
-      @server.setAngle @player(), angle
+      @server.setAngle @getPlayerId(), angle
 
 
   # Plays pull sound only if player equals the current player
   pullSound: (player) ->
-    if player == @player()
+    if player == @getPlayerId()
       new Audio("sounds/pull.wav").play()
 
 
   # Starts the gravity gun of the current player
   startGravityGun: (x, y) ->
     @withServer =>
-      @server.startGravityGun @player(), x, y
+      @server.startGravityGun @getPlayerId(), x, y
 
 
   # Stops the turret angle of the current player.
   stopGravityGun: (x, y) ->
     @withServer =>
-      @server.stopGravityGun @player()
+      @server.stopGravityGun @getPlayerId()
 
 
   # Move the view for the given ball model, takes duration ms
@@ -179,14 +179,14 @@ class @Game
 
   # Sets the angle of any player turret.
   setAngle: (player, angle) ->
-    if player != @player()
+    if player != @getPlayerId()
       @arena.setTurretRotation(player, angle)
 
 
   # Use the current player's powerup. Sends signal to server
   usePowerup: () ->
     @withServer =>
-      @server.usePowerup @player()
+      @server.usePowerup @getPlayerId()
 
 
   # Activates the player's current powerup
