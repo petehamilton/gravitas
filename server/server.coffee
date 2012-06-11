@@ -85,7 +85,7 @@ configureNow = (everyone) ->
 
   everyone.now.startGravityGun = (player, x, y) ->
     # TODO remove X, Y only allow pulling balls in line
-    arena.pull player, x, y, (pulled_ball) ->
+    arena.pull player, x, y, everyone, (pulled_ball) ->
       everyone.now.receivePull player, pulled_ball
 
   everyone.now.stopGravityGun = (player) ->

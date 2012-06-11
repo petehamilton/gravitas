@@ -28,3 +28,37 @@ class @Arena
 
   getBallStorePosition: (player) ->
     @turrets[player].getBallStorePos()
+
+  debugShadowInfo: (si) ->
+
+    Raphael.el.arrow = (color) ->
+      @attr "stroke", color
+      @attr "stroke-width", "3"
+      @attr "arrow-end", "classic"
+
+    Raphael.fn.vector = (s, t, color) ->
+      @path("M#{s.x} #{s.y}L#{t.x} #{t.y}").arrow(color)
+
+    Raphael.el.red = ->
+      @attr fill: "#f00"
+
+    hide_arrow = (segment, color) =>
+
+      {s, d} = segment
+      t =
+        x: s.x + d.x
+        y: s.y + d.y
+
+      arr = @paper.vector(s, t, color)
+      setTimeout (-> arr.remove()), 2000
+
+    shed_arr = hide_arrow si.shadow_segment, 'red'
+    ball_arr = hide_arrow si.ball_segment, 'lightgreen'
+
+    p = si.intersection_point
+
+    log "intersection", p
+    if p
+      c = @paper.circle(p.x, p.y, 20).red()
+      setTimeout (-> c.remove()), 2000
+

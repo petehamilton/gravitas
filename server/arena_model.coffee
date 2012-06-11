@@ -356,20 +356,31 @@ class @ArenaModel
       # t = (q − p) × s / (r × s)
       [p, q, r, s] = [s1.s, s2.s, s1.d, s1.d]
 
-      if (div = cross r, s) < 0.0001
+      div = cross r, s
+      log "div", div
+      if -0.0001 < div < 0.0001
         null
       else
         t = (cross (diff q, p), s) / div
+        log "t", t
         # ip = p + t * r
         intersect_point =
           x: p.x + t * r.x
           y: p.y + t * r.y
+        if 0 <= t <= 1
+          # Intersection inside the segments
+          log "intersect"
+          intersect_point
+        else
+          log "intersect outside"
+          null
+          # Intersection of the lines, but outside the segments
 
     # Ball radius
     BR = config.ball_size / 2
 
     for ob in @balls
-      if ob.id != ball.id
+      # if ob.id != ball.id
 
         # TODO explain that d is the end
         rot_normed_ball_segment_d = normal(normed ball_segment.d)
@@ -381,12 +392,20 @@ class @ArenaModel
             # dx: (2 * BR) * rot_normed_ball_segment_d
             # dy: (2 * BR) * rot_normed_ball_segment_d
 
-        log(JSON.stringify { ball: ob, shadow_segment: shadow_segment })
+        intersection_point = sect shadow_segment, ball_segment
+
+        shadow_info =
+          ball: ob
+          ball_segment: ball_segment
+          shadow_segment: shadow_segment
+          intersection_point: intersection_point
+        log(JSON.stringify shadow_info)
+        return shadow_info
 
     false
 
 
-  pull: (player, x, y, pullCallback) ->
+  pull: (player, x, y, everyone, pullCallback) ->
     # TODO remove X, Y only allow pulling balls in line
     r = config.pull_radius
 
@@ -403,7 +422,9 @@ class @ArenaModel
 
       s = @shadowed player, b
 
-      if s
+      everyone.now.shadowInfo s
+
+      if s.ball
         log "player #{player} tried to pull ball #{b.id} at #{[b.x, b.y]}
              but it is shadowed by ball #{s.id} at #{[s.x, s.y]}"
       else

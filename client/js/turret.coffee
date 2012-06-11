@@ -90,3 +90,88 @@ class @Turret
   setRotation: (angle) ->
     @angle = angle
     @turret_sprite.transform("R#{@angle},#{@center.x},#{@center.y}")
+
+
+  # If the given ball shadowed by another ball, return the shadowing ball closest to the player
+  shadowed: (player, ball) ->
+
+    # TODO remove
+    makeTurretOffset = (x, y) =>
+      switch player
+        when 0 then { x: x, y: y }
+        when 1 then { x: config.arena_size.x - y, y: x }
+        when 2 then { x: config.arena_size.x - x, y: config.arena_size.y - y }
+        when 3 then { x: y, y: config.arena_size.y - x }
+
+    # TODO proper player positions
+    p = makeTurretOffset 0, 0
+
+    # TODO explain that d is the end
+    ball_segment =
+      s:
+        x: p.x
+        y: p.y
+      d:
+        x: ball.x - p.x
+        y: ball.y - p.y
+
+
+    length = (v) ->
+      Math.sqrt(v.x * v.x + v.y * v.y)
+
+    scale = (v, s) ->
+      x: v.x * s
+      y: v.y * s
+
+    normed = (v) ->
+      l = length v
+      assert.ok(l > 0, "norm: length > 0")
+      scale(v, 1 / l)
+
+    normal = (dv) ->
+      # "left-rotated"
+      x: -dv.y
+      y: dv.x
+
+    diff = (a, b) ->
+      x: a.x - b.x
+      y: a.y - b.y
+
+    cross = (a, b) ->
+      a.x * b.y - a.y * b.y
+
+    # TODO doc
+    # see http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
+    sect = (s1, s2) ->
+      # t = (q − p) × s / (r × s)
+      [p, q, r, s] = [s1.s, s2.s, s1.d, s1.d]
+
+      if (div = cross r, s) < 0.0001
+        null
+      else
+        t = (cross (diff q, p), s) / div
+        # ip = p + t * r
+        intersect_point =
+          x: p.x + t * r.x
+          y: p.y + t * r.y
+
+    # Ball radius
+    BR = config.ball_size / 2
+
+    for ob in @balls
+      if ob.id != ball.id
+
+        # TODO explain that d is the end
+        rot_normed_ball_segment_d = normal(normed ball_segment.d)
+        shadow_segment =
+          s: diff(ob, (scale rot_normed_ball_segment_d, BR))
+            # x: ob.x - rot_normed_ball_segment_d * BR
+            # y: ob.y - rot_normed_ball_segment_d * BR
+          d: scale(rot_normed_ball_segment_d, 2 * BR)
+            # dx: (2 * BR) * rot_normed_ball_segment_d
+            # dy: (2 * BR) * rot_normed_ball_segment_d
+
+        log(JSON.stringify { ball: ob, shadow_segment: shadow_segment })
+
+    false
+
