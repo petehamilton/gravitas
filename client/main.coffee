@@ -17,10 +17,10 @@
     arr[i] for arr in arguments
 
 
-createPaper = (paperId, width, height) ->
+createPaper = (paperId, width, height, opacity) ->
   paper = Raphael(paperId, width, height)
   background = paper.rect(0, 0, width, height)
-  background.attr({fill: '#000', opacity: 0.3})
+  background.attr({fill: '#000', opacity: opacity})
   paper
 
 
@@ -65,12 +65,18 @@ class FpsThrottler
 
 main = ->
   # create paper
-  paper = createPaper 'paper', config.arena_size.x, config.arena_size.y
+  paper = createPaper 'paper', config.arena_size.x, config.arena_size.y, 0.3
+
+  # create paper for statistics display
+  paperStats = createPaper 'paperStats', 500, 200, 0
 
   vortex = new Vortex(paper)
 
   # create game
   arena = new Arena(paper)
+
+  # create stats page
+  statistics = new Statistics(paperStats)
 
   game = new Game(arena, 0, now)
   arena.setGame game

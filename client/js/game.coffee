@@ -12,7 +12,7 @@ class @Game
     @gameStarted = ko.observable @autoStart()
     @assembly = ko.observable false
 
-    @assemblyContent = ko.observable 1
+    @assemblyContent = ko.observable 3
 
 
     # Authentication
