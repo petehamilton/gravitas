@@ -75,16 +75,11 @@
               <div id="navigation">
                 <a href="#" class="glow" data-menu="profile" data-bind="click: assemblyGoTo">A</a>
                 <a href="#" class="glow" data-menu="settings" data-bind="click: assemblyGoTo">C</a>
-                <a href="#" class="glow" data-menu="statistics" data-bind="click: assemblyGoTo">v</a>
                 <a href="#" class="glow" data-menu="achievements" data-bind="click: assemblyGoTo">s</a>
                 <a href="#" class="glow" data-menu="search" data-bind="click: assemblyGoTo">M</a>
               </div>
             </div>
             <br />
-            <div id="lobby-content" data-bind="visible: assemblyContent() == 'profile'">
-              <label class="large">Profile</label><br />
-            </div>
-
             <div id="lobby-content" data-bind="visible: assemblyContent() == 'settings'">
             <label class="large">Settings</label><br />
             <table>
@@ -132,30 +127,31 @@
 
             </div>
 
-            <div id="lobby-content" data-bind="visible: assemblyContent() == 'statistics'">
-             <label class="large">Statistics</label><br />
-
-              <table>
-                  <tbody>
-                      <tr>
-                          <td><b>Best Score:</b></td>
-                          <td>999</td>
-
-                      </tr>
-                      <tr>
-                          <td><b>Games Played:</b></td>
-                          <td>123</td>
-                      </tr>
-                      <tr>
-                          <td><b>Time Played:</b></td>
-                          <td>13h 19mins</td>
-                      </tr>
-                      <tr>
-                          <td><b>Win Ratio:</b></td>
-                      </tr>
-                  </tbody>
-              </table>
-              <div id="paperStats"></div>
+            <div id="lobby-content" data-bind="visible: assemblyContent() == 'profile'">
+             <label class="large">Profile</label><br />
+             <div id="profile-picture"><img src="images/ui/placeholder.jpg" class="profile"></div><div id="profile-stats">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><strong>Best Score</strong></td>
+                            <td>999</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Games Played</strong></td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Time Played</strong></td>
+                            <td>13h 19mins</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Win/Loss Ratio</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="piePaper"></div>
+              </div>
+              <div id="chartPaper"></div>
             </div>
 
             <div id="lobby-content" data-bind="visible: assemblyContent() == 'achievements'">
@@ -216,10 +212,7 @@
             </div>
 
 
-
             <div id="buttons">
-
-
                <button data-bind="click: connectNew">
                 Add a player
               </button>

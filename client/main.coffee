@@ -69,7 +69,9 @@ main = ->
   paper = createPaper 'paper', config.arena_size.x, config.arena_size.y, 0.3
 
   # create paper for statistics display
-  paperStats = createPaper 'paperStats', 500, 200, 0
+  chartPaper = createPaper 'chartPaper', 430, 120, 0
+  piePaper = createPaper 'piePaper', 200, 70, 0
+
 
   vortex = new Vortex(paper)
 
@@ -77,7 +79,7 @@ main = ->
   arena = new Arena(paper)
 
   # create stats page
-  statistics = new Statistics(paperStats)
+  statistics = new Statistics(chartPaper,piePaper)
 
   game = new Game(arena, 0, now)
   arena.setGame game
