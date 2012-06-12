@@ -6,8 +6,8 @@ class @Statistics
     graphLabel = chartPaper.text(200, 10, "RATING CHANGES")
     graphLabel2 = piePaper.text(310, 10, "WIN RATIO")
 
-    graphLabel.attr fill: "#68727b", 'font-weight': "bold", 'font-size': 12, 'font-family': "Century Gothic, sans-serif"
-    graphLabel2.attr fill: "#68727b", 'font-weight': "bold", 'font-size': 12, 'font-family': "Century Gothic, sans-serif"
+    graphLabel.attr fill: "#a2b5c6", 'font-size': 12, 'font-family': "Century Gothic, sans-serif"
+    graphLabel2.attr fill: "#a2b5c6", 'font-size': 12, 'font-family': "Century Gothic, sans-serif"
 
     @ratingValues = [ 1121, 943, 1200, 1366, 1665, 1732, 1554 ]
     @graph = @drawLineGraph(@ratingValues)
