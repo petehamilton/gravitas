@@ -162,11 +162,11 @@ class @ArenaModel
 
 
     triangles = []
-    rows = triangleRows()
+    rows = triangleRows(ball_levels)
     half_rows = Math.floor(rows / 2)
 
     for row in [0...rows]
-      cols = trianglesForRow row
+      cols = trianglesForRow ball_levels, row
       for col in [0...cols]
         half_col = Math.floor(col / 2)
         triangles.push (
@@ -187,7 +187,7 @@ class @ArenaModel
 
   # Rotates triangles randomly. If there isn't a ball in the center a new
   # one will be spawned
-  rotateTriangles: ->
+  rotateTriangles: (arena_size, ball_positions) ->
 
     # Finds the ball in @balls for a given point in the form
     # {x: ..., y: ...}
@@ -207,16 +207,16 @@ class @ArenaModel
     for {triangle, direction} in random_triangles
       for index in [0...triangle_points]
         { x, y } = triangle[index]
-        { x, y } = @ball_positions[x][y]
+        { x, y } = ball_positions[x][y]
         ball = findBall(x, y)
         # assert(ball, "Error cannot find plasma ball for triangle point")
         if ball?
           if direction == DIRECTIONS.LEFT
             { x: x_new, y: y_new } = triangle[negativeMod(index - 1, triangle_points)]
-            { x: x_new, y: y_new } = @ball_positions[x_new][y_new]
+            { x: x_new, y: y_new } = ball_positions[x_new][y_new]
           else
             { x: x_new, y: y_new } = triangle[negativeMod(index + 1, triangle_points)]
-            { x: x_new, y: y_new } = @ball_positions[x_new][y_new]
+            { x: x_new, y: y_new } = ball_positions[x_new][y_new]
           balls_to_move.push
             ball: ball
             x: x_new
@@ -227,7 +227,7 @@ class @ArenaModel
       ball.x = x
       ball.y = y
 
-    center_point = { x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2 }
+    center_point = { x: arena_size.x/2, y: arena_size.y/2 }
     unless findBall(center_point.x, center_point.y)?
       console.log "Spawning new ball"
       @spawnNewBall(center_point.x, center_point.y)
