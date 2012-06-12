@@ -24,12 +24,11 @@ nextPlayerId = ->
   cur_player_index %= PLAYER_IDS.length
   tmp
 
-
+# TODO: Pull grid creation out into a set of functions
 class @ArenaModel
 
   constructor: ->
     @players = (new plm.PlayerModel(i, config.player_colours[i]) for i in PLAYER_IDS)
-    log @players
     @ball_positions  = @calculateStartPoints(config.dist_between_balls, ARENA_SIZE, BALL_LEVELS)
     @triangles       = @calculateTriangles(BALL_LEVELS)
 
