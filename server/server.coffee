@@ -154,7 +154,6 @@ startTimers = ->
   ball_rotation = setInterval () =>
     arena.rotateTriangles()
     if connected
-      #
       everyone.now.receiveBallsMoved(arena.balls, config.rotation_time)
   , config.rotation_interval
 
