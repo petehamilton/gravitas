@@ -55,6 +55,7 @@ input[type=password]
   font-size: 14px
   border: 1px solid #c0c0c0
   border-radius: 5px
+
 input.small
   font-size: 10px
   color: #000
@@ -78,11 +79,17 @@ label.small
 
 label.medium
   font-size: 12px
+  color: #bccddc
+
 
 img.profile
   width: 140px
   height: 140px
   border: 1px solid #525e67
+
+img.profile.small
+  width: 32px
+  height: 32px
 
 
 th
@@ -91,7 +98,9 @@ th
 tr
   color: #68727b
   font-size: 12px
-  text-transform: uppercase
+  font-variant:small-caps
+
+  //text-transform: uppercase
 
 input[type=submit]
 button
@@ -122,6 +131,12 @@ button
   &.play
     color: #9fc181
 
+button[disabled]
+  linear-gradient top, #4a6f9a 0%, #2c4e71 100%
+
+  &:hover
+    color: #b7d1dc
+    border: 1px solid #21619b
 
 .screen
   position: absolute
@@ -236,6 +251,9 @@ a.glow:focus
       //color: rgb(30%,70%,0%)
       font-size: 11px
       width: 70%
+
+    #assembly-content
+      padding-left: 30px
 
     #search-result
       padding:30px

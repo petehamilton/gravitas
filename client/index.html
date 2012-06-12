@@ -257,24 +257,26 @@
               <table>
                 <thead>
                   <tr>
-                    <th>Username</th>
-                    <th>Rating</th>
+                    <td><label class="medium">Player</label></td>
+                    <td></td>
+                    <td><label class="medium">Rating</label></td>
                   </tr>
                 </thead>
                 <tbody data-bind="foreach: connectedPlayers">
                   <tr>
+                    <td><img src="images/ui/placeholder.jpg" class="profile small"></td>
                     <td><span data-bind="text: username"></span></td>
                     <td><span data-bind="text: rating"></span></td>
                   </tr>
                 </tbody>
               </table>
               <br />
-               <label>Total connected: <label data-bind="text: connectedPlayers().length"></label></label><br />
+               <label class="large">Total connected: <label data-bind="text: connectedPlayers().length"></label></label><br />
             </div>
 
 
             <div id="buttons">
-              <button data-bind="click: connectNew">
+              <button data-bind="click: connectNew, enable: connectedPlayers().length < 4">
                 Add a player (debug)
               </button>
 
