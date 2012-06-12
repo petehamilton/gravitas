@@ -157,12 +157,73 @@
             <div id="lobby-content" data-bind="visible: assemblyContent() == 'achievements'">
              <label class="large">Achievements</label><br />
 
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+               <table>
+                    <tbody>
+                        <tr>
+                            <td><label class="small">Achievement #1</label></td>
+                            <td>Icon</td>
+                            <td>Status</td>
+                        </tr>
+                        <tr>
+                            <td><label class="small">Achievement #2</label></td>
+                            <td>Icon</td>
+                            <td>Status</td>
+                        </tr>
+                        <tr>
+                            <td><label class="small">Achievement #3</label></td>
+                            <td>Icon</td>
+                            <td>Status</td>
+                        </tr>
+                        <tr>
+                            <td><label class="small">Achievement #4</label></td>
+                            <td>Icon</td>
+                            <td>Status</td>
+                        </tr>
+                        <tr>
+                            <td><label class="small">Achievement #5</label></td>
+                            <td>Icon</td>
+                            <td>Status</td>
+                        </tr>
+                        <tr>
+                            <td><label class="small">Achievement #6</label></td>
+                            <td>Icon</td>
+                            <td>Status</td>
+                        </tr>
+                    </tbody>
+                </table>
 
             </div>
 
+            <!-- Search Panel -->
             <div id="lobby-content" data-bind="visible: assemblyContent() == 'search'">
-             <label class="large">Search</label><input class="small" id="serch" tabindex="1"/><br />
+             <label class="large">Search</label>
+             <br/>
+             <span class="caps">Lookup Player:</span> <input class="small" type="text" placeholder="Search..." id="pictureURL" tabindex="1"/></td>
+             <div id="search-result">
+              <div id="profile-picture"><img src="images/ui/placeholder2.jpg" class="profile"></div><div id="profile-stats">
+                 <table>
+                     <tbody>
+                         <tr>
+                             <td><label class="small">Best Score</label></td>
+                             <td>999</td>
+                         </tr>
+                         <tr>
+                             <td><label class="small">Games Played</label></td>
+                             <td>123</td>
+                         </tr>
+                         <tr>
+                             <td><label class="small">Time Played</label></td>
+                             <td>13h 19mins</td>
+                         </tr>
+                         <tr>
+                             <td><label class="small">Win/Loss Ratio</label></td>
+                             <td>52:48</td>
+                         </tr>
+                     </tbody>
+                 </table>
+
+               </div>
+             </div>
 
             </div>
 
@@ -213,30 +274,18 @@
 
 
             <div id="buttons">
-               <button data-bind="click: connectNew">
-                Add a player
+              <button data-bind="click: connectNew">
+                Add a player (debug)
               </button>
 
-              <button data-bind="click: pingServer">
-                Ping Server
-              </button>
-
-
-               <!--<button data-bind="click: assemblyExitClick">
-                 Leave
-               </button>
-
-               <button data-bind="click: startGame">
-                 Start
-               </button>-->
-             <button id="leavebutton" data-bind="click: assemblyExitClick">
+              <button id="leavebutton" data-bind="click: assemblyExitClick">
                 Leave
               </button>
 
               <button id="startbutton" data-bind="click: startGame">
                 Start
               </button>
-        </div>
+            </div>
 
           </div>
 
