@@ -96,17 +96,26 @@ configureNow = (everyone) ->
   everyone.now.startGravityGun = (player_id, x, y) ->
     player = arena.players[player_id]
     # TODO remove X, Y only allow pulling balls in line
-    activateCallback = (powerup_type) =>
-      everyone.now.receiveActivatePowerup(player_id, powerup_type)
 
-    deactivateCallback = () =>
-      player.powerup = null
-      everyone.now.receiveDeactivatePowerup(player_id)
+    pullCallback = (pulled_ball, x, y, powerup) =>
+      removeBallCallback = =>
+        everyone.now.receiveRemoveBall(pulled_ball.x, pulled_ball.y, pulled_ball)
 
-    pullCallback = (pulled_ball, x, y) =>
+      activateCallback = (powerup_type) =>
+        everyone.now.receiveActivatePowerup(player_id, powerup_type)
+
+      deactivateCallback = () =>
+        player.powerup = null
+        everyone.now.receiveDeactivatePowerup(player_id)
+
       duration = config.pull_time_ms
       pulled_ball.animateTo x, y, duration, () ->
           everyone.now.receiveBallMoved pulled_ball, 0
+          if powerup
+            player = arena.players[player_id]
+            removeBallCallback()
+            arena.setPowerup(player, pulled_ball.type.powerup_kind, activateCallback, deactivateCallback)
+
 
     validPullSoundCallback = =>
       everyone.now.receiveValidPullSound(player.id)
@@ -114,12 +123,11 @@ configureNow = (everyone) ->
     invalidPullSoundCallback = =>
       everyone.now.receiveInvalidPullSound(player.id)
 
+
     arena.pull(player,
                x,
                y,
                pullCallback,
-               activateCallback,
-               deactivateCallback,
                validPullSoundCallback,
                invalidPullSoundCallback)
 
@@ -176,7 +184,7 @@ startTimers = ->
       clearInterval ball_rotation
       clearInterval collisionCheck
   , config.clock_interval
-  
+
 
 run = ->
 

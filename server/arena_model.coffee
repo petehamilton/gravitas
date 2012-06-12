@@ -268,8 +268,7 @@ class @ArenaModel
   # pullCallback  : passed (pulled_ball, target_x, target_y), called once
   #                 coords calculated
   #
-  pull: (player, x, y, pullCallback, activatePowerupCallback,
-         deactivatePowerupCallback, validPullSoundCallback, invalidPullSoundCallback) ->
+  pull: (player, x, y, pullCallback, validPullSoundCallback, invalidPullSoundCallback) ->
     # Find the balls that were selected by the pull
     r = config.pull_radius
     [selected, others] = partition @balls, (b, i) ->
@@ -278,26 +277,27 @@ class @ArenaModel
     assert.ok(selected.length in [0,1], "not more than one ball should be selected in a pull")
 
     if selected.length
-      b = selected[0]
+      ball = selected[0]
 
-      powerup = config.ball_kinds.powerup
+      is_powerup = ball.type.kind == config.ball_kinds.powerup
 
       # TODO: Remove Later when using collision with turret
-      if b.type.kind == powerup
-        @setPowerup(player, b.type.powerup_kind, activatePowerupCallback, deactivatePowerupCallback)
 
-      if b.type.kind == powerup or b.type.player_id == player.id
+      if is_powerup or ball.type.player_id == player.id
         validPullSoundCallback()
 
         turret_center = config.player_centers[player.id]
 
-        log "player #{player} pulled ball #{b.id} at", [b.x, b.y]
+        log "player #{player} pulled ball #{ball.id} at", [ball.x, ball.y]
 
-        player.stored_balls = [b]
 
         @balls = others # All other balls stay
 
-        pullCallback b, turret_center.x, turret_center.y
+        pullCallback ball, turret_center.x, turret_center.y, is_powerup
+
+        unless is_powerup
+          player.stored_balls = [ball]
+
 
       else
         invalidPullSoundCallback()

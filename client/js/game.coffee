@@ -155,10 +155,10 @@ class @Game
   #
   # ball_model : The ball model for the view we wish to move
   # duration : Animation time
-  moveBall: (ball_model, duration) ->
+  moveBall: (ball_model, duration, callback) ->
     ball_view = @balls[ball_model.id]
     if ball_view?
-      ball_view.moveTo(ball_model.x, ball_model.y, duration)
+      ball_view.moveTo(ball_model.x, ball_model.y, duration, callback)
     else
       @balls[ball_model.id] = new BallView(ball_model, @arena.paper)
 
@@ -227,6 +227,21 @@ class @Game
   updateHealth: (player, health) ->
     @arena.updateHealth(player, health)
 
-  # Deal with a damagin collision
+
+  removeBall: (x, y, ball_model) ->
+    removeBallFromBalls = (ball_id) =>
+      assert(delete @balls[ball_id], "Error cannot find ball to remove it client side")
+
+    ball_view = @balls[ball_model.id]
+    ball_view.image.animate {opacity: 0}, 300, ""
+    ball_view.image.animate {transform:"T#{x},#{y}"}, 800, "", () ->
+      ball_view.image.remove()
+    # removeBallFromBalls(ball_model.id)
+
+
+  # Deal with a damaging collision
   collisionDamage: (player, ball_model, x, y) ->
-    @arena.collisionDamage player, ball_model, x, y
+    ballRemoveCallback = (x, y) =>
+      @removeBall(x, y, ball_model)
+
+    @arena.collisionDamage player, ball_model, x, y, ballRemoveCallback
