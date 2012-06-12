@@ -5,7 +5,8 @@
   "author": "Niklas Hambuechen <mail@nh2.me>",
   "dependencies": {
     "express": ">= 2.5.9",
-    "mongodb": ">= 1.0.2",
+    "mocha": ">= 1.1.0",
+    "chai": ">= 1.0.4",
     "mongoose": ">= 2.6.5",
     "now": ">= 0.8.1"
   },

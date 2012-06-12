@@ -173,4 +173,5 @@ class @Game
 
   shadowInfo: (x) ->
     log "shadowInfo", x
-    @arena.debugShadowInfo x
+    if x
+      @arena.debugShadowInfo x

@@ -22,7 +22,7 @@ getSpritePath = (ball_type, config) ->
 corner = (ball_center) ->
   ball_center - SIZE / 2
 
-
+2
 class @BallView
   constructor: (@ball_model, @paper) ->
     log "Creating Ball"

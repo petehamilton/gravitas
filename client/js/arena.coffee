@@ -32,19 +32,22 @@ class @Arena
   debugShadowInfo: (si) ->
 
     Raphael.el.arrow = (color) ->
-      @attr "stroke", color
-      @attr "stroke-width", "3"
-      @attr "arrow-end", "classic"
+      @attr
+        'stroke': color
+        'stroke-width': 3
+        'arrow-end': 'classic'
 
     Raphael.fn.vector = (s, t, color) ->
       @path("M#{s.x} #{s.y}L#{t.x} #{t.y}").arrow(color)
 
     Raphael.el.red = ->
-      @attr fill: "#f00"
+      @attr
+        fill: "#f00"
+        stroke: 'none'
 
     hide_arrow = (segment, color) =>
 
-      {s, d} = segment
+      { s, d } = segment
       t =
         x: s.x + d.x
         y: s.y + d.y
@@ -52,13 +55,13 @@ class @Arena
       arr = @paper.vector(s, t, color)
       setTimeout (-> arr.remove()), 2000
 
-    shed_arr = hide_arrow si.shadow_segment, 'red'
+    shed_arr = hide_arrow si.shadow_segment, 'blue'
     ball_arr = hide_arrow si.ball_segment, 'lightgreen'
 
     p = si.intersection_point
 
     log "intersection", p
     if p
-      c = @paper.circle(p.x, p.y, 20).red()
+      c = @paper.circle(p.x, p.y, 4).red()
       setTimeout (-> c.remove()), 2000
 

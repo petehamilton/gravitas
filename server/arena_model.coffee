@@ -1,6 +1,7 @@
 { config, dict, log, even, degToRad, partition, flatten, assert, negativeMod } = require './utils'
 pbm = require './ball_model'
 assert = require 'assert'
+{ scale, normed, normal, diff, cross, makeSegmentBetweenPoints, sect } = require './intersect'
 
 
 PLAYER_IDS = config.player_ids
@@ -316,93 +317,38 @@ class @ArenaModel
     # TODO proper player positions
     p = makeTurretOffset 0, 0
 
-    # TODO explain that d is the end
-    ball_segment =
-      s:
-        x: p.x
-        y: p.y
-      d:
-        x: ball.x - p.x
-        y: ball.y - p.y
-
-
-    length = (v) ->
-      Math.sqrt(v.x * v.x + v.y * v.y)
-
-    scale = (v, s) ->
-      x: v.x * s
-      y: v.y * s
-
-    normed = (v) ->
-      l = length v
-      assert.ok(l > 0, "norm: length > 0")
-      scale(v, 1 / l)
-
-    normal = (dv) ->
-      # "left-rotated"
-      x: -dv.y
-      y: dv.x
-
-    diff = (a, b) ->
-      x: a.x - b.x
-      y: a.y - b.y
-
-    cross = (a, b) ->
-      a.x * b.y - a.y * b.y
-
-    # TODO doc
-    # see http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
-    sect = (s1, s2) ->
-      # t = (q − p) × s / (r × s)
-      [p, q, r, s] = [s1.s, s2.s, s1.d, s1.d]
-
-      div = cross r, s
-      log "div", div
-      if -0.0001 < div < 0.0001
-        null
-      else
-        t = (cross (diff q, p), s) / div
-        log "t", t
-        # ip = p + t * r
-        intersect_point =
-          x: p.x + t * r.x
-          y: p.y + t * r.y
-        if 0 <= t <= 1
-          # Intersection inside the segments
-          log "intersect"
-          intersect_point
-        else
-          log "intersect outside"
-          null
-          # Intersection of the lines, but outside the segments
+    ball_segment = makeSegmentBetweenPoints p, ball
 
     # Ball radius
     BR = config.ball_size / 2
 
     for ob in @balls
-      # if ob.id != ball.id
+      if ob.id != ball.id
 
         # TODO explain that d is the end
         rot_normed_ball_segment_d = normal(normed ball_segment.d)
         shadow_segment =
-          s: diff(ob, (scale rot_normed_ball_segment_d, BR))
-            # x: ob.x - rot_normed_ball_segment_d * BR
-            # y: ob.y - rot_normed_ball_segment_d * BR
-          d: scale(rot_normed_ball_segment_d, 2 * BR)
-            # dx: (2 * BR) * rot_normed_ball_segment_d
-            # dy: (2 * BR) * rot_normed_ball_segment_d
+          s:
+            diff(ob, (scale rot_normed_ball_segment_d, BR))
+          d:
+            scale(rot_normed_ball_segment_d, 2 * BR)
 
         intersection_point = sect shadow_segment, ball_segment
 
+        # TODO only return ball
         shadow_info =
           ball: ob
           ball_segment: ball_segment
           shadow_segment: shadow_segment
           intersection_point: intersection_point
-        log(JSON.stringify shadow_info)
-        return shadow_info
 
-    false
+        log(JSON.stringify shadow_info)
+        if intersection_point
+          # TODO don't return only on real intersection.
+          # Return point + boolean real intersection member.
+          return shadow_info
+
+    return false
 
 
   pull: (player, x, y, everyone, pullCallback) ->
