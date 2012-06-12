@@ -236,7 +236,7 @@ class @Game
     ball_view.image.animate {opacity: 0}, 300, ""
     ball_view.image.animate {transform:"T#{x},#{y}"}, 800, "", () ->
       ball_view.image.remove()
-    # removeBallFromBalls(ball_model.id)
+      removeBallFromBalls(ball_model.id)
 
 
   # Deal with a damaging collision
