@@ -2,7 +2,7 @@
 
 class @ShieldPowerupModel
   constructor: (@activateCallback, @deactivateCallback) ->
-    @duration = 6000
+    @duration = 7000
     @activated = false
 
 
