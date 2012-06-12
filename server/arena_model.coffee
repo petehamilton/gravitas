@@ -30,8 +30,8 @@ class @ArenaModel
   constructor: ->
     @players = (new plm.PlayerModel(i, config.player_colours[i]) for i in PLAYER_IDS)
     log @players
-    @ball_positions  = @calculateStartPoints()
-    @triangles       = @calculateTriangles()
+    @ball_positions  = @calculateStartPoints(config.dist_between_balls, ARENA_SIZE, BALL_LEVELS)
+    @triangles       = @calculateTriangles(BALL_LEVELS)
 
     @balls = for {x, y} in flatten @ball_positions
       new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
@@ -73,36 +73,34 @@ class @ArenaModel
 
   # Calculates how many rows from the center a given row
   # in the plasma ball structure is
-  rowsFromCenter: (row) ->
-    Math.abs(BALL_LEVELS - 1 - row)
+  rowsFromCenter: (ball_levels, row) ->
+    Math.abs(ball_levels - 1 - row)
 
 
   # Calculates the number of balls for a given row
-  ballsForRow: (row) ->
-    max_index = BALL_LEVELS - 1
-    offset = @rowsFromCenter row
-    max_index - offset + BALL_LEVELS
+  ballsForRow: (ball_levels, row) ->
+    max_index = ball_levels - 1
+    offset = @rowsFromCenter ball_levels, row
+    max_index - offset + ball_levels
 
 
   # Calculates the number of rows of the plasma ball structure
-  ballRows: ->
-    BALL_LEVELS * 2 - 1
+  ballRows: (ball_levels) ->
+    ball_levels * 2 - 1
 
 
   # Calculates starting points for all the balls
-  calculateStartPoints: ->
-
-    dist_between_balls = config.dist_between_balls
+  calculateStartPoints: (dist_between_balls, arena_size, ball_levels)->
+    # dist_between_balls = config.dist_between_balls
     dist_components = {dx: dist_between_balls / 2, dy: Math.sin(degToRad(60)) * dist_between_balls}
-    center_point = { x: ARENA_SIZE.x/2, y: ARENA_SIZE.y/2 }
+    center_point = { x: arena_size.x/2, y: arena_size.y/2 }
 
     ball_positions = []
-    rows = @ballRows()
-
+    rows = @ballRows ball_levels
     for row in [0...rows]
       ball_positions[row] = []
-      cols = @ballsForRow row
-      rows_from_center = @rowsFromCenter row
+      cols = @ballsForRow ball_levels, row
+      rows_from_center = @rowsFromCenter ball_levels, row
 
       for col in [0...cols]
         ball_positions[row][col] =
@@ -125,14 +123,14 @@ class @ArenaModel
   #   {x : 1, y : 1},
   # ]
   # where a, b, c are the corners
-  calculateTriangles: ->
+  calculateTriangles: (ball_levels) ->
 
-    triangleRows = =>
-      @ballRows() - 1
+    triangleRows = (ball_levels) =>
+      @ballRows(ball_levels) - 1
 
 
-    trianglesForRow = (row) =>
-      @ballsForRow(row) - 1  + @ballsForRow(row + 1) - 1
+    trianglesForRow = (ball_levels, row) =>
+      @ballsForRow(ball_levels, row) - 1  + @ballsForRow(ball_levels, row + 1) - 1
 
 
     # Calculates the points for a triangle with two points
