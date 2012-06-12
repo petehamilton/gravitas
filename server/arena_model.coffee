@@ -289,7 +289,7 @@ class @ArenaModel
       if b.type.kind == powerup or b.type.player_id == player.id
         validPullSoundCallback()
 
-        center = config.player_centers[player.id]
+        turret_center = config.player_centers[player.id]
 
         log "player #{player} pulled ball #{b.id} at", [b.x, b.y]
 
@@ -297,7 +297,7 @@ class @ArenaModel
 
         @balls = others # All other balls stay
 
-        pullCallback b, center.x, center.y
+        pullCallback b, turret_center.x, turret_center.y
 
       else
         invalidPullSoundCallback()
