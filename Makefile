@@ -29,3 +29,6 @@ dev: statics_fetch
 
 server: statics_fetch
 	coffee server/server.coffee
+
+test:
+	 mocha --compilers coffee:coffee-script server/testTriangles.coffee
