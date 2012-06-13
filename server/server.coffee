@@ -172,10 +172,10 @@ startTimers = ->
       arena.handleCollision player, ball_model, x, y, () =>
         everyone.now.receiveCollisionDamage player.id, ball_model, x, y
         everyone.now.receiveBallMoved ball_model, 0
-        if player.health <= 0.2
-          everyone.now.receiveHealthUpdate player.id, player.health
-        else
+        if player.health <= 1 - config.survivable_hits*0.1
           everyone.now.receivePlayerDeath player.id
+        else
+          everyone.now.receiveHealthUpdate player.id, player.health
   , config.collision_check_interval
 
   # Arena clock time

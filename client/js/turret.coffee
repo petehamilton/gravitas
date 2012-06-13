@@ -82,6 +82,11 @@ class @Turret
     @turret_pulse_persist.animate({transform:"s#{@pulse_scale}"}, config.shield_damage_speed, "<>")
     @turret_pulse_background.animate({transform:"s#{@pulse_scale}"}, config.shield_damage_speed, "<>")
 
+    if health <= 1 - (config.survivable_hits-1)*0.1 # Warn when one from death
+      @pulse_speed = 0.2
+      @turret_pulse_background.animate {fill: config.warning_colour}
+
+
   # Turns the turret according to the mouse position.
   # Returns the angle in degrees.
   mouseMoved: (mx, my) ->
@@ -138,10 +143,10 @@ class @Turret
   destroy: () ->
     @alive = false
     clearTimeout @animate_pulse_timer
+    @pulse_scale = 0.6 # Not full, but bigger than turret
     @do_pulse()
-    @turret_sprite.animate({transform: "... r720,#{@center.x},#{@center.y} s0"}, 1000, "")
-    @turret_sprite.animate({transform: "... r720,#{@center.x},#{@center.y} s0"}, 1000, "")
-    @turret_pulse_anim.animate({transform: "s0"}, 800, "")
-    @blast_shield.animate({transform: "s0"}, 800, "")
-    @turret_pulse_background.animate({transform: "s0"}, 800, "")
+
+    @turret_sprite.animate({transform: "... r720,#{@center.x},#{@center.y} s0", opacity: 0}, 1000, "")
+    @blast_shield.animate({transform: "s0"}, 1000, "")
+    @turret_pulse_background.animate({transform: "s0"}, 1000, "")
     @turret_pulse_persist.animate({transform: "s0"}, 1000, "bounce")
