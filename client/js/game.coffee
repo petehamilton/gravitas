@@ -3,9 +3,12 @@ class @Game
     # Automatic log-in / start
     @autoLogIn = makeCookieObservable 'autoLogIn'
     @autoStart = makeCookieObservable 'autoStart'
+    @disableSound = makeCookieObservable 'soundDisabled'
+
 
     @autoLogIn.subscribe => @autoStart off unless @autoLogIn()
     @autoStart.subscribe => @autoLogIn on if @autoStart()
+
 
     # Log-in / start
     @loggedIn = ko.observable @autoLogIn()
@@ -128,13 +131,13 @@ class @Game
 
   # Plays pull sound only if player equals the current player
   validPullSound: (player) ->
-    if player == @getPlayerId()
+    if player == @getPlayerId() && !@disableSound()
       new Audio("sounds/pull.wav").play()
 
 
   # Plays invalid pull sound only if player equals the current player
   invalidPullSound: (player) ->
-    if player == @getPlayerId()
+    if player == @getPlayerId() && !@disableSound()
       new Audio("sounds/funk.wav").play()
 
 
@@ -178,8 +181,11 @@ class @Game
   # player : the player who shot
   # ball_model : The ball which has been shot
   shot: (player, ball_model) ->
-    new Audio("sounds/fire.wav").play()
     log "player #{player} shot", ball_model
+    if !@disableSound()
+      log "disableSound:", @disableSound()
+      new Audio("sounds/fire.wav").play()
+
 
   # Player shot done, remove ball from canvas
   #
