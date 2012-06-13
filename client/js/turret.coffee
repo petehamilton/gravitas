@@ -85,6 +85,8 @@ class @Turret
     if health <= 1 - (config.survivable_hits-1)*0.1 # Warn when one from death
       @pulse_speed = 0.2
       @turret_pulse_background.animate {fill: config.warning_colour}
+    else
+      @turret_pulse_background.animate {fill: config.player_colours[@position]}
 
 
   # Turns the turret according to the mouse position.
