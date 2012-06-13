@@ -8,12 +8,12 @@ getSpritePath = (ball_type, config) ->
       assertPlayerId ball_type.player_id
 
       switch ball_type.player_id
-        when 0 then "pb_blue_0.png"
-        when 1 then "pb_green_0.png"
-        when 2 then "pb_pink_0.png"
-        when 3 then "pb_yellow_0.png"
+        when 0 then "pb_blue_0.PNG"
+        when 1 then "pb_green_0.PNG"
+        when 2 then "pb_pink_0.PNG"
+        when 3 then "pb_yellow_0.PNG"
 
-    when config.ball_kinds.powerup then "pb_powerup.png"
+    when config.ball_kinds.powerup then "pb_powerup.PNG"
 
   SPRITE_FOLDER + filename
 
@@ -50,7 +50,7 @@ class @BallView
 
 
   # Animates the ball image from it's current position to x, y over duration
-  # 
+  #
   # callback : called once animation complete
   moveTo: (x, y, duration, callback) ->
     @image.animate { x: corner(x), y: corner(y) }, duration, 'backOut', callback

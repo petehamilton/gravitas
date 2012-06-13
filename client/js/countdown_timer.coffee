@@ -3,7 +3,7 @@ SEG_WIDTH = 34
 SEG_HEIGHT = 50
 class @CountdownTimer
   constructor: (@paper, @x, @y) ->
-    image = "../images/countdownGlowing.png"
+    image = "../images/countdownGlowing2.png"
     @seconds = 0
     @digits = ({index: i, val: 13, image: null} for i in [0..4])
     @digits[2].val = 11

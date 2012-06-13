@@ -7,7 +7,9 @@ class @Turret
   constructor: (@position, @paper) ->
     log "Creating Turret #{@position}"
 
-    @image = "../images/double_turret.png"
+    # @image = "../images/double_turret.png"
+    @image = "../images/turret2.PNG"
+
     @pulse_image = "../images/pulse.png"
     @blast_shield_image = "../images/pulse_shield.png"
 
