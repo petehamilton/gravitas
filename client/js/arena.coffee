@@ -47,3 +47,8 @@ class @Arena
 
   collisionDamage: (player_id, ball_model, x, y, ballRemoveCallback) ->
     @turrets[player_id].damage(@game.balls[ball_model.id], x, y, ballRemoveCallback)
+
+
+  killPlayer: (player_id) ->
+    turret = @turrets[player_id]
+    turret.destroy()

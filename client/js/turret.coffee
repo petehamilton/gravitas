@@ -13,6 +13,8 @@ class @Turret
     @pulse_image = "../images/pulse.png"
     @blast_shield_image = "../images/pulse_shield.png"
 
+    @alive = true
+
     @center = config.player_centers[@position]
 
     makeTurretOffset = (x, y) =>
@@ -54,11 +56,9 @@ class @Turret
     @turret_pulse_anim.transform("s0").attr {opacity: 1}
 
     animate_pulse = () =>
-      setTimeout () =>
-        @turret_pulse_anim.transform("s0").attr {opacity: 1}
-        @turret_pulse_anim.animate({transform:"s#{@pulse_scale}"}, config.turret_pulse_interval*2/3*@pulse_speed, "<>")
-        @turret_pulse_anim.animate({opacity: 0}, config.turret_pulse_interval*@pulse_speed, "<>")
-        animate_pulse()
+      @animate_pulse_timer = setTimeout () =>
+        @do_pulse()
+        animate_pulse() if @alive
       , config.turret_pulse_interval * @pulse_speed
 
     animate_pulse()
@@ -69,12 +69,23 @@ class @Turret
     @turret_sprite = @paper.image(@image, @offset_center.x, @offset_center.y, width, height)
                       .transform("r#{@angle},#{@center.x},#{@center.y}")
 
+  do_pulse: () =>
+    @turret_pulse_anim.transform("s0").attr {opacity: 1}
+    @turret_pulse_anim.animate({transform:"s#{@pulse_scale}"}, config.turret_pulse_interval*2/3*@pulse_speed, "<>")
+    @turret_pulse_anim.animate({opacity: 0}, config.turret_pulse_interval*@pulse_speed, "<>")
+
+
   updateHealth: (health) ->
     @pulse_scale = health
     #TODO: Animate this?
     @turret_pulse_anim.animate({transform:"s#{@pulse_scale}"}, config.shield_damage_speed, "<>")
     @turret_pulse_persist.animate({transform:"s#{@pulse_scale}"}, config.shield_damage_speed, "<>")
     @turret_pulse_background.animate({transform:"s#{@pulse_scale}"}, config.shield_damage_speed, "<>")
+
+    if health <= 1 - (config.survivable_hits-1)*0.1 # Warn when one from death
+      @pulse_speed = 0.2
+      @turret_pulse_background.animate {fill: config.warning_colour}
+
 
   # Turns the turret according to the mouse position.
   # Returns the angle in degrees.
@@ -92,7 +103,7 @@ class @Turret
     else
       angle = a
     angle_degrees = angle * (180 / Math.PI)
-    @setRotation angle_degrees
+    @setRotation angle_degrees if @alive
     angle_degrees
 
 
@@ -129,6 +140,13 @@ class @Turret
         # damage_pulse_anim.remove()
         # ball_view.image.remove()
 
+  destroy: () ->
+    @alive = false
+    clearTimeout @animate_pulse_timer
+    @pulse_scale = 0.6 # Not full, but bigger than turret
+    @do_pulse()
 
-
-
+    @turret_sprite.animate({transform: "... r720,#{@center.x},#{@center.y} s0", opacity: 0}, 1000, "")
+    @blast_shield.animate({transform: "s0"}, 1000, "")
+    @turret_pulse_background.animate({transform: "s0"}, 1000, "")
+    @turret_pulse_persist.animate({transform: "s0"}, 1000, "bounce")

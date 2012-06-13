@@ -11,7 +11,6 @@ class @ShieldPowerupView
 
 
   deactivate: ->
-    new Audio("sounds/powerup_shield.wav").play()
     @turret.pulse_speed = 1
     @turret.killBlastShield()
 

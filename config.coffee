@@ -85,12 +85,15 @@ config =
 
   shield_radius: 80
   shield_damage_speed: 500
+  survivable_hits: 6
 
   player_colours:
     0: "#00a2ff"
     1: "#72ff00"
     2: "#fc00ff"
     3: "#fcff00"
+
+  warning_colour: "#ff0000"
 
   # Default users with passwords
   default_users:

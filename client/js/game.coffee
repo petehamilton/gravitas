@@ -246,3 +246,6 @@ class @Game
       @removeBall(x, y, ball_model)
 
     @arena.collisionDamage player, ball_model, x, y, ballRemoveCallback
+
+  killPlayer: (player) ->
+    @arena.killPlayer(player)
