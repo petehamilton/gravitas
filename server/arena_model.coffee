@@ -2,6 +2,7 @@
 pbm = require './ball_model'
 plm = require './player_model'
 spm = require './shield_powerup_model'
+hpm = require './health_powerup_model'
 assert = require 'assert'
 
 
@@ -205,6 +206,7 @@ class @ArenaModel
     triangle_points = 3
     balls_to_move = []
     for {triangle, direction} in random_triangles
+
       for index in [0...triangle_points]
         { x, y } = triangle[index]
         { x, y } = ball_positions[x][y]
@@ -221,6 +223,8 @@ class @ArenaModel
             ball: ball
             x: x_new
             y: y_new
+
+
 
     # console.log "Balls to move", balls_to_move
     for { ball, x, y } in balls_to_move
@@ -345,10 +349,12 @@ class @ArenaModel
   # activateCallback    : Called when the powerup is activated
   # deactivateCallback  : Called when the powerup is deactivated
   setPowerup: (player, powerup_type, activateCallback, deactivateCallback) ->
-    log "player #{player} has collected a #{powerup_type} powerup"
+    log "player #{player.id} has collected a #{powerup_type} powerup"
     player.powerup = switch powerup_type
       when config.powerup_kinds.shield
         new spm.ShieldPowerupModel activateCallback, deactivateCallback
+      when config.powerup_kinds.health
+        new hpm.HealthPowerupModel player, activateCallback, deactivateCallback
 
   # Removes ball from @active_balls if it exists
   remove: (ball) ->

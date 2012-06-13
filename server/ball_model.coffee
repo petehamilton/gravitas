@@ -9,9 +9,6 @@ exports.makePowerupBallType = (powerup_kind) ->
   powerup_kind: powerup_kind
 
 
-BALL_SIZE = config.ball_size
-
-
 class @BallModel
   # type examples:
   # - { kind: PLAYER, player_id: 2 }
@@ -22,7 +19,7 @@ class @BallModel
 
   # Animates a ball model from it's current position to x, y
   # This is done by repeated small step increments
-  # 
+  #
   # x                   : Target x coord
   # y                   : Target y coord
   # duration            : Duration (ms)
@@ -53,9 +50,9 @@ class @BallModel
       newy = ServerAnimation.easeInOutCubic i, original_y, dy, frames
       @x = newx
       @y = newy
-      
+
       stepCallback()
-      
+
       i += 1
     , spf
 

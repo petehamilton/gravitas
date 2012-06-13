@@ -18,10 +18,10 @@ config =
   # Powerup effects, when you add a new one increase powerup_count below
   powerup_kinds:
     shield: 0
-    # health: 1
+    health: 1
 
   # TODO is there a better way to do this
-  powerup_count: 1
+  powerup_count: 2
 
 
   # Probability of spawning a powerup
@@ -53,8 +53,8 @@ config =
     x: 30
     y: TURRET_HEIGHT/2
 
-  hp_radius: 10
-  max_health: 100
+  # Max health for each player
+  max_health: 1
 
   lag_limit: 50
 
