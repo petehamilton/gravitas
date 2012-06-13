@@ -21,8 +21,8 @@ class @Game
 
 
     # Authentication
-    @username = ko.observable 'Winston'
-    @password = ko.observable ''
+    @username = ko.observable 'lukasz'
+    @password = ko.observable 'lukasz'
     @authFailed = ko.observable false
     @logInButtonText = ko.computed =>
       if @authFailed() then 'Auth failed' else 'Log In'
@@ -33,9 +33,14 @@ class @Game
     ])
 
     # Logged in user rating
-    @userRating = ko.observable 1554
+    @gamesWon = ko.observable 0
+    @gamesPlayed = ko.observable 0
+    @timePlayed =  ko.observable 0
+    @timePlayedConverted = ko.computed(=>
+      @secToTime(@timePlayed()))
+    @userRating = ko.observable 1340
     @userRatingColor = ko.computed(->
-      userRatingRed = ((@userRating()/2200)*255)
+      userRatingRed = (((@userRating()-1200)/1000)*255)
       userRatingGreen = (255 - userRatingRed)
       "rgba("+Math.round(userRatingRed)+","+Math.round(userRatingGreen)+",0,0.7)"
     , this )
@@ -69,6 +74,7 @@ class @Game
 
 
 
+
   resetAuthStatus: =>
     @authFailed false
     true  # continue keypress event
@@ -79,13 +85,22 @@ class @Game
       log res
       if res.ok
         log "login successful"
+        @getStats()
         @loggedIn true
       else
         log "login failed"
         @authFailed true
         @username ''
         @password ''
-    @loggedIn true #TODO: Remove me, I'm for testing only.
+   # @loggedIn true #TODO: Remove me, I'm for testing only.
+
+  getStats: =>
+    @server.getStats @username(), (res) =>
+      @userRating res.rating
+      @gamesWon res.gamesWon
+      @gamesPlayed res.gamesPlayed
+      @timePlayed res.timePlayed
+
 
 
   assemblyClick: =>
@@ -114,6 +129,12 @@ class @Game
     @username = username
     @rating = rating
 
+  secToTime : (d) ->
+    d = Number(d)
+    h = Math.floor(d / 3600)
+    m = Math.floor(d % 3600 / 60)
+    s = Math.floor(d % 3600 % 60)
+    (if h > 0 then h + ":" else "") + (if m > 0 then (if h > 0 and m < 10 then "0" else "") + m + ":" else "0:") + (if s < 10 then "0" else "") + s
 
   # Makes sure the server connection is esablished before executing fn.
   # Otherwise sets the lag indicator.

@@ -13,6 +13,11 @@ User = mongoose.model 'User', new mongoose.Schema
     type: String
     index: true
   password: String
+  timePlayed: Number
+  gamesWon: Number
+  gamesPlayed: Number
+  rating: Number
+
 
 
 connect = ->
@@ -24,10 +29,14 @@ setup = (callback) ->
     log "dropped all users"
 
     for name, pw of config.default_users
-      log "inserting user: #{name}"
+      log "inserting userCOFFEE: #{name}"
       user = new User
         username: name
         password: pw
+        timePlayed: 39603
+        gamesWon: 31
+        gamesPlayed: 70
+        rating: 1500
       user.save callback
 
 

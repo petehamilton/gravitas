@@ -128,22 +128,23 @@
 
             </div>
 
+
             <div id="lobby-content" data-bind="visible: assemblyContent() == 'profile'">
              <label class="large">Profile</label><br />
              <div id="profile-picture"><img src="images/ui/placeholder.jpg" class="profile"></div><div id="profile-stats">
                 <table>
                     <tbody>
                         <tr>
-                            <td><label class="small">Best Score</label></td>
-                            <td>999</td>
+                            <td><label class="small">Games Won</label></td>
+                            <td data-bind="text: gamesWon()">999</td>
                         </tr>
                         <tr>
                             <td><label class="small">Games Played</label></td>
-                            <td>123</td>
+                            <td data-bind="text: gamesPlayed()">123</td>
                         </tr>
                         <tr>
                             <td><label class="small">Time Played</label></td>
-                            <td>13h 19mins</td>
+                            <td data-bind="text: timePlayedConverted()">13h 19mins</td>
                         </tr>
                         <tr>
                             <td><label class="small">Win/Loss Ratio</label></td>

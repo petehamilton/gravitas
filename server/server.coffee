@@ -44,6 +44,16 @@ configureNow = (everyone) ->
         # TODO send auth token
         callback { ok: true }
 
+  everyone.now.getStats = (user, callback) ->
+    db.User.findOne { username: user}, (err, u) ->
+      callback
+        rating: u.rating
+        gamesWon: u.gamesWon
+        gamesPlayed: u.gamesPlayed
+        timePlayed: u.timePlayed
+
+
+
 
   # TODO check if we can replace dbInsert and dbUpdate by one dbSave
   everyone.now.dbInsert = (obj) ->
