@@ -1,4 +1,4 @@
-{config} = require './utils'
+config = require('../config').config
 
 exports.makePlayerBallType = (player_id) ->
   kind: config.ball_kinds.player

@@ -8,7 +8,7 @@ STATICS = {
 	'client/js/lib/jasmine-html.js': 'https://raw.github.com/pivotal/jasmine/master/lib/jasmine-core/jasmine-html.js',
 	'client/css/lib/jasmine.css': 'https://raw.github.com/pivotal/jasmine/master/lib/jasmine-core/jasmine.css',
 
-	'client/js/lib/coffee-script.js': 'https://raw.github.com/jashkenas/coffee-script/master/extras/coffee-script.js',
+	'client/js/lib/CoffeeScript.js': 'https://raw.github.com/jashkenas/coffee-script/master/extras/coffee-script.js',
 
 	'client/js/lib/run_jasmine_test.coffee': 'https://raw.github.com/nh2/phantom-jasmine/fix-long-running-tests/lib/run_jasmine_test.coffee',
 
@@ -34,6 +34,16 @@ STATICS = {
 	'runtogether.py': 'https://raw.github.com/nh2/runtogether/master/runtogether.py',
 
 	'server/lib/underscore.js': 'http://underscorejs.org/underscore.js',
+
+	# Browser testing
+	'client/css/lib/mocha.css': 'https://raw.github.com/visionmedia/mocha/master/mocha.css',
+	'client/js/lib/mocha.js': 'https://raw.github.com/visionmedia/mocha/master/mocha.js',
+	'client/js/lib/chai.js': 'http://chaijs.com/chai.js',
+
+	# require.js
+	'server/lib/r.js': 'http://requirejs.org/docs/release/2.0.1/r.js',
+	'client/js/lib/require.js': 'http://requirejs.org/docs/release/2.0.1/minified/require.js',
+	'client/js/lib/cs.js': 'https://raw.github.com/jrburke/require-cs/latest/cs.js',
 }
 
 

@@ -1,5 +1,6 @@
 *.pyc
 
+node_modules
 
 client/css/lib/
 client/js/lib/

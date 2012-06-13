@@ -31,4 +31,6 @@ server: statics_fetch
 	coffee server/server.coffee
 
 test:
+	@echo "See ../client/test.html for browser tests"
 	mocha --compilers coffee:coffee-script server/test.coffee
+	mocha --compilers coffee:coffee-script common/

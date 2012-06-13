@@ -1,7 +1,8 @@
-{ config, dict, log, even, degToRad, partition, flatten, assert, negativeMod } = require './utils'
+{ dict, log, even, degToRad, partition, flatten, negativeMod } = require './common/utils'
+config = require('../config').config
 pbm = require './ball_model'
 assert = require 'assert'
-{ scale, normed, normal, diff, cross, makeSegmentBetweenPoints, sect } = require './intersect'
+{ scale, normed, normal, diff, cross, makeSegmentBetweenPoints, sect } = require './common/intersect'
 
 
 PLAYER_IDS = config.player_ids
@@ -250,7 +251,8 @@ class @ArenaModel
         { x, y } = triangle[index]
         { x, y } = @ball_positions[x][y]
         ball = findBall(x, y)
-        # assert(ball, "Error cannot find plasma ball for triangle point")
+        # TODO Sarah what is with this
+        # assert.ok(ball, "Error cannot find plasma ball for triangle point")
         if ball?
           if direction == DIRECTIONS.LEFT
             { x: x_new, y: y_new } = triangle[negativeMod(index - 1, triangle_points)]
@@ -292,7 +294,7 @@ class @ArenaModel
       return null
 
     transposed = findBall(x, y)
-    assert(transposed, "Error finding ball to replace pulled ball")
+    assert.ok(transposed, "Error finding ball to replace pulled ball")
 
     neighbours = @ball_neighbours[transposed.x][transposed.y]
     neighbour = Math.floor(Math.random() * (neighbours.length - 1))
@@ -303,10 +305,12 @@ class @ArenaModel
     @angles[player] = angle
 
 
-  # If the given ball shadowed by another ball, return the shadowing ball closest to the player
-  shadowed: (player, ball) ->
+  # Tells whether the given ball shadowed by another ball
+  shadowed: (player, target_ball) ->
 
-    # TODO remove
+    # TODO implement returning the closest one, not the first one we find
+
+    # TODO move to common
     makeTurretOffset = (x, y) =>
       switch player
         when 0 then { x: x, y: y }
@@ -314,43 +318,44 @@ class @ArenaModel
         when 2 then { x: config.arena_size.x - x, y: config.arena_size.y - y }
         when 3 then { x: y, y: config.arena_size.y - x }
 
-    # TODO proper player positions
+    # TODO bettr player positions?
     p = makeTurretOffset 0, 0
 
-    ball_segment = makeSegmentBetweenPoints p, ball
+    target_segment = makeSegmentBetweenPoints p, target_ball
 
     # Ball radius
     BR = config.ball_size / 2
 
-    for ob in @balls
-      if ob.id != ball.id
+    # Try to find a ball that shadows the target ball
+    for b in @balls
+      if b.id != target_ball.id
 
-        # TODO explain that d is the end
-        rot_normed_ball_segment_d = normal(normed ball_segment.d)
-        shadow_segment =
+        # Segment orthogonal to target segment, unit length
+        u_n_t = normal(normed target_segment.d)
+
+        # Segment through the ball diameter, orthogonal to target segment
+        ball_segment =
           s:
-            diff(ob, (scale rot_normed_ball_segment_d, BR))
+            diff { x: b.x, y: b.y }, (scale u_n_t, BR)
           d:
-            scale(rot_normed_ball_segment_d, 2 * BR)
+            scale u_n_t, 2*BR
 
-        intersection_point = sect shadow_segment, ball_segment
+        # Calculate intersection
+        intersection = sect ball_segment, target_segment
 
-        # TODO only return ball
         shadow_info =
-          ball: ob
+          ball: b
+          target_segment: target_segment
           ball_segment: ball_segment
-          shadow_segment: shadow_segment
-          intersection_point: intersection_point
+          intersection: intersection
 
-        log(JSON.stringify shadow_info)
-        if intersection_point
-          # TODO don't return only on real intersection.
-          # Return point + boolean real intersection member.
+        if intersection.intersects and intersection.point
           return shadow_info
 
     return false
 
 
+  # TODO don't pass in 'everyone like this', build proper server-to-client debugging
   pull: (player, x, y, everyone, pullCallback) ->
     # TODO remove X, Y only allow pulling balls in line
     r = config.pull_radius
@@ -366,11 +371,11 @@ class @ArenaModel
     if selected.length
       b = selected[0]
 
-      s = @shadowed player, b
+      shadow_info = @shadowed player, b
 
-      everyone.now.shadowInfo s
+      everyone.now.debug_receiveShadow shadow_info
 
-      if s.ball
+      if s = shadow_info.ball
         log "player #{player} tried to pull ball #{b.id} at #{[b.x, b.y]}
              but it is shadowed by ball #{s.id} at #{[s.x, s.y]}"
       else

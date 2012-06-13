@@ -4,7 +4,9 @@ nowjs = require 'now'
 arena_model = require './arena_model'
 pbm = require './ball_model'
 db = require './db'
-{config, log, dir} = require './utils'
+{log, dir} = require './common/utils'
+config = require('../config').config
+
 
 # Server configuration
 

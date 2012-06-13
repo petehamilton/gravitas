@@ -171,7 +171,8 @@ class @Game
         # Create a new view for this ball. This calls update() for us already.
         @balls[ball_model.id] = new BallView(ball_model, @arena.paper)
 
-  shadowInfo: (x) ->
-    log "shadowInfo", x
-    if x
-      @arena.debugShadowInfo x
+  debugShadow: (shadow_info) ->
+    # TODO make a switch to disable this
+    log "shadowInfo", shadow_info
+    if shadow_info
+      @arena.displayShadow shadow_info
