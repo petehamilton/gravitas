@@ -13,6 +13,8 @@ class @Turret
     @pulse_image = "../images/pulse.png"
     @blast_shield_image = "../images/pulse_shield.png"
 
+    @alive = true
+
     @center = config.player_centers[@position]
 
     makeTurretOffset = (x, y) =>
@@ -54,11 +56,9 @@ class @Turret
     @turret_pulse_anim.transform("s0").attr {opacity: 1}
 
     animate_pulse = () =>
-      setTimeout () =>
-        @turret_pulse_anim.transform("s0").attr {opacity: 1}
-        @turret_pulse_anim.animate({transform:"s#{@pulse_scale}"}, config.turret_pulse_interval*2/3*@pulse_speed, "<>")
-        @turret_pulse_anim.animate({opacity: 0}, config.turret_pulse_interval*@pulse_speed, "<>")
-        animate_pulse()
+      @animate_pulse_timer = setTimeout () =>
+        @do_pulse()
+        animate_pulse() if @alive
       , config.turret_pulse_interval * @pulse_speed
 
     animate_pulse()
@@ -68,6 +68,12 @@ class @Turret
     height = config.turret_height
     @turret_sprite = @paper.image(@image, @offset_center.x, @offset_center.y, width, height)
                       .transform("r#{@angle},#{@center.x},#{@center.y}")
+
+  do_pulse: () =>
+    @turret_pulse_anim.transform("s0").attr {opacity: 1}
+    @turret_pulse_anim.animate({transform:"s#{@pulse_scale}"}, config.turret_pulse_interval*2/3*@pulse_speed, "<>")
+    @turret_pulse_anim.animate({opacity: 0}, config.turret_pulse_interval*@pulse_speed, "<>")
+
 
   updateHealth: (health) ->
     @pulse_scale = health
@@ -92,7 +98,7 @@ class @Turret
     else
       angle = a
     angle_degrees = angle * (180 / Math.PI)
-    @setRotation angle_degrees
+    @setRotation angle_degrees if @alive
     angle_degrees
 
 
@@ -129,6 +135,13 @@ class @Turret
         # damage_pulse_anim.remove()
         # ball_view.image.remove()
 
-
-
-
+  destroy: () ->
+    @alive = false
+    clearTimeout @animate_pulse_timer
+    @do_pulse()
+    @turret_sprite.animate({transform: "... r720,#{@center.x},#{@center.y} s0"}, 1000, "")
+    @turret_sprite.animate({transform: "... r720,#{@center.x},#{@center.y} s0"}, 1000, "")
+    @turret_pulse_anim.animate({transform: "s0"}, 800, "")
+    @blast_shield.animate({transform: "s0"}, 800, "")
+    @turret_pulse_background.animate({transform: "s0"}, 800, "")
+    @turret_pulse_persist.animate({transform: "s0"}, 1000, "bounce")
