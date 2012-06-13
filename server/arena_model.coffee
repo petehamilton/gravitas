@@ -1,18 +1,22 @@
-{ config, dict, log, even, degToRad, partition, flatten, assert, negativeMod, radToDeg } = require './utils'
+{ dict, log, even, degToRad, partition, flatten, negativeMod } = require './common/utils'
+config = require('../config').config
 pbm = require './ball_model'
 plm = require './player_model'
 spm = require './shield_powerup_model'
 hpm = require './health_powerup_model'
 assert = require 'assert'
+{ scale, normed, normal, diff, cross, makeSegmentBetweenPoints, sect } = require './common/intersect'
 
 
 PLAYER_IDS = config.player_ids
 BALL_SIZE = config.ball_size
 ARENA_SIZE = config.arena_size
 BALL_LEVELS = config.ball_levels
+
 DIRECTIONS =
   LEFT: 0
   RIGHT: 1
+
 
 
 next_ball_id = 0
@@ -24,6 +28,11 @@ nextPlayerId = ->
   tmp = PLAYER_IDS[cur_player_index++]
   cur_player_index %= PLAYER_IDS.length
   tmp
+
+# Creates an object mapping from player ID to value created by `fn`.
+playerIdDict = (fn) ->
+  dict ([i, fn(i)] for i in PLAYER_IDS)
+
 
 # TODO: Pull grid creation out into a set of functions
 class @ArenaModel
@@ -38,6 +47,8 @@ class @ArenaModel
 
     # Holds all the active balls that players have shot.
     @active_balls = []
+
+    @angles = playerIdDict (i) -> 0
 
 
   # Picks random triangles to rotate
@@ -224,8 +235,6 @@ class @ArenaModel
             x: x_new
             y: y_new
 
-
-
     # console.log "Balls to move", balls_to_move
     for { ball, x, y } in balls_to_move
       ball.x = x
@@ -252,7 +261,57 @@ class @ArenaModel
 
 
   setAngle: (player, angle) ->
-    player.turret_angle = angle
+    @angles[player] = angle
+
+
+  # Tells whether the given ball shadowed by another ball
+  shadowed: (player, target_ball) ->
+
+    # TODO implement returning the closest one, not the first one we find
+
+    # TODO move to common
+    makeTurretOffset = (x, y) =>
+      switch player
+        when 0 then { x: x, y: y }
+        when 1 then { x: config.arena_size.x - y, y: x }
+        when 2 then { x: config.arena_size.x - x, y: config.arena_size.y - y }
+        when 3 then { x: y, y: config.arena_size.y - x }
+
+    # TODO bettr player positions?
+    p = makeTurretOffset 0, 0
+
+    target_segment = makeSegmentBetweenPoints p, target_ball
+
+    # Ball radius
+    BR = config.ball_size / 2
+
+    # Try to find a ball that shadows the target ball
+    for b in @balls
+      if b.id != target_ball.id
+
+        # Segment orthogonal to target segment, unit length
+        u_n_t = normal(normed target_segment.d)
+
+        # Segment through the ball diameter, orthogonal to target segment
+        ball_segment =
+          s:
+            diff { x: b.x, y: b.y }, (scale u_n_t, BR)
+          d:
+            scale u_n_t, 2*BR
+
+        # Calculate intersection
+        intersection = sect ball_segment, target_segment
+
+        shadow_info =
+          ball: b
+          target_segment: target_segment
+          ball_segment: ball_segment
+          intersection: intersection
+
+        if intersection.intersects and intersection.point
+          return shadow_info
+
+    return false
 
 
   # Responsible for handling a player pulling a ball.
@@ -270,8 +329,13 @@ class @ArenaModel
   #                 coords calculated
   #
   pull: (player, x, y, pullCallback, validPullSoundCallback, invalidPullSoundCallback) ->
+
     # Find the balls that were selected by the pull
     r = config.pull_radius
+
+    angle = @angles[player]
+
+    # Find the balls that were selected by the pull
     [selected, others] = partition @balls, (b, i) ->
       Math.abs(x - b.x) < r and Math.abs(y - b.y) < r
 

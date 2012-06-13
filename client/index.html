@@ -4,7 +4,8 @@
     <title>Gravitas</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
 
-    <script type="text/javascript" src="js/lib/coffee-script.js"></script>
+    <!-- Called CoffeeScript.js instead of coffee-script.js for require-cs -->
+    <script type="text/javascript" src="js/lib/CoffeeScript.js"></script>
     <script type="text/javascript" src="js/lib/raphael.js"></script>
     <script type="text/javascript" src="js/lib/g.raphael.js"></script>
     <script type="text/javascript" src="js/lib/g.pie.js"></script>
@@ -20,6 +21,10 @@
     <script type='text/coffeescript' src='js/ko-extras.coffee'></script>
 
     <script type="text/coffeescript" src="js/config.coffee"></script>
+    <script type="text/coffeescript" src="js/common/utils.coffee"></script>
+
+    <script type="text/coffeescript" src="js/common/intersect.coffee"></script>
+
     <script type="text/coffeescript" src="js/crosshair.coffee"></script>
     <script type="text/coffeescript" src="js/countdown_timer.coffee"></script>
     <script type="text/coffeescript" src="js/shield_powerup_view.coffee"></script>
@@ -32,6 +37,7 @@
     <script type="text/coffeescript" src="js/vortex.coffee"></script>
     <script type="text/coffeescript" src="main.coffee"></script>
 
+    <script data-main="js/main" src="js/lib/require.js"></script>
 
   </head>
 

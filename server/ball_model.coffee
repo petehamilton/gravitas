@@ -1,4 +1,5 @@
-{ config, ServerAnimation, log } = require './utils'
+config = require('../config').config
+{ ServerAnimation, log } = require './common/utils'
 
 exports.makePlayerBallType = (player_id) ->
   kind: config.ball_kinds.player

@@ -78,7 +78,7 @@ config =
 
   # Player Centers, used for ball pulling, turret rotation etc
   player_centers:
-    0: { x: PLAYER_CENTER_OFFSET_X, y: PLAYER_CENTER_OFFSET_Y}
+    0: { x: PLAYER_CENTER_OFFSET_X, y: PLAYER_CENTER_OFFSET_Y }
     1: { x: CANVAS_WIDTH - PLAYER_CENTER_OFFSET_X, y: PLAYER_CENTER_OFFSET_Y }
     2: { x: CANVAS_WIDTH - PLAYER_CENTER_OFFSET_X, y: CANVAS_HEIGHT - PLAYER_CENTER_OFFSET_Y }
     3: { x: PLAYER_CENTER_OFFSET_X, y: CANVAS_HEIGHT - PLAYER_CENTER_OFFSET_Y }

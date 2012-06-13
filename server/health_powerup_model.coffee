@@ -1,4 +1,4 @@
-{ config } = require './utils'
+config = require('../config').config
 
 class @HealthPowerupModel
   constructor: (@player, @activateCallback, @deactivateCallback) ->

@@ -51,3 +51,39 @@ class @Arena
   killPlayer: (player_id) ->
     turret = @turrets[player_id]
     turret.destroy()
+
+
+  displayShadow: (shadow_info) ->
+
+    Raphael.el.arrow = (color) ->
+      @attr
+        'stroke': color
+        'stroke-width': 3
+        'arrow-end': 'classic'
+
+    Raphael.fn.vector = (s, t, color) ->
+      @path("M#{s.x} #{s.y}L#{t.x} #{t.y}").arrow(color)
+
+    Raphael.el.red = ->
+      @attr
+        fill: "#f00"
+        stroke: 'none'
+
+    hide_arrow = (segment, color) =>
+
+      { s, d } = segment
+      t =
+        x: s.x + d.x
+        y: s.y + d.y
+
+      arr = @paper.vector(s, t, color)
+      setTimeout (-> arr.remove()), 2000
+
+    { ball_segment, target_segment, intersection_point: p } = shadow_info
+
+    shed_arr = hide_arrow ball_segment, 'blue'
+    ball_arr = hide_arrow target_segment, 'lightgreen'
+
+    if p
+      c = @paper.circle(p.x, p.y, 4).red()
+      setTimeout (-> c.remove()), 2000

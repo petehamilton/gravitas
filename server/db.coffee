@@ -1,5 +1,7 @@
 mongoose = require 'mongoose'
-{config, log, dir} = require './utils'
+{log, dir} = require './common/utils'
+# TODO put config this into common
+config = require('../config').config
 
 
 MONGO_URL = 'mongodb://localhost/gravitas'

@@ -271,3 +271,9 @@ class @Game
             text.remove()
         , 500
 
+
+  debugShadow: (shadow_info) ->
+    # TODO make a switch to disable this
+    log "shadowInfo", shadow_info
+    if shadow_info
+      @arena.displayShadow shadow_info

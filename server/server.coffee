@@ -5,9 +5,13 @@ arena_model = require './arena_model'
 pbm = require './ball_model'
 spm = require './shield_powerup_model'
 db = require './db'
-{config, log, dir, ServerAnimation} = require './utils'
+{log, dir, ServerAnimation} = require './common/utils'
+config = require('../config').config
+
 
 # Server configuration
+
+MODEL_FPS = config.model_fps
 BALLS_ENABLED = config.balls_enabled
 ARENA_SIZE = config.arena_size
 
@@ -95,8 +99,8 @@ configureNow = (everyone) ->
 
 
   everyone.now.startGravityGun = (player_id, x, y) ->
-    player = arena.players[player_id]
     # TODO remove X, Y only allow pulling balls in line
+    player = arena.players[player_id]
 
     pullCallback = (pulled_ball, x, y, powerup) =>
       removeBallCallback = =>
@@ -128,7 +132,6 @@ configureNow = (everyone) ->
 
     invalidPullSoundCallback = =>
       everyone.now.receiveInvalidPullSound(player.id)
-
 
     arena.pull(player,
                x,
