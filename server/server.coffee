@@ -48,6 +48,16 @@ configureNow = (everyone) ->
         # TODO send auth token
         callback { ok: true }
 
+  everyone.now.getStats = (user, callback) ->
+    db.User.findOne { username: user}, (err, u) ->
+      callback
+        rating: u.rating
+        gamesWon: u.gamesWon
+        gamesPlayed: u.gamesPlayed
+        timePlayed: u.timePlayed
+
+
+
 
   # TODO check if we can replace dbInsert and dbUpdate by one dbSave
   everyone.now.dbInsert = (obj) ->
@@ -182,6 +192,18 @@ startTimers = ->
         everyone.now.receiveBallMoved ball_model, 0
         if player.health <= 1 - config.survivable_hits*0.1
           everyone.now.receivePlayerDeath player.id
+
+          #TODO:  I think triangles has by this point got a copy
+          i = 0
+          bs = (b for b in arena.balls)
+          for b in bs
+            if b and b.type.player_id == player.id
+              everyone.now.receiveRemoveBall(b.x, b.y, b)
+              arena.balls.splice i, i+1
+            else
+              i += 1
+          #TODO: So here, some balls are accidentally re-rendered
+          
         else
           everyone.now.receiveHealthUpdate player.id, player.health
   , config.collision_check_interval
