@@ -263,9 +263,11 @@ class @Game
   displayMessage: (player, message) ->
     if player == @getPlayerId()
       text = @arena.paper.text(ARENA_SIZE.x/2, ARENA_SIZE.y - ARENA_SIZE.y/5, message)
-              .attr({"font-size": 30, "fill": "#ffffff", opacity: 0})
+              .attr({"font-size": 20, "fill": "#a2b5c6", 'font-family': "Century Gothic, sans-serif", opacity: 0})
               .transform "s0"
       text.animate {transform: "s1", opacity: 1}, 500, () ->
-        text.animate {transform: "s1.5", opacity: 0}, 800, () ->
-          text.remove()
+        setTimeout () =>
+          text.animate {opacity: 0}, 1000, () ->
+            text.remove()
+        , 500
 
