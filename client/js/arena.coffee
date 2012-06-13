@@ -5,7 +5,6 @@ class @Arena
 
     @clock = new CountdownTimer(@paper, 215, 70)
 
-
   setGame: (game) ->
     @game = game
 

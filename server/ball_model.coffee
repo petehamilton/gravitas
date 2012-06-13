@@ -5,8 +5,14 @@ exports.makePlayerBallType = (player_id) ->
   player_id: player_id
 
 exports.makePowerupBallType = (powerup_kind) ->
+  powerup_kinds = config.powerup_kinds
+  powerup_messages = config.powerup_messages
   kind: config.ball_kinds.powerup
   powerup_kind: powerup_kind
+  powerup_message:
+    switch powerup_kind
+      when powerup_kinds.shield then powerup_messages.shield
+      when powerup_kinds.health then powerup_messages.health
 
 
 class @BallModel

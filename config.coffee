@@ -23,6 +23,9 @@ config =
   # TODO is there a better way to do this
   powerup_count: 2
 
+  powerup_messages:
+    shield: "Shield powerup!\nPress space to activate."
+    health: "Full health powerup!\nPress space to activate."
 
   # Probability of spawning a powerup
   powerup_probability: 0.2

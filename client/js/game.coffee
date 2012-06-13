@@ -1,3 +1,5 @@
+ARENA_SIZE = config.arena_size
+
 class @Game
   constructor: (@arena, @player, @server) ->
     # Automatic log-in / start
@@ -254,3 +256,16 @@ class @Game
 
   killPlayer: (player) ->
     @arena.killPlayer(player)
+
+
+  # Displays a message, message, temporarily in the centre of the screen for
+  # a given player
+  displayMessage: (player, message) ->
+    if player == @getPlayerId()
+      text = @arena.paper.text(ARENA_SIZE.x/2, ARENA_SIZE.y - ARENA_SIZE.y/5, message)
+              .attr({"font-size": 30, "fill": "#ffffff", opacity: 0})
+              .transform "s0"
+      text.animate {transform: "s1", opacity: 1}, 500, () ->
+        text.animate {transform: "s1.5", opacity: 0}, 800, () ->
+          text.remove()
+

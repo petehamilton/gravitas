@@ -117,6 +117,7 @@ configureNow = (everyone) ->
           player = arena.players[player_id]
           removeBallCallback()
           arena.setPowerup(player, pulled_ball.type.powerup_kind, activateCallback, deactivateCallback)
+          everyone.now.receiveMessage player.id, pulled_ball.type.powerup_message
 
       duration = config.pull_time_ms
       pulled_ball.animateTo x, y, duration, stepCallBack, completionCallback
