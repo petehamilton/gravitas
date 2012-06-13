@@ -9,6 +9,7 @@ db = require './db'
 
 # Server configuration
 BALLS_ENABLED = config.balls_enabled
+ARENA_SIZE = config.arena_size
 
 # Global Variables
 
@@ -160,7 +161,7 @@ createApp = ->
 startTimers = ->
   # Ball Triangle Rotations
   ball_rotation = setInterval () =>
-    arena.rotateTriangles()
+    arena.rotateTriangles(ARENA_SIZE, arena.ball_positions)
     if connected
       everyone.now.receiveBallsMoved(arena.balls, config.rotation_time)
   , config.rotation_interval
