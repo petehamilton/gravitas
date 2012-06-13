@@ -110,6 +110,13 @@ main = ->
         e.preventDefault()
         arena.spacebarPressed()
 
+  $(document).bind "touchmove", (e) ->
+    e.preventDefault()
+    x = e.touches[0].pageX
+    y = e.touches[0].pageY
+    arena.mouseMoved x, y
+
+
 
   # Use game as toplevel knockout ViewModel
   ko.applyBindings game
