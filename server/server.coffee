@@ -105,17 +105,21 @@ configureNow = (everyone) ->
       activateCallback = (powerup_type) =>
         everyone.now.receiveActivatePowerup(player_id, powerup_type)
 
-      deactivateCallback = () =>
+      deactivateCallback = =>
         player.powerup = null
         everyone.now.receiveDeactivatePowerup(player_id)
 
-      duration = config.pull_time_ms
-      pulled_ball.animateTo x, y, duration, () ->
+      stepCallBack = =>
           everyone.now.receiveBallMoved pulled_ball, 0
-          if powerup
-            player = arena.players[player_id]
-            removeBallCallback()
-            arena.setPowerup(player, pulled_ball.type.powerup_kind, activateCallback, deactivateCallback)
+
+      completionCallback = ->
+        if powerup
+          player = arena.players[player_id]
+          removeBallCallback()
+          arena.setPowerup(player, pulled_ball.type.powerup_kind, activateCallback, deactivateCallback)
+
+      duration = config.pull_time_ms
+      pulled_ball.animateTo x, y, duration, stepCallBack, completionCallback
 
 
     validPullSoundCallback = =>
