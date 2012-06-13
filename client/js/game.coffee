@@ -240,8 +240,7 @@ class @Game
       assert(delete @balls[ball_id], "Error cannot find ball to remove it client side")
 
     ball_view = @balls[ball_model.id]
-    ball_view.image.animate {opacity: 0}, 300, ""
-    ball_view.image.animate {transform:"T#{x},#{y}"}, 800, "", () ->
+    ball_view.image.animate {opacity: 0}, 300, "", () ->
       ball_view.image.remove()
       removeBallFromBalls(ball_model.id)
 
