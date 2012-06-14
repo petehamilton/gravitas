@@ -6,8 +6,8 @@ staticfetcher.py:
 
 .PHONY: statics_fetch statics_fetch_force statics_clean dev db server test
 
-	statics_fetch: staticfetcher.py
-		python statics.py fetch
+statics_fetch: staticfetcher.py
+	python statics.py fetch
 
 statics_fetch_force: staticfetcher.py
 	python statics.py fetch --force

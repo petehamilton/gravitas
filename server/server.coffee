@@ -113,32 +113,16 @@ configureNow = (everyone) ->
 
 
   everyone.now.startGravityGun = (player_id, x, y) ->
+    log "Start Gun"
     # TODO remove X, Y only allow pulling balls in line
     player = arena.players[player_id]
 
-    pullCallback = (pulled_ball, x, y, powerup) =>
-      removeBallCallback = =>
-        everyone.now.receiveRemoveBall(pulled_ball.x, pulled_ball.y, pulled_ball)
-
-      activateCallback = (powerup_type) =>
-        everyone.now.receiveActivatePowerup(player_id, powerup_type)
-
-      deactivateCallback = =>
-        player.powerup = null
-        everyone.now.receiveDeactivatePowerup(player_id)
-
-      stepCallBack = =>
-          everyone.now.receiveBallMoved pulled_ball, 0
-
-      completionCallback = ->
-        if powerup
-          player = arena.players[player_id]
-          removeBallCallback()
-          arena.setPowerup(player, pulled_ball.type.powerup_kind, activateCallback, deactivateCallback)
-          everyone.now.receiveMessage player.id, pulled_ball.type.powerup_message
-
-      duration = config.pull_time_ms
-      pulled_ball.animateTo x, y, duration, stepCallBack, completionCallback
+    pullCallback = (pulled_ball) =>
+      everyone.now.receiveBallMoved pulled_ball, config.pull_time_ms
+      setTimeout () => # Ball now in turret
+        everyone.now.receiveBallInTurret(pulled_ball)
+        #TODO: Set powerup if necessary
+      , config.pull_time_ms
 
     arena.pull(
       player,
@@ -152,8 +136,12 @@ configureNow = (everyone) ->
 
 
   everyone.now.stopGravityGun = (player_id) ->
-    arena.shoot arena.players[player_id], everyone, (shot_ball) =>
-      everyone.now.receiveShot player_id, shot_ball
+    arena.shoot(
+      arena.players[player_id]
+      everyone
+      (shot_ball, hit_player_id) => everyone.now.receiveShot player_id, shot_ball, hit_player_id
+      (hit_player) => everyone.now.receiveHealth hit_player.id, hit_player.health
+    )
 
 
   everyone.now.usePowerup = (player_id) ->
@@ -177,8 +165,6 @@ startTimers = ->
       everyone.now.receiveBallsMoved(arena.balls, config.rotation_time)
 
       # TODO: Clean me, use .includes? or something
-      log "ARENA_BEF: ", (b.id for b in arena.balls)
-      log "BALLS_DEL: ", @balls_to_delete
       for b_id in @balls_to_delete
         i = 0
         for b in arena.balls
@@ -187,30 +173,9 @@ startTimers = ->
             arena.balls.splice i, 1
           else
             i += 1
-      log "ARENA_AFT: ", (b.id for b in arena.balls)
 
       @balls_to_delete = []
   , config.rotation_interval
-
-  # Collision checking
-  collisionCheck = setInterval () =>
-    arena.processBallPositions (player, ball_model, x, y) ->
-      arena.handleCollision player, ball_model, x, y, () =>
-        everyone.now.receiveCollisionDamage player.id, ball_model, x, y
-        everyone.now.receiveBallMoved ball_model, 0
-        if player.health <= roundNumber(config.max_health - config.survivable_hits * config.hit_damage, config.health_decimal_places)
-          everyone.now.receivePlayerDeath player.id
-
-          #TODO:  I think triangles has by this point got a copy
-          bs = (b for b in arena.balls)
-          for b in bs
-            if b and b.type.player_id == player.id
-              @balls_to_delete.push b.id
-          #TODO: So here, some balls are accidentally re-rendered
-
-        else
-          everyone.now.receiveHealthUpdate player.id, player.health
-  , config.collision_check_interval
 
   # Arena clock time
   seconds = config.game_time

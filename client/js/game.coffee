@@ -211,8 +211,12 @@ class @Game
   #
   # player : the player who shot
   # ball_model : The ball which has been shot
-  shot: (player, ball_model) ->
+  shot: (player, ball_model, hit_player_id) ->
     @playSoundForCurrentPlayer player, "fire.wav"
+    # TODO shooting animation
+
+    # TODO remove ball at end of animation
+    # @removeBall(x, y, ball_model)
 
 
   # Player shot done, remove ball from canvas
@@ -259,8 +263,9 @@ class @Game
     @arena.clock.update seconds
 
   # Update the health for the given player
-  updateHealth: (player, health) ->
-    @arena.updateHealth(player, health)
+  updateHealth: (player_id, health) ->
+    log "updateHealth of player #{player_id} to #{health}"
+    @arena.updateHealth(player_id, health)
 
 
   removeBall: (x, y, ball_model) ->
@@ -272,13 +277,6 @@ class @Game
       ball_view.image.remove()
       removeBallFromBalls(ball_model.id)
 
-
-  # Deal with a damaging collision
-  collisionDamage: (player, ball_model, x, y) ->
-    ballRemoveCallback = (x, y) =>
-      @removeBall(x, y, ball_model)
-
-    @arena.collisionDamage player, ball_model, x, y, ballRemoveCallback
 
   killPlayer: (player) ->
     @arena.killPlayer(player)
@@ -303,3 +301,11 @@ class @Game
     log "shadowInfo", shadow_info
     if shadow_info
       @arena.displayShadow shadow_info
+
+
+  ballInTurret: (ball_model) ->
+    log "Ball in turret"
+    #TODO: Implement
+    if ball_model.type.kind == config.ball_kinds.powerup
+      log "Powerup in turret"
+      #TODO: Implement powerup fadeout
