@@ -88,11 +88,11 @@ class @Arena
       arr = @paper.vector(s, t, color)
       setTimeout (-> arr.remove()), 2000
 
-    { ball_segment, target_segment, intersection_point: p } = shadow_info
+    { ball_segment, target_segment, intersection } = shadow_info
 
     shed_arr = hide_arrow ball_segment, 'blue'
     ball_arr = hide_arrow target_segment, 'lightgreen'
 
-    if p
+    if p = intersection.point
       c = @paper.circle(p.x, p.y, 4).red()
       setTimeout (-> c.remove()), 2000
