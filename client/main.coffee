@@ -93,7 +93,7 @@ main = ->
 
   # listen to mouse events
   mouseMoveThrottler = new FpsThrottler config.mouse_move_fps
-  $('#paper').mousemove (e) ->
+  $('#paper svg').mousemove (e) ->
     mouseMoveThrottler.throttle ->
       arena.mouseMoved e.offsetX, e.offsetY
 
