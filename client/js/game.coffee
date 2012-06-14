@@ -302,3 +302,11 @@ class @Game
     log "shadowInfo", shadow_info
     if shadow_info
       @arena.displayShadow shadow_info
+
+
+  ballInTurret: (ball_model) ->
+    log "Ball in turret"
+    #TODO: Implement
+    if ball_model.type.kind == config.ball_kinds.powerup
+      log "Powerup in turret"
+      #TODO: Implement powerup fadeout
