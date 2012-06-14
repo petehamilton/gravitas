@@ -26,17 +26,20 @@ class @Arena
 
   mousePressed: (x, y) ->
     # Tell the game about the player clicking their mouse
-    @game.startGravityGun x, y
+    if @turrets[@game.getPlayerId()].alive
+      @game.startGravityGun x, y
 
 
   mouseReleased: (x, y) ->
     # Tell the game about the player clicking their mouse
-    @game.stopGravityGun()
+   if @turrets[@game.getPlayerId()].alive
+     @game.stopGravityGun()
 
 
   spacebarPressed: () ->
     # Tell the game about the player wanting to use their powerup
-    @game.usePowerup()
+    if @turrets[@game.getPlayerId()].alive
+      @game.usePowerup()
 
 
   setTurretRotation: (turret, angle) ->
