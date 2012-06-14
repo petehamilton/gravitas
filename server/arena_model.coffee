@@ -269,20 +269,12 @@ class @ArenaModel
 
 
   # Tells whether the given ball shadowed by another ball
-  shadowed: (player, target_ball) ->
+  shadowed: (player_id, target_ball) ->
 
     # TODO implement returning the closest one, not the first one we find
 
-    # TODO move to common
-    makeTurretOffset = (x, y) =>
-      switch player
-        when 0 then { x: x, y: y }
-        when 1 then { x: config.arena_size.x - y, y: x }
-        when 2 then { x: config.arena_size.x - x, y: config.arena_size.y - y }
-        when 3 then { x: y, y: config.arena_size.y - x }
-
-    # TODO bettr player positions?
-    p = makeTurretOffset 0, 0
+    # Position of the ball in the turrent
+    p = config.player_centers[player_id]
 
     target_segment = makeSegmentBetweenPoints p, target_ball
 
