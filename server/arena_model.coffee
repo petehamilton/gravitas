@@ -5,7 +5,7 @@ plm = require './player_model'
 spm = require './shield_powerup_model'
 hpm = require './health_powerup_model'
 assert = require 'assert'
-{ scale, normed, normal, diff, cross, makeSegmentBetweenPoints, sect } = require './common/intersect'
+{ length, scale, invert, normed, normal, sum, diff, cross, makeSegmentBetweenPoints, sect } = require './common/intersect'
 
 
 PLAYER_IDS = config.player_ids
@@ -42,6 +42,18 @@ class @ArenaModel
 
     # Holds all the active balls that players have shot.
     @active_balls = []
+
+
+  arenaRadius: ->
+    Math.max(config.arena_size.x, config.arena_size.y) * 1.42
+
+  # Starting from p, calculates a line to a point that is on a circle with center
+  # in (0,0) and radius in (arena.x, arena.y).
+  lineToArenaRadius: (p, angle) ->
+    target =
+      x: p.x + Math.cos(degToRad angle) * @arenaRadius()
+      y: p.y + Math.sin(degToRad angle) * @arenaRadius()
+    target
 
 
   nextBallOwner: () ->
@@ -273,7 +285,7 @@ class @ArenaModel
 
     # TODO implement returning the closest one, not the first one we find
 
-    # Position of the ball in the turrent
+    # Position of the ball in the turret
     p = config.player_centers[player_id]
 
     target_segment = makeSegmentBetweenPoints p, target_ball
@@ -282,30 +294,29 @@ class @ArenaModel
     BR = config.ball_size / 2
 
     # Try to find a ball that shadows the target ball
-    for b in @balls
-      if b.id != target_ball.id
+    for b in @balls when b.id != target_ball.id
 
-        # Segment orthogonal to target segment, unit length
-        u_n_t = normal(normed target_segment.d)
+      # Segment orthogonal to target segment, unit length
+      u_n_t = normal(normed target_segment.d)
 
-        # Segment through the ball diameter, orthogonal to target segment
-        ball_segment =
-          s:
-            diff { x: b.x, y: b.y }, (scale u_n_t, BR)
-          d:
-            scale u_n_t, 2*BR
+      # Segment through the ball diameter, orthogonal to target segment
+      ball_segment =
+        s:
+          diff { x: b.x, y: b.y }, (scale u_n_t, BR)
+        d:
+          scale u_n_t, 2*BR
 
-        # Calculate intersection
-        intersection = sect ball_segment, target_segment
+      # Calculate intersection
+      intersection = sect ball_segment, target_segment
 
-        shadow_info =
-          ball: b
-          target_segment: target_segment
-          ball_segment: ball_segment
-          intersection: intersection
+      shadow_info =
+        ball: b
+        target_segment: target_segment
+        ball_segment: ball_segment
+        intersection: intersection
 
-        if intersection.intersects and intersection.point
-          return shadow_info
+      if intersection.intersects and intersection.point
+        return shadow_info
 
     return false
 
@@ -375,19 +386,20 @@ class @ArenaModel
         invalid_pull_callback()
 
 
+  # TODO update these docs
   # Responsible for handling a player shooting their ball. Calculates ball
   # trajectory and then runs a callback function with target & ball params
   # Does nothing if the player doesn't have any balls
   #
   # player: player to shoot from
-  # shotCallback: passed (shot_ball, target_x, target_y)
+  # shotCallback: passed (shot_ball)
   #
   # 1. Identifies a target point ~900px away from the current position
   #    (900 guaruntees it will go off screen).
   # 2. Calculates the target x and y coordinates
   # 3. Deletes the ball from the player's balls
   # 4. Calls the callback function, passing it the ball model and target coords
-  shoot: (player, shotCallback) ->
+  shoot: (player, everyone, shotCallback) ->
 
     #TODO, work out distance to nearest object?
     # 900 will mean balls always shoot at same speed
@@ -401,17 +413,70 @@ class @ArenaModel
       log "player #{player} tries to shoot, but has no ball"
     else
       log "player #{player} shoots ball #{ball.id} of kind #{ball.type.kind} with angle #{angle}"
-      { x: oldX, y: oldY } = ball
-      radius = Math.max(config.arena_size.x, config.arena_size.y) * 1.42
-      target =
-        x: oldX + Math.cos(degToRad(angle)) * radius
-        y: oldY + Math.sin(degToRad(angle)) * radius
+
+      # Tell other players that ball was shot
+      shotCallback ball
 
       # Removes element at index 0
       player.stored_balls.splice(0, 1)
       @active_balls.push ball
 
-      shotCallback ball, target.x, target.y
+      # Calculate which turret was hit, if any
+
+      # Get target segment
+      p = config.player_centers[player.id]  # Position of the ball in the turret
+      target_point = @lineToArenaRadius p, angle
+      target_segment = makeSegmentBetweenPoints p, target_point
+
+      # Get ball segment
+
+      for target_player in @players when target_player.id != player.id
+
+        # TODO remove dup
+
+        # Segment orthogonal to target segment, unit length
+        u_n_t = normal(normed target_segment.d)
+
+        turret_position = config.player_centers[target_player.id]
+        turret_radius = config.shield_radius * player.health
+
+        # Segment through the turret diameter, orthogonal to target segment
+        turret_segment =
+          s:
+            diff turret_position, (scale u_n_t, turret_radius)
+          d:
+            scale u_n_t, 2*turret_radius
+
+        # Intersect
+        intersection = sect turret_segment, target_segment
+
+        if intersection.intersects and intersection.point
+          # Hit
+          log "hit: player #{target_player.id}"
+
+          # Calculate impact point (where the center of the ball hits the turret radius)
+          r = turret_radius
+          d = length diff(intersection.point, turret_position)
+          m = Math.sqrt(r*r - d*d)
+          unit_inverse_target = normed(invert target_segment.d)
+          impact = sum intersection.point, scale(unit_inverse_target, m)
+
+          # TODO clean this up, don't hijack intersection
+          shadow_info =
+            ball: null
+            target_segment: target_segment
+            ball_segment: turret_segment
+            intersection:
+              intersects: true
+              point: impact
+
+          everyone.now.debug_receiveShadow shadow_info
+
+        else
+          # Not hit
+          log "not hit: player #{target_player.id}"
+
+
 
   # Gives a powerup to a player
   #

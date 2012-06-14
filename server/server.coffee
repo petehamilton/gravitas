@@ -152,16 +152,8 @@ configureNow = (everyone) ->
 
 
   everyone.now.stopGravityGun = (player_id) ->
-    shootCallback = (shot_ball, x, y) =>
+    arena.shoot arena.players[player_id], everyone, (shot_ball) =>
       everyone.now.receiveShot player_id, shot_ball
-      duration = config.shoot_time_ms
-      shot_ball.animateTo x, y, duration, () ->
-          everyone.now.receiveBallMoved shot_ball, 0
-        , () ->
-          everyone.now.receiveShotFinished player_id, shot_ball
-
-
-    arena.shoot arena.players[player_id], shootCallback
 
 
   everyone.now.usePowerup = (player_id) ->
