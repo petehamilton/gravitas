@@ -208,7 +208,7 @@ startTimers = ->
       arena.handleCollision player, ball_model, x, y, () =>
         everyone.now.receiveCollisionDamage player.id, ball_model, x, y
         everyone.now.receiveBallMoved ball_model, 0
-        if player.health <= 1 - config.survivable_hits*0.1
+        if player.health <= config.max_health - config.survivable_hits * config.hit_damage
           everyone.now.receivePlayerDeath player.id
 
           #TODO:  I think triangles has by this point got a copy

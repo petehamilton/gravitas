@@ -18,6 +18,11 @@ even = (num) -> num % 2 == 0
 degToRad = (deg) -> (deg * Math.PI) / 180
 
 
+# Rounds number to given decimal places
+roundNumber = (num, dec) ->
+  Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec)
+
+
 partition = (list, iterator) ->
   take = []
   reject = []
@@ -65,6 +70,7 @@ exports = {
   dict
   even
   degToRad
+  roundNumber
   partition
   flatten
   assert

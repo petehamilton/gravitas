@@ -1,4 +1,4 @@
-{ dict, log, even, degToRad, partition, flatten, negativeMod } = require './common/utils'
+{ dict, log, even, degToRad, roundNumber, partition, flatten, negativeMod } = require './common/utils'
 config = require('../config').config
 pbm = require './ball_model'
 plm = require './player_model'
@@ -485,11 +485,13 @@ class @ArenaModel
   # handledCallback : Called once the collision has been handled
   handleCollision: (player, ball_model, x, y, handledCallback) ->
     if ball_model.floating and ball_model.type.player_id != player.id
-      player.setHealth(player.health - 0.1)
+      # Shouldn't have to round but has some floating point accuracy issues
+      player.setHealth(roundNumber(player.health - config.hit_damage, config.health_decimal_places))
+
       ball_model.floating = false
       ball_model.stopAnimation()
       ball_model.x = x
       ball_model.y = y
       handledCallback() if handledCallback
       @remove(ball_model)
-#
+

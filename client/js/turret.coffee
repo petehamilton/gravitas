@@ -77,14 +77,15 @@ class @Turret
     @turret_pulse_anim.animate({opacity: 0}, config.turret_pulse_interval*@pulse_speed, "<>")
 
 
-  updateHealth: (health) ->
-    @pulse_scale = health
+  updateHealth: (@pulse_scale) ->
+    log "Updating health to", @pulse_scale
     #TODO: Animate this?
     @turret_pulse_anim.animate({transform:"s#{@pulse_scale}"}, config.shield_damage_speed, "<>")
     @turret_pulse_persist.animate({transform:"s#{@pulse_scale}"}, config.shield_damage_speed, "<>")
     @turret_pulse_background.animate({transform:"s#{@pulse_scale}"}, config.shield_damage_speed, "<>")
 
-    if health <= 1 - (config.survivable_hits-1)*0.1 # Warn when one from death
+    if @pulse_scale <= 1 - (config.survivable_hits-1) * config.hit_damage # Warn when one from death
+      log "One from death"
       @pulse_speed = 0.2
       @turret_pulse_background.animate {fill: config.warning_colour}, 500
     else

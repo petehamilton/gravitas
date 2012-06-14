@@ -6,6 +6,7 @@ class @Arena
 
   setGame: (@game) ->
     makeTurrets = (player_models) =>
+      log "Creating turrets"
       @turrets = (new Turret(@paper, player) for player in player_models)
 
     @game.usePlayerModels(makeTurrets)

@@ -14,9 +14,10 @@ class @PlayerModel
     # Number of balls available for player in center
     @balls_available = 0
 
-  isAlive: () ->
-    @health > 0
+  isAlive: ->
+    @health > config.survivable_hits * config.hit_damage
 
   setHealth: (@health) ->
+    console.log "Setting health to", @health
     unless @isAlive
       @alive = false

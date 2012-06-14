@@ -58,6 +58,7 @@ config =
 
   # Max health for each player
   max_health: 1
+  health_decimal_places: 2 # Number of decimal places player health is allowed
 
   lag_limit: 50
 
@@ -89,6 +90,7 @@ config =
   shield_radius: 80
   shield_damage_speed: 500
   survivable_hits: 6
+  hit_damage: 0.1
 
   player_colours:
     0: "#00a2ff"
