@@ -1,3 +1,4 @@
+{ roundNumber } = require './common/utils'
 config = require('../config').config
 
 class @PlayerModel
@@ -15,9 +16,8 @@ class @PlayerModel
     @balls_available = 0
 
   isAlive: ->
-    @health > config.survivable_hits * config.hit_damage
+    @health > roundNumber(config.max_health - config.survivable_hits * config.hit_damage, config.health_decimal_places)
 
   setHealth: (@health) ->
-    console.log "Setting health to", @health
-    unless @isAlive
+    unless @isAlive()
       @alive = false

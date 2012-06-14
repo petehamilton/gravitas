@@ -5,7 +5,7 @@ arena_model = require './arena_model'
 pbm = require './ball_model'
 spm = require './shield_powerup_model'
 db = require './db'
-{log, dir, ServerAnimation} = require './common/utils'
+{ log, dir, ServerAnimation, roundNumber } = require './common/utils'
 config = require('../config').config
 
 
@@ -208,7 +208,7 @@ startTimers = ->
       arena.handleCollision player, ball_model, x, y, () =>
         everyone.now.receiveCollisionDamage player.id, ball_model, x, y
         everyone.now.receiveBallMoved ball_model, 0
-        if player.health <= config.max_health - config.survivable_hits * config.hit_damage
+        if player.health <= roundNumber(config.max_health - config.survivable_hits * config.hit_damage, config.health_decimal_places)
           everyone.now.receivePlayerDeath player.id
 
           #TODO:  I think triangles has by this point got a copy

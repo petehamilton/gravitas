@@ -18,63 +18,72 @@ class @Turret
         animate_pulse() if @alive
       , config.turret_pulse_interval * @pulse_speed
 
+
     @position = player_model.id
-
     log "Creating Turret #{@position}"
-
-    # @image = "../images/double_turret.png"
-    @image = "../images/turret2.png"
-
-    @pulse_image = "../images/pulse.png"
-    @blast_shield_image = "../images/pulse_shield.png"
 
     @alive = player_model.alive
 
-    @center = config.player_centers[@position]
+    if @alive
+      # @image = "../images/double_turret.png"
+      @image = "../images/turret2.png"
+
+      @pulse_image = "../images/pulse.png"
+      @blast_shield_image = "../images/pulse_shield.png"
+
+      @center = config.player_centers[@position]
 
 
-    @offset_center = { x: @center.x - TURRET_OFFSET.x, y: @center.y - TURRET_OFFSET.y }
+      @offset_center = { x: @center.x - TURRET_OFFSET.x, y: @center.y - TURRET_OFFSET.y }
 
-    @angle = @position * 90 + 45
+      @angle = @position * 90 + 45
 
-    @pulse_scale = player_model.health
-    @shield_radius = config.shield_radius * @pulse_scale
+      @pulse_scale = player_model.health
+      @shield_radius = config.shield_radius * @pulse_scale
 
-    # Translucent shield background
-    @turret_pulse_background = @paper.circle(@center.x, @center.y, @shield_radius)
-    @turret_pulse_background.attr
-      fill: config.player_colours[@position]
-      opacity: 0.2
+      # Translucent shield background
+      @turret_pulse_background = @paper.circle(@center.x, @center.y, @shield_radius)
+      @turret_pulse_background.attr
+        opacity: 0.2
+      @updateColor()
 
-    # Pulses
-    pulse_width = @shield_radius * 2
-    pulse_height = @shield_radius * 2
-    @pulse_speed = 1
-    @pulse_offset_center = { x: @center.x - @shield_radius, y: @center.y - @shield_radius }
+      # Pulses
+      pulse_width = @shield_radius * 2
+      pulse_height = @shield_radius * 2
+      @pulse_speed = 1
+      @pulse_offset_center = { x: @center.x - @shield_radius, y: @center.y - @shield_radius }
 
-    # Static
-    @turret_pulse_persist = @paper.image @pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, pulse_width, pulse_height
+      # Static
+      @turret_pulse_persist = @paper.image @pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, pulse_width, pulse_height
 
-    # Blast Shield
-    @blast_shield = @paper.image @blast_shield_image, @pulse_offset_center.x, @pulse_offset_center.y, pulse_width, pulse_height
-    @blast_shield.attr {opacity: 0}
+      # Blast Shield
+      @blast_shield = @paper.image @blast_shield_image, @pulse_offset_center.x, @pulse_offset_center.y, pulse_width, pulse_height
+      @blast_shield.attr {opacity: 0}
 
-    # Animated Pulse
-    @turret_pulse_anim = @paper.image(@pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, @shield_radius*2, @shield_radius*2)
-    @turret_pulse_anim.transform("s0").attr {opacity: 1}
+      # Animated Pulse
+      @turret_pulse_anim = @paper.image(@pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, @shield_radius*2, @shield_radius*2)
+      @turret_pulse_anim.transform("s0").attr {opacity: 1}
 
-    animate_pulse()
+      animate_pulse()
 
-    # Turret itself
-    width = config.turret_width
-    height = config.turret_height
-    @turret_sprite = @paper.image(@image, @offset_center.x, @offset_center.y, width, height)
-                      .transform("r#{@angle},#{@center.x},#{@center.y}")
+      # Turret itself
+      width = config.turret_width
+      height = config.turret_height
+      @turret_sprite = @paper.image(@image, @offset_center.x, @offset_center.y, width, height)
+                        .transform("r#{@angle},#{@center.x},#{@center.y}")
 
   do_pulse: () =>
     @turret_pulse_anim.transform("s0").attr {opacity: 1}
     @turret_pulse_anim.animate({transform:"s#{@pulse_scale}"}, config.turret_pulse_interval*2/3*@pulse_speed, "<>")
     @turret_pulse_anim.animate({opacity: 0}, config.turret_pulse_interval*@pulse_speed, "<>")
+
+
+  updateColor: ->
+    if @pulse_scale <= 1 - (config.survivable_hits - 1) * config.hit_damage # Warn when one from death
+      @pulse_speed = 0.2
+      @turret_pulse_background.animate {fill: config.warning_colour}, 500
+    else
+      @turret_pulse_background.animate {fill: config.player_colours[@position]}, 500
 
 
   updateHealth: (@pulse_scale) ->
@@ -84,11 +93,7 @@ class @Turret
     @turret_pulse_persist.animate({transform:"s#{@pulse_scale}"}, config.shield_damage_speed, "<>")
     @turret_pulse_background.animate({transform:"s#{@pulse_scale}"}, config.shield_damage_speed, "<>")
 
-    if @pulse_scale <= 1 - (config.survivable_hits-1) * config.hit_damage # Warn when one from death
-      @pulse_speed = 0.2
-      @turret_pulse_background.animate {fill: config.warning_colour}, 500
-    else
-      @turret_pulse_background.animate {fill: config.player_colours[@position]}, 500
+    @updateColor()
 
 
   # Turns the turret according to the mouse position.

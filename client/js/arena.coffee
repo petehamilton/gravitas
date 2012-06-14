@@ -1,7 +1,6 @@
 class @Arena
   constructor: (@paper) ->
     @crosshair = new Crosshair(paper)
-
     @clock = new CountdownTimer(@paper, 215, 70)
 
   setGame: (@game) ->
