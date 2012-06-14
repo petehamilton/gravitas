@@ -186,7 +186,6 @@ startTimers = ->
     if seconds == 0
       clearInterval clock
       clearInterval ball_rotation
-      clearInterval collisionCheck
   , config.clock_interval
 
 
