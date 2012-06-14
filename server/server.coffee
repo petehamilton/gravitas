@@ -11,6 +11,8 @@ config = require('../config').config
 
 # Server configuration
 
+PORT = 7777
+ADDRESS = "0.0.0.0"
 MODEL_FPS = config.model_fps
 BALLS_ENABLED = config.balls_enabled
 ARENA_SIZE = config.arena_size
@@ -169,7 +171,7 @@ configureNow = (everyone) ->
 createApp = ->
   app = express.createServer()
   app.configure -> app.use express.bodyParser()
-  app.listen 7777, "0.0.0.0"
+  app.listen PORT, ADDRESS
   app
 
 
