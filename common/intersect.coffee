@@ -7,6 +7,9 @@ scale = (v, s) ->
   x: v.x * s
   y: v.y * s
 
+invert = (v) ->
+  scale v, -1
+
 normed = (v) ->
   l = length v
   throw new Error("normed: nullvector cannot be normed") if l == 0
@@ -16,6 +19,10 @@ normal = (dv) ->
   # "left-rotated"
   x: -dv.y
   y: dv.x
+
+sum = (a, b) ->
+  x: a.x + b.x
+  y: a.y + b.y
 
 diff = (a, b) ->
   x: a.x - b.x
@@ -92,8 +99,10 @@ sect = (s1, s2) ->
 exports = {
   length
   scale
+  invert
   normed
   normal
+  sum
   diff
   cross
   makeSegment
