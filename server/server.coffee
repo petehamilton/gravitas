@@ -138,19 +138,15 @@ configureNow = (everyone) ->
       duration = config.pull_time_ms
       pulled_ball.animateTo x, y, duration, stepCallBack, completionCallback
 
-
-    validPullSoundCallback = =>
-      everyone.now.receiveValidPullSound(player.id)
-
-    invalidPullSoundCallback = =>
-      everyone.now.receiveInvalidPullSound(player.id)
-
-    arena.pull(player,
-               x,
-               y,
-               pullCallback,
-               validPullSoundCallback,
-               invalidPullSoundCallback)
+    arena.pull(
+      player,
+      x,
+      y,
+      everyone,  # TODO don't do this, use some debug object
+      pullCallback,
+      => everyone.now.receiveValidPull(player.id),
+      => everyone.now.receiveInvalidPull(player.id),
+    )
 
 
   everyone.now.stopGravityGun = (player_id) ->

@@ -156,16 +156,19 @@ class @Game
       @server.setAngle @getPlayerId(), angle
 
 
-  # Plays pull sound only if player equals the current player
-  validPullSound: (player) ->
+  playSoundForCurrentPlayer: (player, sound_filename) ->
     if player == @getPlayerId() && !@disableSound()
-      new Audio("sounds/pull.wav").play()
+      new Audio("sounds/" + sound_filename).play()
 
 
-  # Plays invalid pull sound only if player equals the current player
-  invalidPullSound: (player) ->
-    if player == @getPlayerId() && !@disableSound()
-      new Audio("sounds/funk.wav").play()
+  # Process a valid pull of given player
+  validPull: (player) ->
+    @playSoundForCurrentPlayer player, "pull.wav"
+
+
+  # Process an invalid pull of given player
+  invalidPull: (player) ->
+    @playSoundForCurrentPlayer player, "funk.wav"
 
 
   # Starts the gravity gun of the current player
@@ -208,10 +211,7 @@ class @Game
   # player : the player who shot
   # ball_model : The ball which has been shot
   shot: (player, ball_model) ->
-    log "player #{player} shot", ball_model
-    if !@disableSound()
-      log "disableSound:", @disableSound()
-      new Audio("sounds/fire.wav").play()
+    @playSoundForCurrentPlayer player, "fire.wav"
 
 
   # Player shot done, remove ball from canvas

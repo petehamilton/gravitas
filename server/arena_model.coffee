@@ -329,10 +329,10 @@ class @ArenaModel
   #
   # player        : player who is pulling
   # x, y          : crosshair coords
-  # pullCallback  : passed (pulled_ball, target_x, target_y), called once
+  # pull_callback : passed (pulled_ball, target_x, target_y), called once
   #                 coords calculated
   #
-  pull: (player, x, y, pullCallback, validPullSoundCallback, invalidPullSoundCallback) ->
+  pull: (player, x, y, everyone, pull_callback, valid_pull_callback, invalid_pull_callback) ->
 
     # Find the balls that were selected by the pull
     r = config.pull_radius
@@ -350,10 +350,20 @@ class @ArenaModel
 
       is_powerup = ball.type.kind == config.ball_kinds.powerup
 
+      shadow_info = @shadowed player.id, ball
+
+      everyone.now.debug_receiveShadow shadow_info
+
       # TODO: Remove Later when using collision with turret
 
-      if is_powerup or ball.type.player_id == player.id
-        validPullSoundCallback()
+      if s = shadow_info.ball
+        log "player #{player} tried to pull ball #{ball.id} at #{[ball.x, ball.y]}
+             but it is shadowed by ball #{s.id} at #{[s.x, s.y]}"
+
+        invalid_pull_callback()
+
+      else if is_powerup or ball.type.player_id == player.id
+        valid_pull_callback()
 
         turret_center = config.player_centers[player.id]
 
@@ -362,7 +372,7 @@ class @ArenaModel
 
         @balls = others # All other balls stay
 
-        pullCallback ball, turret_center.x, turret_center.y, is_powerup
+        pull_callback ball, turret_center.x, turret_center.y, is_powerup
 
         unless is_powerup
           player.stored_balls = [ball]
@@ -370,7 +380,7 @@ class @ArenaModel
 
 
       else
-        invalidPullSoundCallback()
+        invalid_pull_callback()
 
 
   # Responsible for handling a player shooting their ball. Calculates ball
