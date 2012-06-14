@@ -32,13 +32,18 @@ class @Game
       new connectedPlayer("Player XYZ", 456)
     ])
 
+    # Password change stuff
+    @oldPasswordInput = ko.observable ""
+    @newPasswordInput1 = ko.observable ""
+    @newPasswordInput2 = ko.observable ""
+
+
     # Logged in user stats
     @gamesWon = ko.observable 0
     @gamesPlayed = ko.observable 0
     @timePlayed =  ko.observable 0
     @timePlayedConverted = ko.computed(=>
       @secToTime(@timePlayed()))
-
 
     @achievementStep = ko.observable ""
     @achievementVeteran = ko.observable ""

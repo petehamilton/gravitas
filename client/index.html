@@ -109,6 +109,13 @@
                   <td><label class="small">Picture URL</label>
                   <td><input class="small" type="text" data-bind="value: avatarURL" id="pictureURL" tabindex="1"/></td>
                 </tr>
+                <tr>
+                  <td>
+                    <button>
+                        Save new URL
+                    </button>
+                  </td>
+                </tr>
                <tr>
                 <td>
                   <br /><label class="large">Change Password</label>
@@ -116,22 +123,28 @@
                </tr>
                 <tr>
                   <td><label class="small">Old Password:</label></td>
-                  <td><input class="small" type="password" id="oldPassword" tabindex="1"/></td>
+                  <td><input class="small" type="password" data-bind="value: oldPasswordInput" tabindex="1"/></td>
                 </tr>
                 <tr>
                   <td><label class="small">New Password:</label></td>
-                  <td><input class="small" type="password" id="oldPassword" tabindex="1"/></td>
+                  <td><input class="small" type="password" data-bind="value: newPasswordInput1" tabindex="1"/></td>
                 </tr>
                 <tr>
                   <td><label class="small">Confirm Password:</label></td>
-                  <td><input class="small" type="password" id="oldPassword" tabindex="1"/></td>
+                  <td><input class="small" type="password" data-bind="value: newPasswordInput2" tabindex="1"/></td>
                 </tr>
+                <tr>
+                  <td>
+                    <button data-bind="enable: !((newPasswordInput1() != newPasswordInput2()) && (newPasswordInput2() != ''))">
+                      Change Password
+                    </button>
+                  </td>
+                  <td>
+                   <span data-bind="visible: ((newPasswordInput1() != newPasswordInput2()) && (newPasswordInput2() != ''))">Passwords do not match!</span>
+                  </td>
               </tbody>
             </table>
-            <br />
-            <button>
-                Save Changes
-            </button>
+
 
             </div>
 
