@@ -3,6 +3,7 @@
 commands = [
     'sh -c "cd client && python -m SimpleHTTPServer"',
     'stylus --watch client/',
+    'vogue client/',
     # 'coffee --compile --watch .',  # We try to avoid using this if possible.
 ]
 

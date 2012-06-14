@@ -37,6 +37,7 @@ Basic setup
 * run ```curl http://npmjs.org/install.sh | sh```
 * run ```npm install -g coffee-script``` to install coffeescript *(no -g if don't want global)*
 * run ```npm install -g stylus``` to install [stylus](http://learnboost.github.com/stylus/)
+* run ```npm install -g vogue``` to install [vogue](http://aboutcode.net/vogue/)
 * run ```npm install -g mongoose``` to install [mongoose](https://github.com/LearnBoost/mongoose)
 * run ```npm install -g mocha``` to install mocha for js testing
 * run ```brew install wget``` to ensure the make file can download the libraries
@@ -64,7 +65,7 @@ Installing Sublime
 	         "selector" : "source.coffee",
 	         "path" : "/usr/local/bin"
        		 }
-   
+
 
 Setting up server
 -----------------
