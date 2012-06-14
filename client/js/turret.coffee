@@ -85,7 +85,6 @@ class @Turret
     @turret_pulse_background.animate({transform:"s#{@pulse_scale}"}, config.shield_damage_speed, "<>")
 
     if @pulse_scale <= 1 - (config.survivable_hits-1) * config.hit_damage # Warn when one from death
-      log "One from death"
       @pulse_speed = 0.2
       @turret_pulse_background.animate {fill: config.warning_colour}, 500
     else
