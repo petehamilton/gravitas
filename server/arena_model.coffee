@@ -267,7 +267,7 @@ class @ArenaModel
 
 
   setAngle: (player, angle) ->
-    @angles[player] = angle
+    @angles[player.id] = angle
 
 
   # Tells whether the given ball shadowed by another ball
@@ -339,7 +339,7 @@ class @ArenaModel
     # Find the balls that were selected by the pull
     r = config.pull_radius
 
-    angle = @angles[player]
+    angle = @angles[player.id]
 
     # Find the balls that were selected by the pull
     [selected, others] = partition @balls, (b, i) ->
