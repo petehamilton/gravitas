@@ -161,8 +161,6 @@ startTimers = ->
       everyone.now.receiveBallsMoved(arena.balls, config.rotation_time)
 
       # TODO: Clean me, use .includes? or something
-      log "ARENA_BEF: ", (b.id for b in arena.balls)
-      log "BALLS_DEL: ", @balls_to_delete
       for b_id in @balls_to_delete
         i = 0
         for b in arena.balls
@@ -171,7 +169,6 @@ startTimers = ->
             arena.balls.splice i, 1
           else
             i += 1
-      log "ARENA_AFT: ", (b.id for b in arena.balls)
 
       @balls_to_delete = []
   , config.rotation_interval
