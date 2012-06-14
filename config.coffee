@@ -11,6 +11,9 @@ config =
   # Used for animations etc
   fps: FPS
 
+  # Upper limit for processing mouse move events
+  mouse_move_fps: 30
+
   ball_kinds:
     player: 0
     powerup: 1

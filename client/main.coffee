@@ -92,7 +92,7 @@ main = ->
   num_colors = 4
 
   # listen to mouse events
-  mouseMoveThrottler = new FpsThrottler config.fps
+  mouseMoveThrottler = new FpsThrottler config.mouse_move_fps
   $('#paper').mousemove (e) ->
     mouseMoveThrottler.throttle ->
       arena.mouseMoved e.offsetX, e.offsetY
