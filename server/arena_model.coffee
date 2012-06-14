@@ -43,8 +43,6 @@ class @ArenaModel
     # Holds all the active balls that players have shot.
     @active_balls = []
 
-    @angles = playerIdDict (i) -> 0
-
 
   nextBallOwner: () ->
     min = undefined
@@ -266,8 +264,8 @@ class @ArenaModel
     @balls.push(new pbm.BallModel(genBallId(), type, x, y))
 
 
-  setAngle: (player, angle) ->
-    @angles[player.id] = angle
+  setAngle: (player_id, angle) ->
+    @players[player_id].turret_angle = angle
 
 
   # Tells whether the given ball shadowed by another ball
@@ -339,7 +337,7 @@ class @ArenaModel
     # Find the balls that were selected by the pull
     r = config.pull_radius
 
-    angle = @angles[player.id]
+    angle = player.turret_angle
 
     # Find the balls that were selected by the pull
     [selected, others] = partition @balls, (b, i) ->

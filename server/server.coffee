@@ -103,8 +103,7 @@ configureNow = (everyone) ->
 
 
   everyone.now.setAngle = (player_id, angle) ->
-    player = arena.players[player_id]
-    arena.setAngle player, angle
+    arena.setAngle player_id, angle
     everyone.now.receiveAngle(player_id, angle)
 
 
@@ -215,7 +214,7 @@ startTimers = ->
             if b and b.type.player_id == player.id
               @balls_to_delete.push b.id
           #TODO: So here, some balls are accidentally re-rendered
-          
+
         else
           everyone.now.receiveHealthUpdate player.id, player.health
   , config.collision_check_interval
