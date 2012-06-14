@@ -1,6 +1,6 @@
 mongoose = require 'mongoose'
 db = require './db'
-{config, log, dir} = require './utils'
+{config, log, dir} = require './common/utils'
 
 
 log "Initialising database..."
