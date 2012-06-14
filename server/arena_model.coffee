@@ -485,7 +485,7 @@ class @ArenaModel
   # handledCallback : Called once the collision has been handled
   handleCollision: (player, ball_model, x, y, handledCallback) ->
     if ball_model.floating and ball_model.type.player_id != player.id
-      player.health -= 0.1
+      player.setHealth(player.health - 0.1)
       ball_model.floating = false
       ball_model.stopAnimation()
       ball_model.x = x

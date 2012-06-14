@@ -145,6 +145,10 @@ class @Game
       @lag off
       fn()
 
+  # Uses playermodels as the parameter to the callback function
+  usePlayerModels: (callback) ->
+    @withServer =>
+      @server.usePlayerModels callback
 
   # Sets the turret angle of the current player.
   onOwnAngle: (angle) ->

@@ -1,12 +1,18 @@
 class @Arena
   constructor: (@paper) ->
-    @turrets = (new Turret(p, @paper) for p in [0..3])
     @crosshair = new Crosshair(paper)
 
     @clock = new CountdownTimer(@paper, 215, 70)
 
-  setGame: (game) ->
-    @game = game
+  setGame: (@game) ->
+    makeTurrets = (player_models) =>
+      @turrets = (new Turret(@paper, player) for player in player_models)
+
+    @game.usePlayerModels(makeTurrets)
+
+  # Gets server side player models
+  getPlayerModels: ->
+    @game.getPlayerModels()
 
 
   mouseMoved: (x, y) ->

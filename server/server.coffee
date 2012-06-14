@@ -106,6 +106,9 @@ configureNow = (everyone) ->
     arena.setAngle player_id, angle
     everyone.now.receiveAngle(player_id, angle)
 
+  everyone.now.usePlayerModels = (callback) ->
+    callback arena.players
+
 
   everyone.now.startGravityGun = (player_id, x, y) ->
     # TODO remove X, Y only allow pulling balls in line

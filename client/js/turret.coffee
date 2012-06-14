@@ -4,7 +4,22 @@ class @Turret
 
   # Positions are clockwise from top left to bottom left
   # 0 => TL, 1 => TR, 2 => BR, 3 => BL
-  constructor: (@position, @paper) ->
+  constructor: (@paper, player_model) ->
+    makeTurretOffset = (x, y) =>
+      switch @position
+        when 0 then { x: @center.x + x, y: @center.y + y }
+        when 1 then { x: @center.x - x, y: @center.y + y }
+        when 2 then { x: @center.x - x, y: @center.y - y }
+        when 3 then { x: @center.x + x, y: @center.y - y }
+
+    animate_pulse = () =>
+      @animate_pulse_timer = setTimeout () =>
+        @do_pulse()
+        animate_pulse() if @alive
+      , config.turret_pulse_interval * @pulse_speed
+
+    @position = player_model.id
+
     log "Creating Turret #{@position}"
 
     # @image = "../images/double_turret.png"
@@ -13,23 +28,17 @@ class @Turret
     @pulse_image = "../images/pulse.png"
     @blast_shield_image = "../images/pulse_shield.png"
 
-    @alive = true
+    @alive = player_model.alive
 
     @center = config.player_centers[@position]
 
-    makeTurretOffset = (x, y) =>
-      switch @position
-        when 0 then { x: @center.x + x, y: @center.y + y }
-        when 1 then { x: @center.x - x, y: @center.y + y }
-        when 2 then { x: @center.x - x, y: @center.y - y }
-        when 3 then { x: @center.x + x, y: @center.y - y }
 
-    @offset_center = {x: @center.x - TURRET_OFFSET.x, y: @center.y - TURRET_OFFSET.y}
+    @offset_center = { x: @center.x - TURRET_OFFSET.x, y: @center.y - TURRET_OFFSET.y }
 
     @angle = @position * 90 + 45
 
-    @shield_radius = config.shield_radius
-
+    @pulse_scale = player_model.health
+    @shield_radius = config.shield_radius * @pulse_scale
 
     # Translucent shield background
     @turret_pulse_background = @paper.circle(@center.x, @center.y, @shield_radius)
@@ -41,8 +50,7 @@ class @Turret
     pulse_width = @shield_radius * 2
     pulse_height = @shield_radius * 2
     @pulse_speed = 1
-    @pulse_scale = 1
-    @pulse_offset_center = {x: @center.x - @shield_radius, y: @center.y - @shield_radius}
+    @pulse_offset_center = { x: @center.x - @shield_radius, y: @center.y - @shield_radius }
 
     # Static
     @turret_pulse_persist = @paper.image @pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, pulse_width, pulse_height
@@ -54,12 +62,6 @@ class @Turret
     # Animated Pulse
     @turret_pulse_anim = @paper.image(@pulse_image, @pulse_offset_center.x, @pulse_offset_center.y, @shield_radius*2, @shield_radius*2)
     @turret_pulse_anim.transform("s0").attr {opacity: 1}
-
-    animate_pulse = () =>
-      @animate_pulse_timer = setTimeout () =>
-        @do_pulse()
-        animate_pulse() if @alive
-      , config.turret_pulse_interval * @pulse_speed
 
     animate_pulse()
 
