@@ -240,10 +240,10 @@ class @Game
   #
   # player : the player who shot
   # ball_model : The ball which has been shot
-  shotFinished: (player, ball_model) ->
-    ball_view = @balls[ball_model.id]
-    ball_view.remove =>
-      delete @balls[ball_model.id] # TODO check if this allows ball to be GC'd
+    shotFinished: (player, ball_model) ->
+      ball_view = @balls[ball_model.id]
+      ball_view.remove =>
+        delete @balls[ball_model.id] # TODO check if this allows ball to be GC'd
 
 
   # Sets the angle of any player turret.

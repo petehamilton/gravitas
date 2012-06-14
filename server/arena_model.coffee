@@ -446,21 +446,6 @@ class @ArenaModel
             # Hit
             log "will hit: player #{target_player.id}"
 
-            # Ball arrived at target; do damage
-            on_arrive_at_target = =>
-              log "ball hit into player #{target_player.id}"
-
-              # Decrease health
-              target_player.hit()
-
-              hit_callback target_player
-
-              if target_player.isDead()
-                everyone.now.receivePlayerDeath target_player.id
-                @removeAllBallsFromPlayer target_player
-
-            setTimeout on_arrive_at_target, config.shoot_time_ms
-
 
             # Calculate impact point (where the center of the ball hits the turret radius)
             r = turret_radius
@@ -479,6 +464,26 @@ class @ArenaModel
                 point: impact
 
             everyone.now.debug_receiveShadow shadow_info
+
+            # Ball arrived at target; do damage
+            on_arrive_at_target = =>
+              log "ball hit into player #{target_player.id}"
+
+              # Decrease health
+              target_player.hit()
+
+              hit_callback target_player
+
+              if target_player.isDead()
+                everyone.now.receivePlayerDeath target_player.id
+                @removeAllBallsFromPlayer target_player
+              else
+
+            
+            ball.x = impact.x
+            ball.y = impact.y
+            everyone.now.receiveBallMoved ball, config.pull_time_ms, ""
+            setTimeout on_arrive_at_target, config.shoot_time_ms
 
           else
             # Not hit
