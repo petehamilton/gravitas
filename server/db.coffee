@@ -25,11 +25,13 @@ User = mongoose.model 'User', new mongoose.Schema
     type: String
     index: true
   password: String
+  avatarURL: String
   timePlayed: Number
   gamesWon: Number
   gamesPlayed: Number
   rating: Number
   achievements: [ Achievement_schema ]
+  ratingHistory: [ RatingHistory_schema ]
 
 
 connect = ->
@@ -45,6 +47,7 @@ setup = (callback) ->
       user = new User
         username: name
         password: pw
+        avatarURL: "http://i.imgur.com/Ro38G.jpg"
         timePlayed: 39603
         gamesWon: 31
         gamesPlayed: 70
@@ -56,7 +59,7 @@ setup = (callback) ->
           {id : 3, date : ""}
           {id : 4, date : ""}
         ]
-        ratingHistory:[
+        ratingHistory: [
           {rating : 123}
           {rating : 456}
           {rating : 789}

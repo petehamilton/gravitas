@@ -8,8 +8,7 @@ class @Statistics
     graphLabel2.attr fill: "#a2b5c6", 'font-size': 12, 'font-family': "Century Gothic, sans-serif"
 
     @ratingValues = [ 1121, 943, 1200, 1366, 1665, 1732, 1554 ]
-    @graph = @drawLineGraph(@ratingValues)
-    log "pie", @pieChart
+    # @graph = @drawLineGraph(@ratingValues)
 
   # Draws the win:loss piechart
   drawPieChart: (winsNumber,lossNumber) ->

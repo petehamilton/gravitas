@@ -59,8 +59,7 @@ configureNow = (everyone) ->
         gamesPlayed: u.gamesPlayed
         timePlayed: u.timePlayed
         achievements: u.achievements
-
-
+        ratingHistory: u.ratingHistory
 
   # TODO check if we can replace dbInsert and dbUpdate by one dbSave
   everyone.now.dbInsert = (obj) ->

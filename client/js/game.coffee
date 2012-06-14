@@ -107,11 +107,22 @@ class @Game
       @gamesPlayed res.gamesPlayed
       @timePlayed res.timePlayed
       @statsPaper.drawPieChart(@gamesWon(),(@gamesPlayed() - @gamesWon()))
-      log "res", res
-      log "date0", res.achievements[0].date
-      log "date1", res.achievements[1].date
-
-      @computeAchievements(res.achievements[0].date,res.achievements[1].date,res.achievements[2].date,res.achievements[3].date,res.achievements[4].date)
+      @statsPaper.drawLineGraph([
+        res.ratingHistory[0].rating
+        res.ratingHistory[1].rating
+        res.ratingHistory[2].rating
+        res.ratingHistory[3].rating
+        res.ratingHistory[4].rating
+        res.ratingHistory[5].rating
+        res.rating
+      ])
+      @computeAchievements(
+        res.achievements[0].date
+        res.achievements[1].date
+        res.achievements[2].date
+        res.achievements[3].date
+        res.achievements[4].date
+      )
 
   computeAchievements: (step, veteran, winner, hardcore, unlucky) =>
     @achievementStep step
