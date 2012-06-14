@@ -339,7 +339,6 @@ class @ArenaModel
 
     # Find the balls that were selected by the pull
     r = config.pull_radius
-
     angle = player.turret_angle
 
     # Find the balls that were selected by the pull
@@ -349,20 +348,16 @@ class @ArenaModel
     assert.ok(selected.length in [0,1], "not more than one ball should be selected in a pull")
 
     if selected.length
-      ball = selected[0]
+      ball = selected[0] #TODO: Hacky, change me
 
       is_powerup = ball.type.kind == config.ball_kinds.powerup
 
       shadow_info = @shadowed player.id, ball
-
       everyone.now.debug_receiveShadow shadow_info
-
-      # TODO: Remove Later when using collision with turret
 
       if s = shadow_info.ball
         log "player #{player} tried to pull ball #{ball.id} at #{[ball.x, ball.y]}
              but it is shadowed by ball #{s.id} at #{[s.x, s.y]}"
-
         invalid_pull_callback()
 
       else if is_powerup or ball.type.player_id == player.id
@@ -372,15 +367,14 @@ class @ArenaModel
 
         log "player #{player} pulled ball #{ball.id} at", [ball.x, ball.y]
 
-
         @balls = others # All other balls stay
-
-        pull_callback ball, turret_center.x, turret_center.y, is_powerup
+        ball.x = turret_center.x
+        ball.y = turret_center.y
+        pull_callback ball
 
         unless is_powerup
           player.stored_balls = [ball]
           player.balls_available--
-
 
       else
         invalid_pull_callback()
@@ -466,7 +460,22 @@ class @ArenaModel
               point: impact
 
           everyone.now.debug_receiveShadow shadow_info
+          # Animate to collision point
+          everyone.now.receiveBallMoved ball, config.shoot_time_ms
+          # # Animate collision
+          # setTimeout () =>
+          #   everyone.now.receiveCollisionDamage target_player.id.id, ball, impact.x, impact.y
+          #   if target_player.health <= roundNumber(config.max_health - config.survivable_hits * config.hit_damage, config.health_decimal_places)
+          #     everyone.now.receivePlayerDeath target_player.id
 
+          #     # Populate list of balls to delete
+          #     bs = (b for b in arena.balls)
+          #     for b in bs
+          #       if b and b.type.player_id == target_player.id
+          #         @balls_to_delete.push b.id
+          #   else
+          #     everyone.now.receiveHealthUpdate target_player.id, target_player.health
+          #     ,  config.shoot_time_ms
         else
           # Not hit
           log "not hit: player #{target_player.id}"
