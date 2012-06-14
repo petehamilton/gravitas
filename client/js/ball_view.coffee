@@ -8,12 +8,12 @@ getSpritePath = (ball_type, config) ->
       assertPlayerId ball_type.player_id
 
       switch ball_type.player_id
-        when 0 then "pb_blue_0.PNG"
-        when 1 then "pb_green_0.PNG"
-        when 2 then "pb_pink_0.PNG"
-        when 3 then "pb_yellow_0.PNG"
+        when 0 then "pb_blue_0.png"
+        when 1 then "pb_green_0.png"
+        when 2 then "pb_pink_0.png"
+        when 3 then "pb_yellow_0.png"
 
-    when config.ball_kinds.powerup then "pb_powerup.PNG"
+    when config.ball_kinds.powerup then "pb_powerup.png"
 
   SPRITE_FOLDER + filename
 
@@ -21,7 +21,7 @@ getSpritePath = (ball_type, config) ->
 corner = (ball_center) ->
   ball_center - SIZE / 2
 
-2
+
 class @BallView
   constructor: (@ball_model, @paper) ->
     log "Creating Ball"

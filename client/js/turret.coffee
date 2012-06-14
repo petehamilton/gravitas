@@ -8,7 +8,7 @@ class @Turret
     log "Creating Turret #{@position}"
 
     # @image = "../images/double_turret.png"
-    @image = "../images/turret2.PNG"
+    @image = "../images/turret2.png"
 
     @pulse_image = "../images/pulse.png"
     @blast_shield_image = "../images/pulse_shield.png"
