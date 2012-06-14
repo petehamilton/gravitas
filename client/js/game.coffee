@@ -1,7 +1,7 @@
 ARENA_SIZE = config.arena_size
 
 class @Game
-  constructor: (@arena, @player, @server) ->
+  constructor: (@arena, @statsPaper, @player, @server) ->
     # Automatic log-in / start
     @autoLogIn = makeCookieObservable 'autoLogIn'
     @autoStart = makeCookieObservable 'autoStart'
@@ -100,6 +100,7 @@ class @Game
       @gamesWon res.gamesWon
       @gamesPlayed res.gamesPlayed
       @timePlayed res.timePlayed
+      @statsPaper.drawPieChart(30,40)
 
 
 

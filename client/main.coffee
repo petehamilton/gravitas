@@ -87,7 +87,7 @@ main = ->
   # create stats page
   statistics = new Statistics(chartPaper,piePaper)
 
-  game = new Game(arena, 0, now)
+  game = new Game(arena, statistics, 0, now)
   arena.setGame game
 
   num_colors = 4
