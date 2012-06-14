@@ -32,7 +32,7 @@ class @Game
       new connectedPlayer("Player XYZ", 456)
     ])
 
-    # Logged in user rating
+    # Logged in user stats
     @gamesWon = ko.observable 0
     @gamesPlayed = ko.observable 0
     @timePlayed =  ko.observable 0
@@ -55,6 +55,17 @@ class @Game
 
     @avatarURL = ko.observable ""
 
+    # Searched user stats
+    @searchUserUsername = ko.observable ""
+    @searchUserRating = ko.observable 0
+    @searchAvatarURL = ko.observable ""
+    @searchGamesWon = ko.observable ""
+    @searchGamesPlayed = ko.observable ""
+    @searchTimePlayed = ko.observable ""
+    @searchTimePlayedConverted = ko.computed(=>
+      @secToTime(@searchTimePlayed()))
+    @searchWinLossRatio =  ko.computed(=>
+      Math.round((@searchGamesWon()/(@searchGamesPlayed()-@searchGamesWon()))*100)/100)
     # Whether lag is currently happening
     @lag = ko.observable false
 
@@ -127,6 +138,14 @@ class @Game
         res.achievements[4].date
       )
 
+  searchPlayer: =>
+    @server.getStats @searchUserUsername(), (res) =>
+      @searchUserRating res.rating
+      @searchAvatarURL res.avatarURL
+      @searchGamesWon res.gamesWon
+      @searchGamesPlayed res.gamesPlayed
+      @searchTimePlayed res.timePlayed
+
   computeAchievements: (step, veteran, winner, hardcore, unlucky) =>
     @achievementStep step
     @achievementVeteran veteran
@@ -137,6 +156,9 @@ class @Game
 
   assemblyClick: =>
     @assembly true
+
+
+
 
 
   assemblyExitClick: =>

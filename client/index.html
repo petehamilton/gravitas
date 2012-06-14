@@ -104,7 +104,7 @@
                   <td>
                     <br /><label class="large">Profile Picture</label>
                   </td>
-                </td>
+                </tr>
                 <tr>
                   <td><label class="small">Picture URL</label>
                   <td><input class="small" type="text" data-bind="value: avatarURL" id="pictureURL" tabindex="1"/></td>
@@ -207,42 +207,49 @@
             <div id="lobby-content" data-bind="visible: assemblyContent() == 'search'">
              <label class="large">Search</label>
              <br/>
-             <span class="caps">Lookup Player:</span> <input class="small" type="text" placeholder="Search..." id="pictureURL" tabindex="1"/></td>
-             <div id="search-result">
-              <div id="profile-picture"><img src="images/ui/placeholder2.jpg" class="profile" type="off"></div><div id="profile-stats">
-                 <table>
-                     <tbody>
-                         <tr>
-                             <td><label class="small">Games Won</label></td>
-                             <td>999</td>
-                         </tr>
-                         <tr>
-                             <td><label class="small">Games Played</label></td>
-                             <td>123</td>
-                         </tr>
-                         <tr>
-                             <td><label class="small">Time Played</label></td>
-                             <td>13h 19mins</td>
-                         </tr>
-                         <tr>
-                             <td><label class="small">Win/Loss Ratio</label></td>
-                             <td>52:48</td>
-                         </tr>
-                     </tbody>
-                 </table>
-
-               </div>
-             </div>
-
+             <span class="caps">Lookup Player: </span>
+             <input class="small" type="text" placeholder="Search..." tabindex="1" data-bind="value: searchUserUsername">
+             <button data-bind="click: searchPlayer">
+                Search
+             </button>
+             <div id="search-result"  data-bind="visible: searchUserRating() != 0">
+              <div id="search-profile-picture"><img data-bind="attr: {src: searchAvatarURL}" class="profile" type="off"></div>
+              <div id="search-profile-stats">
+                  <table>
+                      <tbody>
+                          <tr>
+                              <td><label class="small">Rating: </label></td>
+                              <td data-bind="text: searchUserRating()">999</td>
+                          </tr>
+                          <tr>
+                              <td><label class="small">Games Won</label></td>
+                              <td data-bind="text: searchGamesWon()">999</td>
+                          </tr>
+                          <tr>
+                              <td><label class="small">Games Played</label></td>
+                              <td data-bind="text: searchGamesPlayed()">123</td>
+                          </tr>
+                          <tr>
+                              <td><label class="small">Time Played</label></td>
+                              <td data-bind="text: searchTimePlayedConverted()">13h 19mins</td>
+                          </tr>
+                          <tr>
+                              <td><label class="small">Win/Loss Ratio</label></td>
+                              <td data-bind="text: searchWinLossRatio()"></td>
+                          </tr>
+                    </tbody>
+                </table>
+              </div>
             </div>
-
               <div id="buttons">
-              <button id="playbutton" data-bind="click: assemblyClick">
-                Play
-              </button>
-            </div>
+                <button id="playbutton" data-bind="click: assemblyClick">
+                  Play
+                </button>
+              </div>
 
 
+
+          </div>
         </div>
       </div>
 
@@ -280,7 +287,8 @@
                 </tbody>
               </table>
               <br />
-               <label class="large">Total connected: <label data-bind="text: connectedPlayers().length"></label></label><br />
+              <label class="large">Total connected: <label data-bind="text: connectedPlayers().length"></label></label><br />
+
             </div>
 
 
@@ -302,8 +310,8 @@
 
         </div>
       </div>
-
     </div>
+  </div>
 
     <div id="game" class="screen">
 
