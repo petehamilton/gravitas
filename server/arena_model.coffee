@@ -22,12 +22,6 @@ DIRECTIONS =
 next_ball_id = 0
 genBallId = -> next_ball_id++
 
-cur_player_index = 0
-# Loops around player Id's
-nextPlayerId = ->
-  tmp = PLAYER_IDS[cur_player_index++]
-  cur_player_index %= PLAYER_IDS.length
-  tmp
 
 # Creates an object mapping from player ID to value created by `fn`.
 playerIdDict = (fn) ->
@@ -39,16 +33,28 @@ class @ArenaModel
 
   constructor: ->
     @players = (new plm.PlayerModel(i, config.player_colours[i]) for i in PLAYER_IDS)
+
     @ball_positions  = @calculateStartPoints(config.dist_between_balls, ARENA_SIZE, BALL_LEVELS)
     @triangles       = @calculateTriangles(BALL_LEVELS)
 
     @balls = for {x, y} in flatten @ball_positions
-      new pbm.BallModel genBallId(), pbm.makePlayerBallType(nextPlayerId()), x, y
+      new pbm.BallModel genBallId(), pbm.makePlayerBallType(@nextBallOwner()), x, y
 
     # Holds all the active balls that players have shot.
     @active_balls = []
 
     @angles = playerIdDict (i) -> 0
+
+
+  nextBallOwner: () ->
+    min = undefined
+    for player in @players
+      if player.isAlive()
+        unless min
+          min = player
+        else if player.balls_available < min.balls_available
+          min = player
+    return min
 
 
   # Picks random triangles to rotate
@@ -255,7 +261,7 @@ class @ArenaModel
       console.log "Creating powerup of kind", powerup_type
       type = pbm.makePowerupBallType(powerup_type)
     else
-      type = pbm.makePlayerBallType(nextPlayerId())
+      type = pbm.makePlayerBallType(@nextBallOwner())
 
     @balls.push(new pbm.BallModel(genBallId(), type, x, y))
 
@@ -362,6 +368,7 @@ class @ArenaModel
 
         unless is_powerup
           player.stored_balls = [ball]
+          player.balls_available--
 
 
       else

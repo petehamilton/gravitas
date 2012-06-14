@@ -9,3 +9,9 @@ class @PlayerModel
     @turret_angle = 0
 
     @center = config.player_centers[@id]
+
+    # Number of balls available for player in center
+    @balls_available = 0
+
+  isAlive: () ->
+    @health > 0

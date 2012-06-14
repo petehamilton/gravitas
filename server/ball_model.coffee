@@ -1,9 +1,10 @@
 config = require('../config').config
 { ServerAnimation, log } = require './common/utils'
 
-exports.makePlayerBallType = (player_id) ->
+exports.makePlayerBallType = (player) ->
+  player.balls_available++
   kind: config.ball_kinds.player
-  player_id: player_id
+  player_id: player.id
 
 exports.makePowerupBallType = (powerup_kind) ->
   powerup_kinds = config.powerup_kinds
@@ -21,7 +22,7 @@ class @BallModel
   # - { kind: PLAYER, player_id: 2 }
   # - { kind: POWERUP, effect: SHIELD }
   constructor: (@id, @type, @x, @y) ->
-    console.log "Creating Ball #{id} at #{[x, y]}"
+    console.log "Creating Ball #{id} at #{[x, y]}, playerid = #{type.player_id}"
     @floating = true
 
   # Animates a ball model from it's current position to x, y
