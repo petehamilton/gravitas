@@ -9,6 +9,16 @@ MONGO_URL = 'mongodb://localhost/gravitas'
 
 # Models
 
+Achievement_schema = new mongoose.Schema(
+  id: Number
+  date: String
+)
+
+RatingHistory_schema = new mongoose.Schema(
+  rating: Number
+)
+
+
 User = mongoose.model 'User', new mongoose.Schema
   id: mongoose.Schema.ObjectId
   username:
@@ -19,7 +29,7 @@ User = mongoose.model 'User', new mongoose.Schema
   gamesWon: Number
   gamesPlayed: Number
   rating: Number
-
+  achievements: [ Achievement_schema ]
 
 
 connect = ->
@@ -31,14 +41,29 @@ setup = (callback) ->
     log "dropped all users"
 
     for name, pw of config.default_users
-      log "inserting userCOFFEE: #{name}"
+      log "inserting userCOFFEE2: #{name}"
       user = new User
         username: name
         password: pw
         timePlayed: 39603
         gamesWon: 31
         gamesPlayed: 70
-        rating: 1500
+        rating: 1533
+        achievements: [
+          {id : 0, date : "12.03.2012"}
+          {id : 1, date : "14.03.2012"}
+          {id : 2, date : ""}
+          {id : 3, date : ""}
+          {id : 4, date : ""}
+        ]
+        ratingHistory:[
+          {rating : 123}
+          {rating : 456}
+          {rating : 789}
+          {rating : 546}
+          {rating : 1123}
+          {rating : 1000}
+        ]
       user.save callback
 
 

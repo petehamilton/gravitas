@@ -51,13 +51,14 @@ configureNow = (everyone) ->
         callback { ok: true }
 
   everyone.now.getStats = (user, callback) ->
-    db.User.findOne { username: user}, (err, u) ->
+    db.User.findOne { username: user }, (err, u) ->
+      console.log "u.achievements", JSON.stringify u.achievements
       callback
         rating: u.rating
         gamesWon: u.gamesWon
         gamesPlayed: u.gamesPlayed
         timePlayed: u.timePlayed
-
+        achievements: u.achievements
 
 
 

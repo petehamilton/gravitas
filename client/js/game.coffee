@@ -38,6 +38,14 @@ class @Game
     @timePlayed =  ko.observable 0
     @timePlayedConverted = ko.computed(=>
       @secToTime(@timePlayed()))
+
+
+    @achievementStep = ko.observable ""
+    @achievementVeteran = ko.observable ""
+    @achievementWinner = ko.observable ""
+    @achievementHardcore = ko.observable ""
+    @achievementUnlucky = ko.observable ""
+
     @userRating = ko.observable 1340
     @userRatingColor = ko.computed(->
       userRatingRed = (((@userRating()-1200)/1000)*255)
@@ -73,8 +81,6 @@ class @Game
     @assemblyContent $(event.target).data('menu')
 
 
-
-
   resetAuthStatus: =>
     @authFailed false
     true  # continue keypress event
@@ -100,8 +106,19 @@ class @Game
       @gamesWon res.gamesWon
       @gamesPlayed res.gamesPlayed
       @timePlayed res.timePlayed
-      @statsPaper.drawPieChart(30,40)
+      @statsPaper.drawPieChart(@gamesWon(),(@gamesPlayed() - @gamesWon()))
+      log "res", res
+      log "date0", res.achievements[0].date
+      log "date1", res.achievements[1].date
 
+      @computeAchievements(res.achievements[0].date,res.achievements[1].date,res.achievements[2].date,res.achievements[3].date,res.achievements[4].date)
+
+  computeAchievements: (step, veteran, winner, hardcore, unlucky) =>
+    @achievementStep step
+    @achievementVeteran veteran
+    @achievementWinner winner
+    @achievementHardcore hardcore
+    @achievementUnlucky unlucky
 
 
   assemblyClick: =>

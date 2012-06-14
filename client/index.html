@@ -168,34 +168,34 @@
                <table valign="middle">
                     <tbody>
                         <tr>
-                            <td><img src="images/medals/first.png" class="medal"></td>
+                            <td><img src="images/medals/first.png" class="medal" data-bind="style: { opacity: achievementStep() == ''? '0.4' : '1' }"></td>
                             <td><label class="medium">Step Into Gravitas</label></td>
                             <td><label class="small">Win one game.</label></td>
-                            <td>Date</td>
+                            <td data-bind="text: achievementStep()"></td>
                         </tr>
                         <tr>
-                            <td><img src="images/medals/veteran.png" class="medal" type="grey"></td>
+                            <td><img src="images/medals/veteran.png" class="medal" data-bind="style: { opacity: achievementVeteran() == ''? '0.4' : '1' }"></td>
                             <td><label class="medium" type="grey">Veteran</label></td>
                             <td><label class="small">Win 100 games.</label></td>
-                            <td>Date</td>
+                            <td data-bind="text: achievementVeteran()"></td>
                         </tr>
                         <tr>
-                            <td><img src="images/medals/winner.png" class="medal" type="grey"></td>
+                            <td><img src="images/medals/winner.png" class="medal" data-bind="style: { opacity: achievementWinner() == ''? '0.4' : '1' }"></td>
                             <td><label class="medium" type="grey">Winner</label></td>
                             <td><label class="small">Win more than 50 games and have more wins than losses.</label></td>
-                            <td>Date</td>
+                            <td data-bind="text: achievementWinner()"></td>
                         </tr>
                         <tr>
-                            <td><img src="images/medals/addict.png" class="medal" type="grey"></td>
+                            <td><img src="images/medals/addict.png" class="medal" data-bind="style: { opacity: achievementHardcore() == ''? '0.4' : '1' }"></td>
                             <td><label class="medium" type="grey">Hardcore</label></td>
                             <td><label class="small">Spend 10 hours playing Gravitas.</label></td>
-                            <td>Date</td>
+                            <td data-bind="text: achievementHardcore()"></td>
                         </tr>
                         <tr>
-                            <td><img src="images/medals/unlucky.png" class="medal" type="grey"></td>
+                            <td><img src="images/medals/unlucky.png" class="medal" data-bind="style: { opacity: achievementUnlucky() == ''? '0.4' : '1' }"></td>
                             <td><label class="medium" type="grey">Unlucky</label></td>
                             <td><label class="small">Lose 50 games.</label></td>
-                            <td>Date</td>
+                            <td data-bind="text: achievementUnlucky()"></td>
                         </tr>
                     </tbody>
                 </table>
