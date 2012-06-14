@@ -95,9 +95,10 @@ img.profile.small
 
 img.medal
   width: 34px
-
-img.medal[type=grey]
   opacity: 0.4
+
+  &.achieved
+    opacity: 1
 
 th
   color: #bccddc
@@ -216,8 +217,8 @@ a.glow:focus
   display: inline-block
 
 
-#spinner
-#spinner-label
+.spinner
+.spinner-label
   display: inline-block
   vertical-align: middle
   padding-top: 15px
@@ -226,17 +227,23 @@ a.glow:focus
   color: #bccddc
   font-variant:small-caps
 
-#profile-picture
-#profile-stats
-#search-profile-stats
-#search-profile-picture
+
+#app
+  .hidden-on-startup
+    display: none
+
+
+.profile-picture
+.profile-stats
+.search-profile-stats
+.search-profile-picture
   display: inline-block
   vertical-align: middle
   padding-bottom: 0px
   padding-right: 20px
 
 
-#login-overlay
+#menu
   background-image: url(images/ui/bgnologo.jpg)
   background-position: center center
   background-size-cover()
@@ -251,7 +258,7 @@ a.glow:focus
     width: 600px
     min-height: 380px
 
-    #lobby-content
+    .lobby-content
       padding-left: 30px
       padding-top: 20px
       color: #bccddc
@@ -259,14 +266,7 @@ a.glow:focus
       font-size: 11px
       width: 70%
 
-    #assembly-content
-      padding-left: 30px
-
-    #search-result
-      padding:30px
-
-
-    #nick
+    .nick
       text-align: right
       display: inline-block
       position: absolute
@@ -276,14 +276,21 @@ a.glow:focus
       color: #fff
       font-variant: small-caps
 
-    #lobby-label
-      font-size: 16px
-      font-variant: small-caps
-
-
-    #rating
+    .rating
       font-size: 28px
       font-variant: small-caps
+
+    .buttons
+      position: absolute
+      bottom: 10px
+      right: 15px
+      diplay: inline-block
+
+    .assembly-content
+      padding-left: 30px
+
+    .search-result
+      padding:30px
 
     #navigation
       font-family:'HeydingsIconsRegular'
@@ -292,24 +299,14 @@ a.glow:focus
       font-size: 24px
       font-variant: normal
 
-    #buttons
-      position: absolute
-      bottom: 10px
-      right: 15px
-      diplay: inline-block
-
-    #playbutton
+    .playbutton
+    .startbutton
       playbutton(24px)
 
+      &:hover
+        linear-gradient top, #fcd468 0%, #e16202 100%
 
-    #startbutton
-      playbutton(24px)
-
-    #startbutton:hover
-    #playbutton:hover
-      linear-gradient top, #fcd468 0%, #e16202 100%
-
-    #leavebutton
+    .leavebutton
       font-size: 24px
       //linear-gradient top, #c50304 0%, #560003 100%
       //linear-gradient top, #ee0608 0%, #920006 100%
@@ -317,8 +314,8 @@ a.glow:focus
       //border: 1px solid #d52122
       font-weight: normal
 
-    #leavebutton:hover
-      //linear-gradient top, #ee0608 0%, #920006 100%
+      &:hover
+        //linear-gradient top, #ee0608 0%, #920006 100%
 
 #game
   background-image: url(images/ui/gamebg.jpg)
@@ -332,7 +329,7 @@ a.glow:focus
   svg
     cursor: url(images/cursor/transparent.png), default
 
-#controls
+#dev-panel
   position: absolute
   top: 0
   right: 0

@@ -17,6 +17,10 @@ class @Game
     @gameStarted = ko.observable @autoStart()
     @assembly = ko.observable false
 
+    @lobbyVisible = ko.computed => !@gameStarted() and @loggedIn() and !@assembly()
+    @assemblyVisible = ko.computed => !@gameStarted() and @loggedIn() and @assembly()
+
+    # Assembly
     @assemblyContent = ko.observable 'profile'
 
 
@@ -32,11 +36,14 @@ class @Game
       new connectedPlayer("Player XYZ", 456)
     ])
 
+    @canAddAnotherPlayer = ko.computed => @connectedPlayers().length < 4
+
+
     # Password change stuff
     @oldPasswordInput = ko.observable ""
     @newPasswordInput1 = ko.observable ""
     @newPasswordInput2 = ko.observable ""
-
+    @passwordsMismatch = ko.computed => @newPasswordInput1() > '' and @newPasswordInput1() != @newPasswordInput2()
 
     # Logged in user stats
     @gamesWon = ko.observable 0
