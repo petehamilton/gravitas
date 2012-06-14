@@ -1,6 +1,6 @@
 class @Statistics
   constructor: (@chartPaper, @piePaper) ->
-    @pieChart = @drawPieChart(43,31)
+    # @pieChart = @drawPieChart(43,31)
     graphLabel = chartPaper.text(200, 10, "RATING CHANGES")
     graphLabel2 = piePaper.text(310, 10, "WIN RATIO")
 
@@ -13,12 +13,13 @@ class @Statistics
 
   # Draws the win:loss piechart
   drawPieChart: (winsNumber,lossNumber) ->
-    @piechart? @piechart.remove
+    @piechart?.remove()
+
     @piechart = @piePaper.piechart(140, 30, 30, [winsNumber,lossNumber],
       {legend: ["Win - %%", "Loss - %%"], legendpos: "west", legendcolor: '#68727b', colors:["#50a20e","#a20e0f"], smooth: true, stroke: "#000"})
   # Draws the rating line graph
   drawLineGraph: (ratingValues) ->
-    @graph? @graph.remove
+    @graph?.remove()
     xAxisValues = []
     i = ratingValues.length
     while i > 0
