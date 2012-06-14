@@ -53,6 +53,8 @@ class @Game
       "rgba("+Math.round(userRatingRed)+","+Math.round(userRatingGreen)+",0,0.7)"
     , this )
 
+    @avatarURL = ko.observable ""
+
     # Whether lag is currently happening
     @lag = ko.observable false
 
@@ -103,6 +105,7 @@ class @Game
   getStats: =>
     @server.getStats @username(), (res) =>
       @userRating res.rating
+      @avatarURL res.avatarURL
       @gamesWon res.gamesWon
       @gamesPlayed res.gamesPlayed
       @timePlayed res.timePlayed

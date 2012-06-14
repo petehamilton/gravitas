@@ -106,7 +106,7 @@
                 </td>
                 <tr>
                   <td><label class="small">Picture URL</label>
-                  <td><input class="small" type="text" value="LOAD CURRENT URL" id="pictureURL" tabindex="1"/></td>
+                  <td><input class="small" type="text" data-bind="value: avatarURL" id="pictureURL" tabindex="1"/></td>
                 </tr>
                <tr>
                 <td>
@@ -137,7 +137,7 @@
 
             <div id="lobby-content" data-bind="visible: assemblyContent() == 'profile'">
              <label class="large">Profile</label><br />
-             <div id="profile-picture"><img src="images/ui/placeholder.jpg" class="profile"></div><div id="profile-stats">
+             <div id="profile-picture"><img src="images/ui/placeholder.jpg" data-bind="attr: {src: avatarURL}" class="profile"></div><div id="profile-stats">
                 <table>
                     <tbody>
                         <tr>

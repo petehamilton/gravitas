@@ -55,6 +55,7 @@ configureNow = (everyone) ->
       console.log "u.achievements", JSON.stringify u.achievements
       callback
         rating: u.rating
+        avatarURL: u.avatarURL
         gamesWon: u.gamesWon
         gamesPlayed: u.gamesPlayed
         timePlayed: u.timePlayed
