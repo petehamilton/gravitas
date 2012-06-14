@@ -74,8 +74,9 @@ class @Turret
 
   do_pulse: () =>
     @turret_pulse_anim.transform("s0").attr {opacity: 1}
-    @turret_pulse_anim.animate({transform:"s#{@pulse_scale}"}, config.turret_pulse_interval*2/3*@pulse_speed, "<>")
-    @turret_pulse_anim.animate({opacity: 0}, config.turret_pulse_interval*@pulse_speed, "<>")
+    # TODO reimplent pulse so that it is not CPU-intensive
+    # @turret_pulse_anim.animate({transform:"s#{@pulse_scale}"}, config.turret_pulse_interval*2/3*@pulse_speed, "<>")
+    # @turret_pulse_anim.animate({opacity: 0}, config.turret_pulse_interval*@pulse_speed, "<>")
 
 
   updateColor: ->
