@@ -178,10 +178,26 @@ createApp = ->
 # Start the intervals which control ball rotation and the clock
 startTimers = ->
   # Ball Triangle Rotations
+  @balls_to_delete = []
   ball_rotation = setInterval () =>
     arena.rotateTriangles(ARENA_SIZE, arena.ball_positions)
     if connected
       everyone.now.receiveBallsMoved(arena.balls, config.rotation_time)
+
+      # TODO: Clean me, use .includes? or something
+      log "ARENA_BEF: ", (b.id for b in arena.balls)
+      log "BALLS_DEL: ", @balls_to_delete
+      for b_id in @balls_to_delete
+        i = 0
+        for b in arena.balls
+          if b and b.id == b_id
+            everyone.now.receiveRemoveBall(b.x, b.y, b)
+            arena.balls.splice i, 1
+          else
+            i += 1
+      log "ARENA_AFT: ", (b.id for b in arena.balls)
+
+      @balls_to_delete = []
   , config.rotation_interval
 
   # Collision checking
@@ -194,14 +210,10 @@ startTimers = ->
           everyone.now.receivePlayerDeath player.id
 
           #TODO:  I think triangles has by this point got a copy
-          i = 0
           bs = (b for b in arena.balls)
           for b in bs
             if b and b.type.player_id == player.id
-              everyone.now.receiveRemoveBall(b.x, b.y, b)
-              arena.balls.splice i, i+1
-            else
-              i += 1
+              @balls_to_delete.push b.id
           #TODO: So here, some balls are accidentally re-rendered
           
         else
