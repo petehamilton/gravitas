@@ -400,11 +400,6 @@ class @ArenaModel
   # 3. Deletes the ball from the player's balls
   # 4. Calls the callback function, passing it the ball model and target coords
   shoot: (player, everyone, shotCallback) ->
-
-    #TODO, work out distance to nearest object?
-    # 900 will mean balls always shoot at same speed
-    distance = 600
-
     angle = player.turret_angle
 
     ball = player.stored_balls[0]
