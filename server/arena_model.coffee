@@ -386,14 +386,15 @@ class @ArenaModel
   # Does nothing if the player doesn't have any balls
   #
   # player: player to shoot from
-  # shotCallback: passed (shot_ball)
+  # shot_callback: passed (shot_ball)
   #
   # 1. Identifies a target point ~900px away from the current position
   #    (900 guaruntees it will go off screen).
   # 2. Calculates the target x and y coordinates
   # 3. Deletes the ball from the player's balls
   # 4. Calls the callback function, passing it the ball model and target coords
-  shoot: (player, everyone, shotCallback) ->
+  shoot: (player, everyone, shot_callback, hit_callback) ->
+
     angle = player.turret_angle
 
     ball = player.stored_balls[0]
@@ -402,9 +403,6 @@ class @ArenaModel
       log "player #{player} tries to shoot, but has no ball"
     else
       log "player #{player} shoots ball #{ball.id} of kind #{ball.type.kind} with angle #{angle}"
-
-      # Tell other players that ball was shot
-      shotCallback ball
 
       # Removes element at index 0
       player.stored_balls.splice(0, 1)
@@ -420,66 +418,82 @@ class @ArenaModel
       # Get ball segment
 
       for target_player in @players when target_player.id != player.id
+        do (target_player) ->
+          # TODO remove dup
 
-        # TODO remove dup
+          # Segment orthogonal to target segment, unit length
+          u_n_t = normal(normed target_segment.d)
 
-        # Segment orthogonal to target segment, unit length
-        u_n_t = normal(normed target_segment.d)
+          turret_position = config.player_centers[target_player.id]
+          turret_radius = config.shield_radius * player.health
 
-        turret_position = config.player_centers[target_player.id]
-        turret_radius = config.shield_radius * player.health
+          # Segment through the turret diameter, orthogonal to target segment
+          turret_segment =
+            s:
+              diff turret_position, (scale u_n_t, turret_radius)
+            d:
+              scale u_n_t, 2*turret_radius
 
-        # Segment through the turret diameter, orthogonal to target segment
-        turret_segment =
-          s:
-            diff turret_position, (scale u_n_t, turret_radius)
-          d:
-            scale u_n_t, 2*turret_radius
+          # Intersect
+          intersection = sect turret_segment, target_segment
 
-        # Intersect
-        intersection = sect turret_segment, target_segment
+          will_hit = intersection.intersects and intersection.point
 
-        if intersection.intersects and intersection.point
-          # Hit
-          log "hit: player #{target_player.id}"
+          # Tell other players that ball was shot and if it will hit another player
+          shot_callback ball, target_player.id
 
-          # Calculate impact point (where the center of the ball hits the turret radius)
-          r = turret_radius
-          d = length diff(intersection.point, turret_position)
-          m = Math.sqrt(r*r - d*d)
-          unit_inverse_target = normed(invert target_segment.d)
-          impact = sum intersection.point, scale(unit_inverse_target, m)
+          if will_hit
+            # Hit
+            log "will hit: player #{target_player.id}"
 
-          # TODO clean this up, don't hijack intersection
-          shadow_info =
-            ball: null
-            target_segment: target_segment
-            ball_segment: turret_segment
-            intersection:
-              intersects: true
-              point: impact
+            # Ball arrived at target; do damage
+            on_arrive_at_target = =>
+              log "ball hit into player #{target_player.id}"
 
-          everyone.now.debug_receiveShadow shadow_info
-          # Animate to collision point
-          everyone.now.receiveBallMoved ball, config.shoot_time_ms
-          # # Animate collision
-          # setTimeout () =>
-          #   everyone.now.receiveCollisionDamage target_player.id.id, ball, impact.x, impact.y
-          #   if target_player.health <= roundNumber(config.max_health - config.survivable_hits * config.hit_damage, config.health_decimal_places)
-          #     everyone.now.receivePlayerDeath target_player.id
+              # Decrease health
+              target_player.hit()
 
-          #     # Populate list of balls to delete
-          #     bs = (b for b in arena.balls)
-          #     for b in bs
-          #       if b and b.type.player_id == target_player.id
-          #         @balls_to_delete.push b.id
-          #   else
-          #     everyone.now.receiveHealthUpdate target_player.id, target_player.health
-          #     ,  config.shoot_time_ms
-        else
-          # Not hit
-          log "not hit: player #{target_player.id}"
+              hit_callback target_player
 
+              if target_player.isDead()
+                everyone.now.receivePlayerDeath target_player.id
+                @removeAllBallsFromPlayer target_player
+
+            setTimeout on_arrive_at_target, config.shoot_time_ms
+
+
+            # Calculate impact point (where the center of the ball hits the turret radius)
+            r = turret_radius
+            d = length diff(intersection.point, turret_position)
+            m = Math.sqrt(r*r - d*d)
+            unit_inverse_target = normed(invert target_segment.d)
+            impact = sum intersection.point, scale(unit_inverse_target, m)
+
+            # TODO clean this up, don't hijack intersection
+            shadow_info =
+              ball: null
+              target_segment: target_segment
+              ball_segment: turret_segment
+              intersection:
+                intersects: true
+                point: impact
+
+            everyone.now.debug_receiveShadow shadow_info
+
+          else
+            # Not hit
+            log "not hit: player #{target_player.id}"
+
+
+  removeAllBallsFromPlayer: (player) ->
+    log "removing all balls of player #{player.id}"
+    # TODO implement
+
+    # Populate list of balls to delete
+    # bs = (b for b in arena.balls)
+    # for b in bs
+    #   if b and b.type.player_id == player.id
+    #     @balls_to_delete.push b.id
 
 
   # Gives a powerup to a player
@@ -544,25 +558,3 @@ class @ArenaModel
 
         if distance < contact_radius
           processCollision(ball, player)
-
-
-
-  # Handles the collision between a player's shield and a ball
-  #
-  # player          : The player in the collision
-  # ball_model      : The ball which has collided with the player
-  # x               : The x coord of impact
-  # y               : The y coord of impact
-  # handledCallback : Called once the collision has been handled
-  handleCollision: (player, ball_model, x, y, handledCallback) ->
-    if ball_model.floating and ball_model.type.player_id != player.id
-      # Shouldn't have to round but has some floating point accuracy issues
-      player.setHealth(roundNumber(player.health - config.hit_damage, config.health_decimal_places))
-
-      ball_model.floating = false
-      ball_model.stopAnimation()
-      ball_model.x = x
-      ball_model.y = y
-      handledCallback() if handledCallback
-      @remove(ball_model)
-

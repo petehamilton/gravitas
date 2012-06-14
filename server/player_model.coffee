@@ -29,4 +29,8 @@ class @PlayerModel
 
   # Decreases the player's health points by the damage of one ball
   hit: ->
-    @setHealth(roundNumber(player.health - config.hit_damage, config.health_decimal_places))
+    @setHealth(roundNumber(@health - config.hit_damage, config.health_decimal_places))
+
+
+  isDead: ->
+    @health <= roundNumber(config.max_health - config.survivable_hits * config.hit_damage, config.health_decimal_places)

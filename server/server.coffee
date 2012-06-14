@@ -136,8 +136,12 @@ configureNow = (everyone) ->
 
 
   everyone.now.stopGravityGun = (player_id) ->
-    arena.shoot arena.players[player_id], everyone, (shot_ball) =>
-      everyone.now.receiveShot player_id, shot_ball
+    arena.shoot(
+      arena.players[player_id]
+      everyone
+      (shot_ball, hit_player_id) => everyone.now.receiveShot player_id, shot_ball, hit_player_id
+      (hit_player) => everyone.now.receiveHealth hit_player.id, hit_player.health
+    )
 
 
   everyone.now.usePowerup = (player_id) ->

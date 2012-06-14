@@ -50,11 +50,9 @@ class @Arena
     @turrets[player].getBallStorePos()
 
 
-  updateHealth: (player, health) ->
-    @turrets[player].updateHealth health
-
-  collisionDamage: (player_id, ball_model, x, y, ballRemoveCallback) ->
-    @turrets[player_id].damage(@game.balls[ball_model.id], x, y, ballRemoveCallback)
+  updateHealth: (player_id, health) ->
+    log "updateHealth of player #{player_id} to #{health}"
+    @turrets[player_id].updateHealth health
 
 
   killPlayer: (player_id) ->
