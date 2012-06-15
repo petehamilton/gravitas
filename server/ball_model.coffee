@@ -22,7 +22,7 @@ class @BallModel
   # - { kind: PLAYER, player_id: 2 }
   # - { kind: POWERUP, effect: SHIELD }
   constructor: (@id, @type, @x, @y) ->
-    console.log "Creating Ball #{id} at #{[x, y]}, playerid = #{type.player_id}"
+    # console.log "Creating Ball #{id} at #{[x, y]}, playerid = #{type.player_id}"
     @floating = true
 
   # Animates a ball model from it's current position to x, y

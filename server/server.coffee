@@ -119,10 +119,23 @@ configureNow = (everyone) ->
     player = arena.players[player_id]
 
     pullCallback = (pulled_ball) =>
+      activateCallback = (powerup_type) =>
+        everyone.now.receiveActivatePowerup(player_id, powerup_type)
+
+      deactivateCallback = =>
+        player.powerup = null
+        everyone.now.receiveDeactivatePowerup(player_id)
+
+
       everyone.now.receiveBallMoved pulled_ball, config.pull_time_ms
       setTimeout () => # Ball now in turret
         everyone.now.receiveBallInTurret(pulled_ball)
         #TODO: Set powerup if necessary
+        console.log "Pulled ball kind", pulled_ball.type.kind, config.ball_kinds.powerup
+        if pulled_ball.type.kind == config.ball_kinds.powerup
+          arena.setPowerup(player, pulled_ball.type.powerup_kind, activateCallback, deactivateCallback)
+          everyone.now.receiveMessage player.id, pulled_ball.type.powerup_message
+
       , config.pull_time_ms
 
     arena.pull(

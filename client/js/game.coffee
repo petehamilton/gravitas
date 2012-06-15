@@ -333,7 +333,7 @@ class @Game
     @arena.updateHealth(player_id, health)
 
 
-  removeBall: (x, y, ball_model) ->
+  removeBall: (ball_model) ->
     removeBallFromBalls = (ball_id) =>
       assert(delete @balls[ball_id], "Error cannot find ball to remove it client side")
 
@@ -373,4 +373,5 @@ class @Game
     #TODO: Implement
     if ball_model.type.kind == config.ball_kinds.powerup
       log "Powerup in turret"
+      @removeBall(ball_model)
       #TODO: Implement powerup fadeout
