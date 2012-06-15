@@ -6,13 +6,13 @@ class @HealthPowerupModel
 
   # Activate the health, run the callback which will be a call
   # to everyone.now.xxxxx to trigger client side animations
-  activate: () ->
+  activate: ->
     @activated = true
     @player.health = 1
     @activateCallback(config.powerup_kinds.health)
 
 
   # Can't deactivate health
-  deactivate: () ->
+  deactivate: ->
     @activated = false
     @deactivateCallback()

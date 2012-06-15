@@ -8,7 +8,7 @@ class @ShieldPowerupModel
 
   # Activate the shield, run the callback which will be a call
   # to everyone.now.xxxxx to trigger client side animations
-  activate: () ->
+  activate: ->
     @activated = true
     @activateCallback(config.powerup_kinds.shield)
     setTimeout () =>
@@ -18,6 +18,6 @@ class @ShieldPowerupModel
 
   # Deactivate the shield, run the callback which will be a call
   # to everyone.now.xxxxx to trigger client side animations
-  deactivate: () ->
+  deactivate: ->
     @activated = false
     @deactivateCallback()
