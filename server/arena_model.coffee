@@ -482,7 +482,7 @@ class @ArenaModel
 
             ball.x = impact.x
             ball.y = impact.y
-            everyone.now.receiveBallMoved ball, config.pull_time_ms, ""
+            everyone.now.receiveBallMoved ball, config.shoot_time_ms, ""
             setTimeout on_arrive_at_target, config.shoot_time_ms
 
           else
