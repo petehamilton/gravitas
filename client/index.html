@@ -284,8 +284,13 @@
                 </div>
               </div>
               <br />
-              <div class="spinner"></div>
-              <div class="spinner-label">Waiting for four other players</div>
+              <div class="waiting-label">
+                <span class="spinner"></span>
+                Waiting for four other players...
+                <div class="autostart-label">
+                  The game will start automatically.
+                </div>
+              </div>
               <div class="assembly-content">
 
                 <table>
@@ -315,12 +320,12 @@
                   Add a player (debug)
                 </button>
 
-                <button class="leavebutton" data-bind="click: assemblyExitClick">
-                  Leave
+                <button data-bind="click: startGame">
+                  Start (debug)
                 </button>
 
-                <button class="startbutton" data-bind="click: startGame">
-                  Start
+                <button class="leavebutton" data-bind="click: assemblyExitClick">
+                  Leave
                 </button>
               </div>
 

@@ -218,14 +218,21 @@ a.glow:focus
 
 
 .spinner
-.spinner-label
   display: inline-block
   vertical-align: middle
-  padding-top: 15px
-  padding-bottom: 40px
+
+.waiting-label
+  margin-top: 15px
+  margin-bottom: 40px
   font-size: 15px
   color: #bccddc
   font-variant:small-caps
+  position: relative
+
+  .autostart-label
+    position: absolute
+    top: 0
+    right: 0
 
 
 #app
@@ -302,7 +309,6 @@ a.glow:focus
       font-variant: normal
 
     .playbutton
-    .startbutton
       playbutton(24px)
 
       &:hover
