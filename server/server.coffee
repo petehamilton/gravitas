@@ -172,7 +172,6 @@ run = ->
   app = createApp()
 
   db.connect()
-  db.configureRoutes app
 
   everyone = nowjs.initialize(app, { socketio: {'browser client minification': true} })
   configureNow everyone
