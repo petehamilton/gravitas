@@ -17,7 +17,11 @@ ko.bindingHandlers.fadeVisible =
 
   update: (element, valueAccessor) ->
     value = valueAccessor()
-    (if ko.utils.unwrapObservable(value) then $(element).fadeIn() else $(element).fadeOut())
+    if ko.utils.unwrapObservable(value)
+      # Make sure to also fade in elements with 'visibility: hidden'
+      $(element).hide().css('visibility','visible').fadeIn()
+    else
+      $(element).fadeOut()
 
 
 # Subscribes the given cookie to "true"/unset on change of `observable`.

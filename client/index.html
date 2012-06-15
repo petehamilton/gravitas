@@ -51,7 +51,7 @@
       <div id="menu" class="screen" data-bind="fadeVisible: !gameStarted()">
 
         <!-- Login window -->
-        <div class="centered-table" data-bind="fadeVisible: !loggedIn()">
+        <div class="window centered-table" data-bind="fadeVisible: !loggedIn()">
           <div class="centered-table-cell">
 
             <div id="login-window" class="box">
@@ -75,7 +75,7 @@
         </div>
 
         <!-- Lobby window -->
-        <div class="centered-table" data-bind="fadeVisible: lobbyVisible()">
+        <div class="window centered-table" data-bind="fadeVisible: lobbyVisible()">
           <div class="centered-table-cell">
 
             <div id="lobby-window" class="box">
@@ -267,7 +267,7 @@
         </div>
 
         <!-- Assembly (where you join a game) -->
-        <div class="centered-table" data-bind="fadeVisible: assemblyVisible()">
+        <div class="window centered-table" data-bind="fadeVisible: assemblyVisible()">
           <div class="centered-table-cell">
 
             <div id="assembly-window" class="box">
@@ -325,9 +325,9 @@
 
 
       <!-- The actual turret game screen -->
-      <div id="game" class="screen">
+      <div id="game" class="screen" data-bind="fadeVisible: gameStarted()">
 
-        <div class="centered-table">
+        <div class="window centered-table">
           <div class="centered-table-cell">
             <div id="paper"></div>
           </div>
