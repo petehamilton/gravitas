@@ -22,6 +22,5 @@ describe "Player Functionality test", ->
     it "Checks the player is alive after every hit until its max hit", ->
       player = new plm.PlayerModel(0, 0)
       for hit_count in [0...config.survivable_hits]
-        console.log "Hit count", hit_count
         player.hit()
         player.isAlive().should.be.true
