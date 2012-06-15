@@ -275,6 +275,13 @@
               <div class="nick">
                 <span data-bind="text: username" placeholder="Username"></span>
                 <span class="rating" data-bind="style: { color: userRatingColor() }, text: userRating()"></span>
+                <div id="log_container" style="width: 100px">
+
+                  <form id="chatform">
+                     Say: <input class="small" style="width: 100px" type="text" id="chatinput" />
+                  </form>
+                  <div id="log"></div>
+                </div>
               </div>
               <br />
               <div class="spinner"></div>
@@ -364,7 +371,6 @@
               <input type="text" id="chatinput" />
             </form>
 
-            <h4>Log:</h4>
             <div id="log"></div>
           </div>
 

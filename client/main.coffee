@@ -52,7 +52,7 @@ setupChat = ->
 
   $('#chatform').submit ->
     msg = $('#chatinput').val()
-    $('#chatinput').val('')
+    $('#chatinput').val(''+ g.username() + ":")
     log "chat message:", msg
 
     now.chat msg
