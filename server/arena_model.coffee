@@ -477,8 +477,6 @@ class @ArenaModel
               unless target_player.isAlive()
                 everyone.now.receivePlayerDeath target_player.id
                 @removeAllBallsFromPlayer target_player
-              else
-
 
             ball.x = impact.x
             ball.y = impact.y
