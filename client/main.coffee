@@ -93,6 +93,12 @@ main = ->
   # listen to mouse events
   mouseMoveThrottler = new FpsThrottler config.mouse_move_fps
   $('#paper svg').mousemove (e) ->
+
+    # Fix offsetX/Y for Firefox (where it doesn't exist)
+    # if not e.offsetX?
+      # ...
+      # TODO implement this after finding out why in FF the SVG is not a square despite CSS
+
     mouseMoveThrottler.throttle ->
       arena.mouseMoved e.offsetX, e.offsetY
 
