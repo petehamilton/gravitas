@@ -130,7 +130,6 @@ configureNow = (everyone) ->
       everyone.now.receiveBallMoved pulled_ball, config.pull_time_ms
       setTimeout () => # Ball now in turret
         everyone.now.receiveBallInTurret(pulled_ball)
-        #TODO: Set powerup if necessary
         if pulled_ball.type.kind == config.ball_kinds.powerup
           arena.setPowerup(player, pulled_ball.type.powerup_kind, activateCallback, deactivateCallback)
           everyone.now.receiveMessage player.id, pulled_ball.type.powerup_message
