@@ -416,7 +416,7 @@ class @ArenaModel
       target_segment = makeSegmentBetweenPoints p, target_point
 
       # Get ball segment
-
+      hit_a_player = false
       for target_player in @players when target_player.id != player.id
         do (target_player) ->
           # TODO remove dup
@@ -445,6 +445,7 @@ class @ArenaModel
           if will_hit
             # Hit
             log "will hit: player #{target_player.id}"
+            hit_a_player |= true
 
 
             # Calculate impact point (where the center of the ball hits the turret radius)
@@ -486,6 +487,11 @@ class @ArenaModel
           else
             # Not hit
             log "not hit: player #{target_player.id}"
+
+      unless hit_a_player
+        ball.x = target_point.x
+        ball.y = target_point.y
+        everyone.now.receiveBallMoved ball, config.shoot_time_ms, ""
 
 
   removeAllBallsFromPlayer: (player) ->
