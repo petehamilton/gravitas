@@ -131,7 +131,6 @@ configureNow = (everyone) ->
       setTimeout () => # Ball now in turret
         everyone.now.receiveBallInTurret(pulled_ball)
         #TODO: Set powerup if necessary
-        console.log "Pulled ball kind", pulled_ball.type.kind, config.ball_kinds.powerup
         if pulled_ball.type.kind == config.ball_kinds.powerup
           arena.setPowerup(player, pulled_ball.type.powerup_kind, activateCallback, deactivateCallback)
           everyone.now.receiveMessage player.id, pulled_ball.type.powerup_message
@@ -183,7 +182,7 @@ startTimers = ->
         i = 0
         for b in arena.balls
           if b and b.id == b_id
-            everyone.now.receiveRemoveBall(b.x, b.y, b)
+            everyone.now.receiveRemoveBall(b)
             arena.balls.splice i, 1
           else
             i += 1
