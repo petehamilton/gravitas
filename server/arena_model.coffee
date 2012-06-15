@@ -474,12 +474,12 @@ class @ArenaModel
 
               hit_callback target_player
 
-              if target_player.isDead()
+              unless target_player.isAlive()
                 everyone.now.receivePlayerDeath target_player.id
                 @removeAllBallsFromPlayer target_player
               else
 
-            
+
             ball.x = impact.x
             ball.y = impact.y
             everyone.now.receiveBallMoved ball, config.pull_time_ms, ""
