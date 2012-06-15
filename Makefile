@@ -37,3 +37,5 @@ test:
 	@echo "See ../client/test.html for browser tests"
 	mocha --compilers coffee:coffee-script server/test.coffee
 	mocha --compilers coffee:coffee-script common/
+	mocha --compilers coffee:coffee-script server/testTriangles.coffee
+	mocha --compilers coffee:coffee-script server/testPlayerFunctionality.coffee
