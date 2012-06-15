@@ -29,4 +29,5 @@ class @PlayerModel
 
   # Decreases the player's health points by the damage of one ball
   hit: ->
-    @setHealth(roundNumber(@health - config.hit_damage, config.health_decimal_places))
+    unless @powerup and @powerup.type() == config.powerup_kinds.shield and @powerup.activated
+     @setHealth(roundNumber(@health - config.hit_damage, config.health_decimal_places))

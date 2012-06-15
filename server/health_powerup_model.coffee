@@ -16,3 +16,7 @@ class @HealthPowerupModel
   deactivate: ->
     @activated = false
     @deactivateCallback()
+
+  # Returns type
+  type: ->
+    return config.powerup_kinds.health
