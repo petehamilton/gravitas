@@ -62,39 +62,6 @@ configureNow = (everyone) ->
         achievements: u.achievements
         ratingHistory: u.ratingHistory
 
-  # TODO check if we can replace dbInsert and dbUpdate by one dbSave
-  everyone.now.dbInsert = (obj) ->
-    console.log "inserting", obj
-    collection.insert obj, -> everyone.now.dbInsertDone()
-
-
-  everyone.now.dbUpdate = (obj) ->
-    console.log "updating", obj
-    fixId obj
-    collection.save obj, -> everyone.now.dbUploadDone()
-
-
-  everyone.now.dbRemove = (obj) ->
-    console.log "removing", obj
-    fixId obj
-    collection.remove { _id: obj._id }, ->
-      everyone.now.dbRemoveDone()
-
-
-  everyone.now.dbDrop = () ->
-    console.log "dropping DB"
-    collection.remove {}
-
-
-  everyone.now.fixAllStringIds = () ->
-    console.log "fixing all string IDs"
-    collection.find().each (err, obj) ->
-      # TODO check why obj cursor is null after the last document
-      if typeof obj?._id is "string"
-        console.log "fixing ", obj
-        collection.remove { _id: obj._id }
-        collection.save fixId(obj)
-
 
   everyone.now.logServer = (msg) ->
     console.log msg
