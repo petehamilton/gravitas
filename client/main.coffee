@@ -117,8 +117,8 @@ main = ->
   $(document).keydown (e) ->
     switch e.keyCode
       when 32 # Spacebar
-        e.preventDefault()
         arena.spacebarPressed()
+
 
   $(document).bind "touchmove", (e) ->
     e.preventDefault()
