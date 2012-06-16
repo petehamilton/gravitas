@@ -106,6 +106,10 @@ class @Game
       when 1, 2, 3, 4
         @player(num-1)
 
+  enterKeyPressed: ->
+    if @lobbyVisible()
+      @assemblyClick()
+
 
   assemblyGoTo: (game, event) =>
     @assemblyContent $(event.target).data('menu')

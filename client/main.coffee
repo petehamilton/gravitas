@@ -119,6 +119,8 @@ main = ->
     if 48 <= e.keyCode <= 57                 # Keys 1, 2, 3, 4
       game.numberKeyPressed(e.keyCode - 48)
     else switch e.keyCode
+      when 13                                # Enter
+        game.enterKeyPressed()
       when 32                                # Spacebar
         if game.gameStarted()
           arena.spacebarPressed()
