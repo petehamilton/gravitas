@@ -115,6 +115,7 @@ main = ->
 
   # listen to key presses (powerup use)
   $(document).keydown (e) ->
+    # log "key pressed", e.keyCode
     if 48 <= e.keyCode <= 57                 # Keys 1, 2, 3, 4
       game.numberKeyPressed(e.keyCode - 48)
     else switch e.keyCode
