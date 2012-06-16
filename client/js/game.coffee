@@ -169,11 +169,12 @@ class @Game
     @achievementUnlucky unlucky
 
 
-  calculateScore: (playerRating, allyRating, enemyRating1, enemyRating2) ->
-    allyTeamRating ((playerRating + allyRating) / 2)
+  calculateScore: (userRating, allyRating, enemyRating1, enemyRating2) =>
+    allyTeamRating ((userRating + allyRating) / 2)
     enemyTeamRating ((enemyRating1 + enemyRating2) / 2)
-    # Team A's Chance of Winning: 1 / (1+10(1580 - 1500)/400) = 0.38686
-    teamAChanceofWinning calculateWinChance(allyTeamRating,enemyTeamRating)
+    winChance calculateWinChance(allyTeamRating,enemyTeamRating)
+    calculateNewRating(@userRating,winChance,enemyTeamRating)
+
 
   calculateWinChance: (allyTeamRating, enemyTeamRating) ->
     1 / (1 + Math.pow(10, ((enemyTeamRating - allyTeamRating) / 400)))
