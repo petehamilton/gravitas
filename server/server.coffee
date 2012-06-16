@@ -52,7 +52,6 @@ configureNow = (everyone) ->
 
   everyone.now.getStats = (user, callback) ->
     db.User.findOne { username: user }, (err, u) ->
-      console.log "u.achievements", JSON.stringify u.achievements
       callback
         rating: u.rating
         avatarURL: u.avatarURL
