@@ -270,6 +270,7 @@ startTimers = ->
       clearInterval clock
       clearInterval ball_rotation
       arena.stopGame()
+      winners = arena.getWinners()
   , config.clock_interval
 
 

@@ -576,3 +576,22 @@ class @ArenaModel
   stopGame: ->
     @game_play = false
 
+  # Returns winning players
+  # Has to work out if there's been a draw
+  getWinners: ->
+    max = []
+    index = 0
+    for player in @players
+      unless max[index]
+        max[index] = player
+      else if player.health > max[index].health
+        max = []
+        index = 0
+        max[index] = player
+      else if player.health == max[index].health
+        max[++index] = player
+
+    max
+
+
+
