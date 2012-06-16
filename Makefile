@@ -35,7 +35,4 @@ server: statics_fetch
 
 test:
 	@echo "See ../client/test.html for browser tests"
-	mocha --compilers coffee:coffee-script common/  -R spec
-	mocha --compilers coffee:coffee-script server/test.coffee -R spec
-	mocha --compilers coffee:coffee-script server/testTriangles.coffee  -R spec
-	mocha --compilers coffee:coffee-script server/testPlayerFunctionality.coffee  -R spec
+	mocha --compilers coffee:coffee-script spec/*  -R spec

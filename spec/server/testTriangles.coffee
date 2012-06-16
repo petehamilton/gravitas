@@ -1,4 +1,4 @@
-{ ArenaModel } = require './arena_model'
+{ ArenaModel } = require '../../server/arena_model'
 
 chai = require 'chai'
 { expect } = chai

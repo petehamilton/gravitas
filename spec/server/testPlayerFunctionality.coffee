@@ -1,5 +1,5 @@
-plm = require './player_model'
-config = require('../config').config
+plm = require '../../server/player_model'
+config = require('../../config').config
 
 chai = require 'chai'
 { expect } = chai
