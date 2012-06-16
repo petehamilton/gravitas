@@ -269,6 +269,7 @@ startTimers = ->
     if seconds == 0
       clearInterval clock
       clearInterval ball_rotation
+      arena.stopGame()
   , config.clock_interval
 
 
