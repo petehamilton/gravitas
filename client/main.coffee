@@ -115,8 +115,11 @@ main = ->
 
   # listen to key presses (powerup use)
   $(document).keydown (e) ->
-    switch e.keyCode
-      when 32 # Spacebar
+    log "keydown", e.keyCode
+    if 48 <= e.keyCode <= 57                 # Keys 1, 2, 3, 4
+      game.numberKeyPressed(e.keyCode - 48)
+    else switch e.keyCode
+      when 32                                # Spacebar
         arena.spacebarPressed()
 
 

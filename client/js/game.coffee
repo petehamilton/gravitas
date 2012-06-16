@@ -95,6 +95,11 @@ class @Game
     @powerups = ({i: null} for i in [0..4])
 
 
+  numberKeyPressed: (num) ->
+    switch num
+      when 1, 2, 3, 4
+        @player(num-1)
+
 
   assemblyGoTo: (game, event) =>
     @assemblyContent $(event.target).data('menu')
