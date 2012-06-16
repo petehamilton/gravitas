@@ -166,10 +166,10 @@ class @Game
 
 
   calculateNewRating: (userRating, allyRating, enemyRating1, enemyRating2, won) =>
-    allyTeamRating ((userRating + allyRating) / 2)
-    enemyTeamRating ((enemyRating1 + enemyRating2) / 2)
-    winChance calculateWinChance(allyTeamRating,enemyTeamRating)
-    @userRating + 32 * ( (if won then 1 else 0) - winChance)
+    allyTeamRating = ((userRating + allyRating) / 2)
+    enemyTeamRating = ((enemyRating1 + enemyRating2) / 2)
+    winChance = @calculateWinChance(allyTeamRating,enemyTeamRating)
+    Math.floor(userRating + 32 * ( (if won then 1 else 0) - winChance))
 
 
   calculateWinChance: (allyTeamRating, enemyTeamRating) ->
