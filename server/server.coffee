@@ -29,7 +29,6 @@ connected = false
 # Available game rooms. Key: room ID
 rooms = {}
 next_room_id = 0
-clientRoomMapping = {}
 
 
 class Room
@@ -126,9 +125,9 @@ configureNow = (everyone) ->
     console.log msg
 
 
-  everyone.now.chat = (msg) ->
-    console.log "chat message: #{msg}"
-    everyone.now.displayMessage msg
+  everyone.now.devLogChat = (msg) ->
+    console.log "dev log chat message: #{msg}"
+    everyone.now.receiveDevLogMessage msg
 
 
   everyone.now.assignRoom = (callback) ->
@@ -136,9 +135,11 @@ configureNow = (everyone) ->
     client = @
     cid = client.user.clientId
 
-    if (room_id = clientRoomMapping[cid])?
+    # If the client is in a room, client.user.room_group is set to the corresponding group.
+
+    if (rg = client.user.room_group)?
       # Client is already in a room
-      log "user with clientId #{cid} is already in room id #{room_id}"
+      log "user with clientId #{cid} is already in room #{rg.groupName}"
       # Tell user that joining failed
       callback false
     else
@@ -156,9 +157,9 @@ configureNow = (everyone) ->
 
       log "putting user with clientID #{cid} into room id #{room_id}"
       room.addClient client
-      clientRoomMapping[cid] = room_id
       room_group = nowjs.getGroup "room-#{room_id}"
       room_group.addUser cid
+      client.user.room_group = room_group
 
       # Tell user that joining was successful
       callback true, room_id
@@ -166,8 +167,6 @@ configureNow = (everyone) ->
       # Tell user about who is already in the room
       for c in clients_in_room_before_join
         @now.receivePlayerJoined c.user.user_model
-
-      log "room_group", room_group
 
       # Notify other players in the room of joined user
       u = client.user.user_model
@@ -192,6 +191,17 @@ configureNow = (everyone) ->
   everyone.now.leaveRoom = (callback) ->
     # TODO implement
     log "leaveRoom not implemented"
+
+
+  everyone.now.sendChatToRoom = (msg) ->
+    client = @
+    room_group = client.user.room_group
+    if not room_group
+      log 'cannot send chat message: client #{client.user.clientId} is not in a room'
+    else
+      username = client.user.user_model.username
+      log 'chat message from #{username} to room #{room_group.groupName}'
+      room_group.now.receiveRoomChat username, msg
 
 
   everyone.now.setAngle = (player_id, angle) ->

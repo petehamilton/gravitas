@@ -38,6 +38,9 @@ class @Game
 
     @waitMessage = ko.observable 'Waiting for other players...'  # TODO add number for how many we're waiting
 
+    @lobbyMessageInput = ko.observable ''
+    @lobbyMessages = ko.observableArray []
+
 
     # Password change stuff
     @oldPasswordInput = ko.observable ""
@@ -193,6 +196,23 @@ class @Game
   assemblyExitClick: =>
     @assembly false
 
+
+  lobbyPostChat: ->
+    msg = @lobbyMessageInput()
+    log "posting room message #{msg}"
+    @withServer =>
+      @server.sendChatToRoom msg
+    @lobbyMessageInput ''
+
+
+  roomChat: (username, message) ->
+    log "received room message from user #{username}: ", message
+    @lobbyMessages.push "#{username}: #{message}"
+
+
+  scrollChatDown: (chat_div) ->
+    log "scrolling chat down"
+    chat_div.scrollTop = chat_div.scrollHeight
 
   # Starts a "game starting in ..." countdown, counting down from s seconds
   startCountdown: (s) ->

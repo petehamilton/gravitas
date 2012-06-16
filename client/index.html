@@ -275,12 +275,14 @@
               <div class="nick">
                 <span data-bind="text: username" placeholder="Username"></span>
                 <span class="rating" data-bind="style: { color: userRatingColor() }, text: userRating()"></span>
-                <div id="log_container" style="width: 100px">
 
-                  <form id="chatform">
-                     Say: <input class="small" style="width: 100px" type="text" id="chatinput" />
-                  </form>
-                  <div id="log"></div>
+              </div>
+              <div class="lobby_chat_container">
+                <form data-bind="submit: lobbyPostChat">
+                   Say: <input type="text" class="small" data-bind="value: lobbyMessageInput" />
+                </form>
+                <div class="lobby_chat" data-bind="foreach: lobbyMessages, onChange: scrollChatDown">
+                  <p data-bind="text: $data">CHAT MESSAGE</p>
                 </div>
               </div>
               <br />
@@ -350,7 +352,7 @@
 
           <div class="divlabel">dev</div>
 
-          <p id="lag_indicator" data-bind="css: { lag: lag }">Lag indicator</p>
+          <p class="lag_indicator" data-bind="css: { lag: lag }">Lag indicator</p>
 
           <p>
             <input type="checkbox" data-bind="checked: autoLogIn" />Logged in
@@ -370,13 +372,13 @@
             <input type="radio" class="player" name="player" value="3" data-bind="checked: player" />
           </p>
 
-          <div id="log_container">
+          <div id="dev_log_container">
 
-            <form id="chatform">
-              <input type="text" id="chatinput" />
+            <form id="dev_log_chat_form">
+              <input type="text" id="dev_log_chat_input" />
             </form>
 
-            <div id="log"></div>
+            <div id="dev_log"></div>
           </div>
 
         </div>
