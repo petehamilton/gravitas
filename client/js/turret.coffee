@@ -80,7 +80,7 @@ class @Turret
 
 
   updateColor: ->
-    if @pulse_scale <= 1 - (config.survivable_hits - 1) * config.hit_damage # Warn when one from death
+    if @pulse_scale <= utils.roundNumber(config.max_health - config.survivable_hits * config.hit_damage, 2) # Warn when one from death
       @pulse_speed = 0.2
       @turret_pulse_background.animate {fill: config.warning_colour}, 500
     else
