@@ -24,22 +24,6 @@ ko.bindingHandlers.fadeVisible =
       $(element).fadeOut()
 
 
-# Subscribes the given cookie to "true"/unset on change of `observable`.
-# subscribeCookie = (observable, cookieName, callback) ->
-#   observable.subscribe (val) ->
-#     $.cookie cookieName, (if val then "true" else null)
-#     callback val
-
-# cookieObservable = (initialValue, cookieName, callback) ->
-#   observable = ko.observable initialValue
-
-#   observable.subscribe (val) ->
-#     $.cookie cookieName, (if val then "true" else null)
-#     callback val
-
-#   observable
-
-
 ko.extenders.cookie = (target, cookieKey) ->
 
   result = ko.computed
