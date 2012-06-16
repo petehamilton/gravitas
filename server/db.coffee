@@ -51,7 +51,7 @@ setup = (callback) ->
         timePlayed: 39603
         gamesWon: 31
         gamesPlayed: 70
-        rating: (Math.floor(Math.random() * 3000)) + 1000
+        rating: (Math.floor(Math.random() * 1700)) + 500  # min: 500, max: 1700 + 500 = 2200
         achievements: [
           {id : 0, date : "12.03.2012"}
           {id : 1, date : "14.03.2012"}
