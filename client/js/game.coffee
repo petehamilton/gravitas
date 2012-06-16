@@ -259,10 +259,10 @@ class @Game
   #
   # ball_model : The ball model for the view we wish to move
   # duration : Animation time
-  moveBall: (ball_model, duration, callback) ->
+  moveBall: (ball_model, duration, tween, callback) ->
     ball_view = @balls[ball_model.id]
     if ball_view?
-      ball_view.moveTo(ball_model.x, ball_model.y, duration, callback)
+      ball_view.moveTo(ball_model.x, ball_model.y, duration, tween, callback)
     else
       @balls[ball_model.id] = new BallView(ball_model, @arena.paper)
 
@@ -272,9 +272,9 @@ class @Game
   #
   # ball_models : The ball models for the views we wish to move
   # duration : Animation time
-  moveBalls: (ball_models, duration) ->
+  moveBalls: (ball_models, duration, tween) ->
     for ball_model in ball_models
-      @moveBall(ball_model, duration)
+      @moveBall(ball_model, duration, tween)
 
 
   # A player has shot a ball, play the sound effect and removes the ball from canvas
@@ -367,8 +367,7 @@ class @Game
 
   ballInTurret: (ball_model) ->
     log "Ball in turret"
-    #TODO: Implement
     if ball_model.type.kind == config.ball_kinds.powerup
       log "Powerup in turret"
       @removeBall(ball_model)
-      #TODO: Implement powerup fadeout
+

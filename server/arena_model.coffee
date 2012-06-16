@@ -446,8 +446,13 @@ class @ArenaModel
 
               will_hit = intersection.intersects and intersection.point
 
+<<<<<<< HEAD
               # Tell other players that ball was shot and if it will hit another player
               shot_callback ball, target_player.id
+=======
+            # Tell other players that ball was shot and if it will hit another player
+            shot_callback ball, target_player
+>>>>>>> Made balls fade away when they collide with a person's shield
 
               if will_hit
                 # Hit
@@ -480,7 +485,7 @@ class @ArenaModel
                   # Decrease health
                   target_player.hit()
 
-                  hit_callback target_player
+                  hit_callback(ball, target_player)
 
                   unless target_player.isAlive()
                     everyone.now.receivePlayerDeath target_player.id
@@ -488,7 +493,7 @@ class @ArenaModel
 
                 ball.x = impact.x
                 ball.y = impact.y
-                everyone.now.receiveBallMoved ball, config.shoot_time_ms, ""
+                everyone.now.receiveBallMoved ball, config.shoot_time_ms, '<>'
                 setTimeout on_arrive_at_target, config.shoot_time_ms
 
               else

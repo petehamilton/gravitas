@@ -52,5 +52,5 @@ class @BallView
   # Animates the ball image from it's current position to x, y over duration
   #
   # callback : called once animation complete
-  moveTo: (x, y, duration, callback) ->
-    @image.animate { x: corner(x), y: corner(y) }, duration, 'backOut', callback
+  moveTo: (x, y, duration, tween, callback) ->
+    @image.animate { x: corner(x), y: corner(y) }, duration, tween, callback

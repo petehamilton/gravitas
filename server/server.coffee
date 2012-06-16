@@ -199,7 +199,7 @@ configureNow = (everyone) ->
         everyone.now.receiveDeactivatePowerup(player_id)
 
 
-      everyone.now.receiveBallMoved pulled_ball, config.pull_time_ms
+      everyone.now.receiveBallMoved pulled_ball, config.pull_time_ms, '<>'
       setTimeout () => # Ball now in turret
         everyone.now.receiveBallInTurret(pulled_ball)
         if pulled_ball.type.kind == config.ball_kinds.powerup
@@ -221,11 +221,14 @@ configureNow = (everyone) ->
 
 
   everyone.now.stopGravityGun = (player_id) ->
+    player = arena.players[player_id]
     arena.shoot(
-      arena.players[player_id]
+      player
       everyone
-      (shot_ball, hit_player_id) => everyone.now.receiveShot player_id, shot_ball, hit_player_id
-      (hit_player) => everyone.now.receiveHealth hit_player.id, hit_player.health
+      (shot_ball, hit_player) => everyone.now.receiveShot player.id, shot_ball, hit_player.id
+      (shot_ball, hit_player) =>
+        everyone.now.receiveHealth hit_player.id, hit_player.health
+        everyone.now.receiveRemoveBall shot_ball
     )
 
 
@@ -263,7 +266,7 @@ startTimers = ->
   ball_rotation = setInterval () =>
     arena.rotateTriangles(ARENA_SIZE, arena.ball_positions)
     if connected
-      everyone.now.receiveBallsMoved(arena.balls, config.rotation_time)
+      everyone.now.receiveBallsMoved(arena.balls, config.rotation_time, 'backOut')
 
       # TODO: Clean me, use .includes? or something
       for b_id in arena.balls_to_delete
