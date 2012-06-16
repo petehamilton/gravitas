@@ -9,13 +9,13 @@ There also a staticfetcher called by the Makefile that allows pulling in externa
 Code Review
 -----------
 
-Let's do semi-proper code review: Everyone can just commit, but make sure every commit is reviewed by somebody else shortly after.
+Let's do code review: Make sure every commit is reviewed by somebody else shortly after.
 
 
 Testing
 -------
 
-Make sure you know how to write jasmine tests. Commit the tests with the code.
+Make sure you know how to write unit tests in Mocha. Commit the tests along with the code
 
 
 Links
