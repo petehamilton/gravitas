@@ -166,6 +166,23 @@ class @Game
     @achievementUnlucky unlucky
 
 
+  calculateScore: (playerRating, allyRating, enemyRating1, enemyRating2) ->
+    allyTeamRating ((playerRating + allyRating) / 2)
+    enemyTeamRating ((enemyRating1 + enemyRating2) / 2)
+    # Team A's Chance of Winning: 1 / (1+10(1580 - 1500)/400) = 0.38686
+    teamAChanceofWinning calculateWinChance(allyTeamRating,enemyTeamRating)
+
+  calculateWinChance: (allyTeamRating, enemyTeamRating) ->
+    1 / (1 + Math.pow(10, ((enemyTeamRating - allyTeamRating) / 400)))
+
+  calculateNewRating: (oldRating, winChance, won) ->
+    oldRating + 32*( (if won then 1 else 0) - winChance)
+
+
+
+  # Team A's New Score: 1500 + 32*(1 - 0.38686) = 1500 + 19.62 = 1519.62
+
+
   assemblyClick: =>
     @assembly true
     @withServer =>
