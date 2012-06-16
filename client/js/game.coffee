@@ -94,15 +94,6 @@ class @Game
     # Powerups for each player. The key is the player ID
     @powerups = ({i: null} for i in [0..4])
 
-    # Model observable that has a corresponding `.view` observable.
-    # Changes to the ".view" are sent to the server using `syncFn`.
-    # The `target` observable is to reflect the (shared) actual state,
-    # the `.view` one the desired state (e.g. choice of the user).
-    withViewObservable = (target, syncFn) =>
-      target.view = ko.computed
-        read: -> target()
-        write: (val) => @withServer -> syncFn val
-      target
 
 
   assemblyGoTo: (game, event) =>
