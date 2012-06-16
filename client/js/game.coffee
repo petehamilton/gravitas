@@ -33,6 +33,9 @@ class @Game
 
     @usernameFocus = ko.observable true
 
+    # Profile
+    @playButtonFocus = ko.observable false
+
     # Lobby
     @connectedPlayers = ko.observableArray []
 
@@ -119,6 +122,7 @@ class @Game
         log "login successful"
         @getStats()
         @loggedIn true
+        @playButtonFocus true
       else
         log "login failed"
         @authFailed true
