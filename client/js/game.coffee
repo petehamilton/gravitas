@@ -111,6 +111,11 @@ class @Game
       @assemblyClick()
 
 
+  showSignupWindow: ->
+    log "showing sign up window"
+    # TODO implement
+
+
   assemblyGoTo: (game, event) =>
     @assemblyContent $(event.target).data('menu')
 

@@ -67,7 +67,14 @@
                   <input type="password" name="password" data-bind="value: password, event: { keypress: resetAuthStatus }" />
                 </p>
 
-                <input type="submit" data-bind="click: logIn, value: logInButtonText, css: { error: authFailed }" />
+                <div class="buttons">
+                  <input type="submit" data-bind="click: logIn, value: logInButtonText, css: { error: authFailed }" />
+                  <!-- <input type="submit" class="button-signup" value="Register" /> -->
+                </div>
+                <p class="signup-question">
+                  Don't have an account?
+                  <a href="#" data-bind="click: showSignupWindow">Sign up</a>
+                </p>
               </form>
             </div>
 

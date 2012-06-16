@@ -201,6 +201,18 @@ button[disabled]
   right: 0
 
 
+p
+  color: #aaa
+
+a
+  &:link
+  &:visited
+    color: #207CE6
+    text-decoration: none
+  &:hover
+    text-decoration: underline
+
+
 a.glow
 a.glow:hover
 a.glow:focus
@@ -308,6 +320,18 @@ a.glow:focus
   #login-window
     width: 180px
     height: 250px
+
+    input
+      &[type=password]  // Workaround for https://github.com/LearnBoost/stylus/issues/730
+      &[type=text]
+        display: block
+        margin: 0 auto
+        width: 90%
+
+    .signup-question
+      margin-top: 20px
+      margin-left: 3px
+      font-size: 12px
 
   #assembly-window
   #lobby-window
