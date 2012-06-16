@@ -204,7 +204,8 @@ configureNow = (everyone) ->
         everyone.now.receiveBallInTurret(pulled_ball)
         if pulled_ball.type.kind == config.ball_kinds.powerup
           arena.setPowerup(player, pulled_ball.type.powerup_kind, activateCallback, deactivateCallback)
-          everyone.now.receiveMessage player.id, pulled_ball.type.powerup_message
+          fadeOut = true
+          everyone.now.receiveMessage player.id, pulled_ball.type.powerup_message, fadeOut
 
       , config.pull_time_ms
 
@@ -238,6 +239,22 @@ createApp = ->
   app.listen PORT, ADDRESS
   app
 
+gameOver = ->
+  winningMessage = "GAME OVER\nCongratulations you won"
+  drawMessage = "GAME OVER\nCongratulations you tied"
+  looseMessage = "GAME OVER\nSorry you lost\nBetter luck next time"
+  fadeOut = false
+  arena.stopGame()
+  winners = arena.getWinners()
+  for player in arena.players
+    if winners.indexOf(player) != -1
+      if winners.length > 1
+        everyone.now.receiveMessage player.id, drawMessage, fadeOut
+      else
+        everyone.now.receiveMessage player.id, winningMessage, fadeOut
+    else
+      everyone.now.receiveMessage player.id, looseMessage, fadeOut
+
 
 # Start the intervals which control ball rotation and the clock
 startTimers = ->
@@ -269,8 +286,8 @@ startTimers = ->
     if seconds == 0
       clearInterval clock
       clearInterval ball_rotation
-      arena.stopGame()
-      winners = arena.getWinners()
+      gameOver()
+
   , config.clock_interval
 
 

@@ -344,16 +344,18 @@ class @Game
 
   # Displays a message, message, temporarily in the centre of the screen for
   # a given player
-  displayMessage: (player, message) ->
+  displayMessage: (player, message, fade) ->
     if player == @getPlayerId()
       text = @arena.paper.text(ARENA_SIZE.x/2, ARENA_SIZE.y - ARENA_SIZE.y/5, message)
               .attr({"font-size": 20, "fill": "#a2b5c6", 'font-family': "Century Gothic, sans-serif", opacity: 0})
               .transform "s0"
+      text.toFront()
       text.animate {transform: "s1", opacity: 1}, 500, () ->
-        setTimeout () =>
-          text.animate {opacity: 0}, 1000, () ->
-            text.remove()
-        , 500
+        if fade
+          setTimeout () =>
+            text.animate {opacity: 0}, 1000, () ->
+              text.remove()
+          , 500
 
 
   debugShadow: (shadow_info) ->
