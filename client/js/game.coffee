@@ -168,9 +168,9 @@ class @Game
 
   assemblyClick: =>
     @assembly true
-
-
-
+    @withServer =>
+      @server.assignRoom (ok, room_id) =>
+        log "server assigned us to room #{room_id}"
 
 
   assemblyExitClick: =>
@@ -183,11 +183,16 @@ class @Game
 
 
   startGame: =>
+    log "starting game"
     @gameStarted true
 
 
   pingServer: =>
     now.pingServer()
+
+
+  playerJoined: (user) ->
+    log "player joined", user
 
 
   #Data structure to hold connected players

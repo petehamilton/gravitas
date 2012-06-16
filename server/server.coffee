@@ -1,6 +1,7 @@
 http = require 'http'
 express = require 'express'
 nowjs = require 'now'
+_ = require 'underscore'
 arena_model = require './arena_model'
 pbm = require './ball_model'
 spm = require './shield_powerup_model'
@@ -23,6 +24,55 @@ arena = new arena_model.ArenaModel()
 everyone = null
 
 connected = false
+
+
+# Available game rooms. Key: room ID
+rooms = {}
+next_room_id = 0
+clientRoomMapping = {}
+
+
+class Room
+  constructor: ->
+    # Stores now client IDs
+    @players = [ null, null, null, null ]
+    @num_players = 0
+
+  addPlayer: (clientId) ->
+    # TODO highlevel this with underscore
+    for cid, i in @players
+      if cid == null
+        @players[i] = clientId
+        @num_players++
+        return
+    throw new Error('room is full!')
+
+  removePlayer: (clientId) ->
+    for cid, i in @players
+      if cid == clientId
+        delete @players[clientId]
+        @num_players--
+        return
+    throw new Error("room doesn't contain clientId #{clientId}!")
+
+  full: ->
+    @num_players == @players.length
+
+
+# Creates a new room, adds it to the available rooms and returns the room ID
+allocateNewRoom = ->
+  id = next_room_id++
+  rooms[id] = new Room()
+  id
+
+
+# TODO allocate room based on player skills
+getSuitableRoom = ->
+  for id, r of rooms
+    if not r.full()
+      return id
+  null
+
 
 configureNow = (everyone) ->
 
@@ -53,6 +103,7 @@ configureNow = (everyone) ->
         # Connect the nowjs user to the user in our database.
         # This being set marks the user as authenticated.
         # Authorization still needs to be done for every action!
+        # TODO do the authorization
         @user.user_model = u
 
         callback { ok: true }
@@ -76,6 +127,54 @@ configureNow = (everyone) ->
   everyone.now.chat = (msg) ->
     console.log "chat message: #{msg}"
     everyone.now.displayMessage msg
+
+
+  everyone.now.assignRoom = (callback) ->
+
+    cid = @user.clientId
+
+    if (room_id = clientRoomMapping[cid])?
+      # Client is already in a room
+      log "user with clientId #{cid} is already in room id #{room_id}"
+      callback false
+    else
+      # Find suitable room for client
+
+      # For now, just put the player into the first free room
+      # suitable_room_id = (_.keys rooms).some (r) -> not r.empty()
+      suitable_room_id = getSuitableRoom()
+
+      # If there is no matching room, create a new one
+      room_id = suitable_room_id or allocateNewRoom()
+      room = rooms[room_id]
+
+      log "putting user with clientID #{cid} into room id #{room_id}"
+      room.addPlayer cid
+      clientRoomMapping[cid] = room_id
+      room_group = nowjs.getGroup "room-#{room_id}"
+      room_group.addUser cid
+
+      callback true, room_id
+
+      log "room_group", room_group
+
+      # Notify other players in the room of joined player
+      u = @user.user_model
+      room_group.now.receivePlayerJoined
+        # TODO put this "information for other users" into a user model method
+        id: u._id
+        username: u.username
+        rating: u.rating
+        avatarURL: u.avatarURL
+
+      # If room is full, start the game
+      if room.full()
+        room_group.now.receiveStartGame()
+
+
+  everyone.now.leaveRoom = (callback) ->
+    # TODO implement
+    log "leaveRoom not implemented"
 
 
   everyone.now.setAngle = (player_id, angle) ->
