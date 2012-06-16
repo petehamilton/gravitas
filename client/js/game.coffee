@@ -169,18 +169,15 @@ class @Game
     @achievementUnlucky unlucky
 
 
-  calculateScore: (userRating, allyRating, enemyRating1, enemyRating2) =>
+  calculateNewRating: (userRating, allyRating, enemyRating1, enemyRating2, won) =>
     allyTeamRating ((userRating + allyRating) / 2)
     enemyTeamRating ((enemyRating1 + enemyRating2) / 2)
     winChance calculateWinChance(allyTeamRating,enemyTeamRating)
-    calculateNewRating(@userRating,winChance,enemyTeamRating)
+    @userRating + 32 * ( (if won then 1 else 0) - winChance)
 
 
   calculateWinChance: (allyTeamRating, enemyTeamRating) ->
     1 / (1 + Math.pow(10, ((enemyTeamRating - allyTeamRating) / 400)))
-
-  calculateNewRating: (oldRating, winChance, won) ->
-    oldRating + 32*( (if won then 1 else 0) - winChance)
 
 
 
