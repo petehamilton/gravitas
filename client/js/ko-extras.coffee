@@ -38,3 +38,10 @@ ko.extenders.cookie = (target, cookieKey) ->
 
 @makeCookieObservable = (cookieKey) ->
   ko.observable(JSON.parse($.cookie cookieKey)).extend { cookie: cookieKey }
+
+
+ko.bindingHandlers.onChange =
+  update: (element, valueAccessor, allBindingsAccessor) ->
+    callOnChangeFn = valueAccessor()
+
+    callOnChangeFn element

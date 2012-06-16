@@ -31,10 +31,6 @@ playbutton(fontSize)
 
 }
 
-span.caps
-  text-transform: uppercase
-
-
 
 body
   margin: 0
@@ -47,20 +43,22 @@ body
   background-color: black
 
 
+span.caps
+  text-transform: uppercase
+
+
 input[type=text]
 input[type=password]
-  color: #000
+  color: #eee
   padding: 7px
   font-size: 14px
-  border: 1px solid #c0c0c0
+  border: 1px solid #444
   border-radius: 5px
+  background: rgba(black, 0.5)
 
 input.small
   font-size: 10px
-  color: #000
   padding: 3px
-  border: 1px solid #c0c0c0
-  border-radius: 5px
   width: 150px
 
 label
@@ -297,6 +295,20 @@ a.glow:focus
       padding-left: 30px
       diplay: inline-block
 
+    .lobby_chat_container
+      position: absolute
+      top: 150px
+      right: 20px
+      width: 250px
+      color: white
+
+      .lobby_chat
+        overflow-y: scroll
+        height: 100px
+        margin-top: 10px
+        p
+          font-size: 14px
+          margin: .1em
 
     .search-result
       padding:30px
@@ -337,6 +349,8 @@ a.glow:focus
   svg
     cursor: url(images/cursor/transparent.png), default
 
+
+
 #dev-panel
   position: absolute
   top: 0
@@ -352,19 +366,10 @@ a.glow:focus
     font-size: .8em
     font-weight: normal
 
-#lag_indicator
-  text-align: center
-  background-color: #ccc
+  .lag_indicator
+    text-align: center
+    background-color: #ccc
 
-
-#lag_indicator.lag
-  color: white
-  background-color: red
-
-
-#log_container
-  font-size: 11px
-
-#log
-  text-align: left
-
+    &.lag
+      color: white
+      background-color: red

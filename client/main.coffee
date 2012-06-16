@@ -26,9 +26,9 @@ createPaper = (paperId, width, height, opacity) ->
 
 setupNow = (game) ->
 
-  now.displayMessage = (msg) ->
-    log "received message: #{msg}"
-    $('#log').append($('<p>').text(msg))
+  now.receiveDevLogMessage = (msg) ->
+    log "received dev log message: #{msg}"
+    $('#dev_log').append($('<p>').text(msg))
 
   now.receiveAngle = (args...) -> game.setAngle args...
   now.receiveShot = (args...) -> game.shot args...
@@ -41,7 +41,8 @@ setupNow = (game) ->
   now.receiveInvalidPull = (args...) -> game.invalidPull args...
   now.receiveHealth = (args...) -> game.updateHealth args...
   now.receivePlayerDeath = (args...) -> game.killPlayer args...
-  now.receiveMessage = (args...) -> game.displayMessage args...
+  now.receiveMessage = (args...) -> game.displayMessage args...  # TODO rename (this is in-battle)
+  now.receiveRoomChat = (args...) -> game.roomChat args...
   now.receiveRoomReady = (args...) -> game.roomReady args...
   now.receiveStartGame = (args...) -> game.startGame args...
   now.receivePlayerJoined= (args...) -> game.playerJoined args...
@@ -51,15 +52,14 @@ setupNow = (game) ->
   now.debug_receiveShadow = (args...) -> game.debugShadow args...
 
 
-setupChat = ->
+setupDevLog = ->
 
-  $('#chatform').submit ->
-    msg = $('#chatinput').val()
-    $('#chatinput').val(''+ g.username() + ":")
-    log "chat message:", msg
-
-    now.chat msg
+  $('#dev_log_chat_form').submit ->
+    msg = $('#dev_log_chat_input').val()
+    $('#dev_log_chat_input').val('')
+    now.devLogChat msg
     false
+
 
 class FpsThrottler
   constructor: (@fps) ->
@@ -136,7 +136,7 @@ main = ->
   now.ready ->
     log "now ready"
 
-    setupChat()
+    setupDevLog()
 
   # Debugging global variables
   @a = arena
