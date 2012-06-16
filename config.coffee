@@ -47,7 +47,7 @@ config =
   crosshair_size: 64
   pull_radius: 20
   pull_time_ms: 300
-  shoot_time_ms: 800
+  shoot_time_ms: 300
 
   vortex_mass: 10000
 
