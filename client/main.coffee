@@ -119,7 +119,8 @@ main = ->
       game.numberKeyPressed(e.keyCode - 48)
     else switch e.keyCode
       when 32                                # Spacebar
-        arena.spacebarPressed()
+        if game.gameStarted()
+          arena.spacebarPressed()
 
 
   $(document).bind "touchmove", (e) ->
