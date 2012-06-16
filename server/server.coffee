@@ -283,7 +283,8 @@ startTimers = ->
   clock = setInterval () =>
     if connected
       everyone.now.receiveClock --seconds
-    if seconds == 0
+
+    if seconds == 0 or arena.aliveCount() <= 1
       clearInterval clock
       clearInterval ball_rotation
       gameOver()

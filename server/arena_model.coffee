@@ -572,9 +572,21 @@ class @ArenaModel
           processCollision(ball, player)
 
 
+  # Counts the number of players still alive
+  aliveCount: ->
+    alive = 0
+    for player in @players
+      if player.isAlive()
+        ++alive
+
+    alive
+
+
+
   # Sets the game play setting to false so that players can no longer continue playing
   stopGame: ->
     @game_play = false
+
 
   # Returns winning players
   # Has to work out if there's been a draw
@@ -592,6 +604,4 @@ class @ArenaModel
         max[++index] = player
 
     max
-
-
 
