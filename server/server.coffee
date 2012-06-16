@@ -42,9 +42,11 @@ configureNow = (everyone) ->
 
 
   everyone.now.authenticate = (user, pw, callback) ->
-    db.User.findOne { username: user, password: pw }, (err, u) ->
+    db.User.findOne { username: user, password: pw }, (err, u) =>
       if err or not u
         callback { ok: false }
+        # Don't disconnect the user (@socket.disconnect())
+        # Simply allow them to call authenticate() again.
       else
         log "user #{u.username} authenticated"
         # TODO send auth token
