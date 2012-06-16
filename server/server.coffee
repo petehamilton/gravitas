@@ -266,7 +266,7 @@ startTimers = ->
       everyone.now.receiveBallsMoved(arena.balls, config.rotation_time)
 
       # TODO: Clean me, use .includes? or something
-      for b_id in @balls_to_delete
+      for b_id in arena.balls_to_delete
         i = 0
         for b in arena.balls
           if b and b.id == b_id

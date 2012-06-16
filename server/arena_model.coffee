@@ -45,6 +45,9 @@ class @ArenaModel
     # Holds all the active balls that players have shot.
     @active_balls = []
 
+    # Holds a list of ball ids for balls which should be removed
+    @balls_to_delete = []
+
 
   arenaRadius: ->
     Math.max(config.arena_size.x, config.arena_size.y) * 1.42
@@ -421,7 +424,7 @@ class @ArenaModel
         # Get ball segment
         hit_a_player = false
         for target_player in @players when target_player.id != player.id
-          do (target_player) ->
+          do (target_player) =>
             # TODO remove dup
 
             # Segment orthogonal to target segment, unit length
@@ -502,10 +505,10 @@ class @ArenaModel
     # TODO implement
 
     # Populate list of balls to delete
-    # bs = (b for b in arena.balls)
-    # for b in bs
-    #   if b and b.type.player_id == player.id
-    #     @balls_to_delete.push b.id
+    bs = (b for b in @balls)
+    for b in bs
+      if b and b.type.player_id == player.id
+        @balls_to_delete.push b.id
 
 
   # Gives a powerup to a player
