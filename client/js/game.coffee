@@ -31,6 +31,8 @@ class @Game
     @logInButtonText = ko.computed =>
       if @authFailed() then 'Auth failed' else 'Log In'
 
+    @usernameFocus = ko.observable true
+
     # Lobby
     @connectedPlayers = ko.observableArray []
 
