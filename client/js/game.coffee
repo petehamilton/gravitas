@@ -31,12 +31,12 @@ class @Game
     @logInButtonText = ko.computed =>
       if @authFailed() then 'Auth failed' else 'Log In'
 
-    @connectedPlayers = ko.observableArray([
-      new connectedPlayer("Player A", 321)
-      new connectedPlayer("Player XYZ", 456)
-    ])
+    # Lobby
+    @connectedPlayers = ko.observableArray []
 
     @canAddAnotherPlayer = ko.computed => @connectedPlayers().length < 4
+
+    @waitMessage = ko.observable 'Waiting for other players...'  # TODO add number for how many we're waiting
 
 
     # Password change stuff
@@ -177,9 +177,24 @@ class @Game
     @assembly false
 
 
-  # Used to add a new player to the connected players list
-  connectNew: =>
-    @connectedPlayers.push new connectedPlayer("New", 666)
+  # Starts a "game starting in ..." countdown, counting down from s seconds
+  startCountdown: (s) ->
+
+    countDown = (s) =>
+      @waitMessage "Game starting in #{s} seconds"
+      if s > 1
+        setTimeout (=> countDown(s-1)), 1000
+
+    countDown s
+
+
+  roomReady: (ready_time_ms) ->
+    log "room is ready, starting in #{ready_time_ms / 1000} s"
+
+    @startCountdown Math.floor(ready_time_ms / 1000)
+
+    # We don't have to do anything when the countdown finishes.
+    # The server will call startGame().
 
 
   startGame: =>
@@ -193,12 +208,19 @@ class @Game
 
   playerJoined: (user) ->
     log "player joined", user
+    @connectedPlayers.push new connectedPlayer(user.username, user.rating)
 
 
+  joinPlayer_debug: ->
+    @connectedPlayers.push new connectedPlayer("fake player", 6668)
+
+
+  # TODO check why this is created with new but not a class
   #Data structure to hold connected players
   connectedPlayer = (username, rating) ->
     @username = username
     @rating = rating
+
 
   secToTime : (d) ->
     d = Number(d)

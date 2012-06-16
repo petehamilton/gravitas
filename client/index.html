@@ -286,7 +286,7 @@
               <br />
               <div class="waiting-label">
                 <span class="spinner"></span>
-                Waiting for four other players...
+                  <span data-bind="text: waitMessage">WAIT_MESSAGE</span>
                 <div class="autostart-label">
                   The game will start automatically.
                 </div>
@@ -316,7 +316,7 @@
 
 
               <div class="buttons">
-                <button data-bind="click: connectNew, enable: canAddAnotherPlayer">
+                <button data-bind="click: joinPlayer_debug, enable: canAddAnotherPlayer">
                   Add a player (debug)
                 </button>
 

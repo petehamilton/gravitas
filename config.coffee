@@ -112,6 +112,10 @@ config =
     sarah: 'sarah'
     mark: 'mark'
 
+  # Length of countdown between a lobby room becoming full and the start of the game
+  ready_time_ms: 3000
+
+
 if exports?
   exports.config = config
 else

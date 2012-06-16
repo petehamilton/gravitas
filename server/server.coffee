@@ -34,29 +34,31 @@ clientRoomMapping = {}
 
 class Room
   constructor: ->
-    # Stores now client IDs
-    @players = [ null, null, null, null ]
-    @num_players = 0
+    # Stores nowjs clients (the User class, not the User#user namespace)
+    # We call them "client" througout this class to avoid confusion with User.user and our DB User
+    @clients = [ null, null, null, null ]
+    @num_clients = 0
 
-  addPlayer: (clientId) ->
+  getClients: ->
+    _.filter @clients, (c) -> c != null
+
+  addClient: (client) ->
     # TODO highlevel this with underscore
-    for cid, i in @players
-      if cid == null
-        @players[i] = clientId
-        @num_players++
-        return
+    for c, i in @clients when c == null
+      @clients[i] = client
+      @num_clients++
+      return
     throw new Error('room is full!')
 
-  removePlayer: (clientId) ->
-    for cid, i in @players
-      if cid == clientId
-        delete @players[clientId]
-        @num_players--
-        return
+  removeClient: (client) ->
+    for c, i in @clients when c == client
+      @clients[i] = null
+      @num_clients--
+      return
     throw new Error("room doesn't contain clientId #{clientId}!")
 
   full: ->
-    @num_players == @players.length
+    @num_clients == @clients.length
 
 
 # Creates a new room, adds it to the available rooms and returns the room ID
@@ -86,7 +88,7 @@ configureNow = (everyone) ->
     console.log "pong"
 
 
-  everyone.now.getUsers = (callback) ->
+  everyone.now.getClients = (callback) ->
     db.User.find {}, (err, docs) ->
       callback docs
 
@@ -131,11 +133,13 @@ configureNow = (everyone) ->
 
   everyone.now.assignRoom = (callback) ->
 
-    cid = @user.clientId
+    client = @
+    cid = client.user.clientId
 
     if (room_id = clientRoomMapping[cid])?
       # Client is already in a room
       log "user with clientId #{cid} is already in room id #{room_id}"
+      # Tell user that joining failed
       callback false
     else
       # Find suitable room for client
@@ -148,18 +152,25 @@ configureNow = (everyone) ->
       room_id = suitable_room_id or allocateNewRoom()
       room = rooms[room_id]
 
+      clients_in_room_before_join = room.getClients()
+
       log "putting user with clientID #{cid} into room id #{room_id}"
-      room.addPlayer cid
+      room.addClient client
       clientRoomMapping[cid] = room_id
       room_group = nowjs.getGroup "room-#{room_id}"
       room_group.addUser cid
 
+      # Tell user that joining was successful
       callback true, room_id
+
+      # Tell user about who is already in the room
+      for c in clients_in_room_before_join
+        @now.receivePlayerJoined c.user.user_model
 
       log "room_group", room_group
 
-      # Notify other players in the room of joined player
-      u = @user.user_model
+      # Notify other players in the room of joined user
+      u = client.user.user_model
       room_group.now.receivePlayerJoined
         # TODO put this "information for other users" into a user model method
         id: u._id
@@ -167,9 +178,15 @@ configureNow = (everyone) ->
         rating: u.rating
         avatarURL: u.avatarURL
 
-      # If room is full, start the game
+      # If room is full, tell everyone that the game will start soon and start it after some seconds
       if room.full()
-        room_group.now.receiveStartGame()
+        READY_TIME = config.ready_time_ms
+
+        # Notify that everyone is ready and that the game will start in READY_TIME ms
+        room_group.now.receiveRoomReady READY_TIME
+
+        # Start the game after READY_TIME ms
+        setTimeout room_group.now.receiveStartGame, READY_TIME
 
 
   everyone.now.leaveRoom = (callback) ->
