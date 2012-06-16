@@ -432,7 +432,7 @@ class @ArenaModel
               u_n_t = normal(normed target_segment.d)
 
               turret_position = config.player_centers[target_player.id]
-              turret_radius = config.shield_radius * player.health
+              turret_radius = config.shield_radius * target_player.health
 
               # Segment through the turret diameter, orthogonal to target segment
               turret_segment =
@@ -446,13 +446,8 @@ class @ArenaModel
 
               will_hit = intersection.intersects and intersection.point
 
-<<<<<<< HEAD
               # Tell other players that ball was shot and if it will hit another player
-              shot_callback ball, target_player.id
-=======
-            # Tell other players that ball was shot and if it will hit another player
-            shot_callback ball, target_player
->>>>>>> Made balls fade away when they collide with a person's shield
+              shot_callback ball, target_player
 
               if will_hit
                 # Hit
