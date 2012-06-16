@@ -49,7 +49,12 @@ configureNow = (everyone) ->
         # Simply allow them to call authenticate() again.
       else
         log "user #{u.username} authenticated"
-        # TODO send auth token
+
+        # Connect the nowjs user to the user in our database.
+        # This being set marks the user as authenticated.
+        # Authorization still needs to be done for every action!
+        @user.user_model = u
+
         callback { ok: true }
 
   everyone.now.getStats = (user, callback) ->
