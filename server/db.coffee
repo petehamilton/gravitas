@@ -42,16 +42,16 @@ setup = (callback) ->
   User.remove {}, (e) ->
     log "dropped all users"
 
-    for name, pw of config.default_users
-      log "inserting userCOFFEE2: #{name}"
+    for name, details of config.default_users
+      log "inserting user: #{name}"
       user = new User
         username: name
-        password: pw
-        avatarURL: "http://i.imgur.com/Ro38G.jpg"
+        password: details.pass
+        avatarURL: details.avatar
         timePlayed: 39603
         gamesWon: 31
         gamesPlayed: 70
-        rating: 1533
+        rating: (Math.floor(Math.random() * 3000)) + 1000
         achievements: [
           {id : 0, date : "12.03.2012"}
           {id : 1, date : "14.03.2012"}

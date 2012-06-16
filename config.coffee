@@ -105,12 +105,21 @@ config =
 
   # Default users with passwords
   default_users:
-    x: ''
-    niklas: 'niklas'
-    lukasz: 'lukasz'
-    peter: 'peter'
-    sarah: 'sarah'
-    mark: 'mark'
+    niklas:
+      pass:   'niklas'
+      avatar: 'https://dl.dropbox.com/u/5718548/gravitas_profiles/niklas.png'
+    lukasz:
+      pass:   'lukasz'
+      avatar: 'https://dl.dropbox.com/u/5718548/gravitas_profiles/lucas.png'
+    peter:
+      pass:   'peter'
+      avatar: 'https://dl.dropbox.com/u/5718548/gravitas_profiles/pete.png'
+    sarah:
+      pass:   'sarah'
+      avatar: 'https://dl.dropbox.com/u/5718548/gravitas_profiles/sarah.png'
+    mark:
+      pass:   'mark'
+      avatar: 'https://dl.dropbox.com/u/5718548/gravitas_profiles/mark.png'
 
   # Length of countdown between a lobby room becoming full and the start of the game
   ready_time_ms: 3000
