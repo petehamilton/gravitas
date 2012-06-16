@@ -42,6 +42,7 @@ class @Game
     @canAddAnotherPlayer = ko.computed => @connectedPlayers().length < 4
 
     @waitMessage = ko.observable 'Waiting for other players...'  # TODO add number for how many we're waiting
+    @countingDown = ko.observable false
 
     @lobbyMessageInput = ko.observable ''
     @lobbyMessages = ko.observableArray []
@@ -228,6 +229,7 @@ class @Game
   roomReady: (ready_time_ms) ->
     log "room is ready, starting in #{ready_time_ms / 1000} s"
 
+    @countingDown true
     @startCountdown Math.floor(ready_time_ms / 1000)
 
     # We don't have to do anything when the countdown finishes.

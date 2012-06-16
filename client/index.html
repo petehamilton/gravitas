@@ -289,7 +289,7 @@
               <div class="waiting-label">
                 <span class="spinner"></span>
                   <span data-bind="text: waitMessage">WAIT_MESSAGE</span>
-                <div class="autostart-label">
+                <div class="autostart-label" data-bind="fadeVisible: !countingDown()">
                   The game will start automatically.
                 </div>
               </div>
