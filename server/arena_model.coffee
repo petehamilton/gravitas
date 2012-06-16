@@ -426,73 +426,74 @@ class @ArenaModel
         for target_player in @players when target_player.id != player.id
           do (target_player) =>
             # TODO remove dup
+            if target_player.isAlive()
 
-            # Segment orthogonal to target segment, unit length
-            u_n_t = normal(normed target_segment.d)
+              # Segment orthogonal to target segment, unit length
+              u_n_t = normal(normed target_segment.d)
 
-            turret_position = config.player_centers[target_player.id]
-            turret_radius = config.shield_radius * player.health
+              turret_position = config.player_centers[target_player.id]
+              turret_radius = config.shield_radius * player.health
 
-            # Segment through the turret diameter, orthogonal to target segment
-            turret_segment =
-              s:
-                diff turret_position, (scale u_n_t, turret_radius)
-              d:
-                scale u_n_t, 2*turret_radius
+              # Segment through the turret diameter, orthogonal to target segment
+              turret_segment =
+                s:
+                  diff turret_position, (scale u_n_t, turret_radius)
+                d:
+                  scale u_n_t, 2*turret_radius
 
-            # Intersect
-            intersection = sect turret_segment, target_segment
+              # Intersect
+              intersection = sect turret_segment, target_segment
 
-            will_hit = intersection.intersects and intersection.point
+              will_hit = intersection.intersects and intersection.point
 
-            # Tell other players that ball was shot and if it will hit another player
-            shot_callback ball, target_player.id
+              # Tell other players that ball was shot and if it will hit another player
+              shot_callback ball, target_player.id
 
-            if will_hit
-              # Hit
-              log "will hit: player #{target_player.id}"
-              hit_a_player |= true
+              if will_hit
+                # Hit
+                log "will hit: player #{target_player.id}"
+                hit_a_player |= true
 
 
-              # Calculate impact point (where the center of the ball hits the turret radius)
-              r = turret_radius
-              d = length diff(intersection.point, turret_position)
-              m = Math.sqrt(r*r - d*d)
-              unit_inverse_target = normed(invert target_segment.d)
-              impact = sum intersection.point, scale(unit_inverse_target, m)
+                # Calculate impact point (where the center of the ball hits the turret radius)
+                r = turret_radius
+                d = length diff(intersection.point, turret_position)
+                m = Math.sqrt(r*r - d*d)
+                unit_inverse_target = normed(invert target_segment.d)
+                impact = sum intersection.point, scale(unit_inverse_target, m)
 
-              # TODO clean this up, don't hijack intersection
-              shadow_info =
-                ball: null
-                target_segment: target_segment
-                ball_segment: turret_segment
-                intersection:
-                  intersects: true
-                  point: impact
+                # TODO clean this up, don't hijack intersection
+                shadow_info =
+                  ball: null
+                  target_segment: target_segment
+                  ball_segment: turret_segment
+                  intersection:
+                    intersects: true
+                    point: impact
 
-              everyone.now.debug_receiveShadow shadow_info
+                everyone.now.debug_receiveShadow shadow_info
 
-              # Ball arrived at target; do damage
-              on_arrive_at_target = =>
-                log "ball hit into player #{target_player.id}"
+                # Ball arrived at target; do damage
+                on_arrive_at_target = =>
+                  log "ball hit into player #{target_player.id}"
 
-                # Decrease health
-                target_player.hit()
+                  # Decrease health
+                  target_player.hit()
 
-                hit_callback target_player
+                  hit_callback target_player
 
-                unless target_player.isAlive()
-                  everyone.now.receivePlayerDeath target_player.id
-                  @removeAllBallsFromPlayer target_player
+                  unless target_player.isAlive()
+                    everyone.now.receivePlayerDeath target_player.id
+                    @removeAllBallsFromPlayer target_player
 
-              ball.x = impact.x
-              ball.y = impact.y
-              everyone.now.receiveBallMoved ball, config.shoot_time_ms, ""
-              setTimeout on_arrive_at_target, config.shoot_time_ms
+                ball.x = impact.x
+                ball.y = impact.y
+                everyone.now.receiveBallMoved ball, config.shoot_time_ms, ""
+                setTimeout on_arrive_at_target, config.shoot_time_ms
 
-            else
-              # Not hit
-              log "not hit: player #{target_player.id}"
+              else
+                # Not hit
+                log "not hit: player #{target_player.id}"
 
         unless hit_a_player
           ball.x = target_point.x
