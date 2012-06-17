@@ -96,7 +96,7 @@ class Room
 
     room_now.startGravityGun = (player_id, x, y) ->
       log "Start Gun"
-      # TODO remove X, Y only allow pulling balls in line
+      # TODO remove X, Y, use model angle only
       player = arena.players[player_id]
 
       pullCallback = (pulled_ball) =>
