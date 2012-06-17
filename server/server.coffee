@@ -286,13 +286,26 @@ gameOver = ->
       else
         0
 
+  # Present new achievements
+  possible_achievements = [1,2,3,4,5,6] #TODO, get me from database
+  achievements = {}
+  for player in arena.players
+    achievements[player.id] = []
+    for achievement in possible_achievements
+      # TODO: Only if earned!
+      unless achievement not in player.achievements
+        # TODO: Give achievement to player
+
+        # Add achievement to list for client presentation
+        achievements[player.id].push achievement
+
   results = {}
   for player in arena.players
     results[player.id] =
       health: player.health
       outcome: outcomes[player.id]
       points_scored: []
-      acheivements_gained: []
+      acheivements_gained: acheivements[player.id]
 
   return results
 
