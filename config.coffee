@@ -125,6 +125,9 @@ config =
     mark:
       pass:   'mark'
       avatar: 'https://dl.dropbox.com/u/5718548/gravitas_profiles/mark.png'
+    x:
+      pass:   'x'
+      avatar: 'http://amix.dk/uploads/coffeescript.jpg'
 
   # Length of countdown between a lobby room becoming full and the start of the game
   ready_time_ms: 3000
