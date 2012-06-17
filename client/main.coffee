@@ -147,12 +147,12 @@ main = ->
 
     setupDevLog()
 
-    # Refresh page if server is unreachable for 3 seconds
+    # Refresh page if server is unreachable for 5 seconds
     setInterval =>
-      kill_timeout = setTimeout (=> window.location.reload()), 3000
+      kill_timeout = setTimeout (=> alert 'you might want to refresh'), 5000
       now.pingServer =>
         clearTimeout kill_timeout
-    , 3000
+    , 5000
 
   # Debugging global variables
   @a = arena

@@ -385,7 +385,7 @@ configureNow = (everyone) ->
 
   everyone.now.pingServer = (callback) ->
     console.log "pong"
-    callback?()
+    setTimeout (=> callback?()), 500
 
 
   everyone.now.getClients = (callback) ->
