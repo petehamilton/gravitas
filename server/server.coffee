@@ -42,6 +42,11 @@ class Room
   getClients: ->
     _.filter @_clients, (c) -> c != null
 
+  getClientIndex: (client) ->
+    for c, i in @_clients when c == client
+      return i
+    throw new Error("room doesn't contain clientId #{clientId}!")
+
   addClient: (client) ->
     # TODO highlevel this with underscore
     for c, i in @_clients when c == null
@@ -51,11 +56,9 @@ class Room
     throw new Error('room is full!')
 
   removeClient: (client) ->
-    for c, i in @_clients when c == client
-      @_clients[i] = null
-      @_num_clients--
-      return
-    throw new Error("room doesn't contain clientId #{clientId}!")
+    i = @getClientIndex client
+    @_clients[i] = null
+    @_num_clients--
 
   full: ->
     @_num_clients == @_clients.length
