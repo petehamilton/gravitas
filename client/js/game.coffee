@@ -11,7 +11,7 @@ hashToLogin =
 class @Game
   constructor: (@arena, @statsPaper, @player, @server) ->
 
-    @debugMode = ko.observable true
+    @debugMode = ko.observable false
 
     # Automatic log-in / start
     @autoLogIn = makeCookieObservable 'autoLogIn'
