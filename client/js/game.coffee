@@ -476,6 +476,6 @@ class @Game
       when DRAW then "GAME OVER\nCongratulations you tied"
       when WIN then "GAME OVER\nCongratulations you won"
 
-    @displayMessage(@getPlayerId(), message, 'fadeOut')
+    @displayMessage(@getPlayerId(), message)
 
 
