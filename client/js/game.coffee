@@ -508,11 +508,11 @@ class @Game
     @displayMessage(@getPlayerId(), message)
 
     setTimeout () =>
-      log "ENDING GAME"
       @assembly false
       @gameStarted false
       @resetAssemblyVariables()
       @getStats()
+      @assemblyContent('summary')
     , config.post_game_wait
 
 

@@ -211,9 +211,13 @@ class Room
     # Gather results
     results = {}
     for player in arena.players
+      user = @_clients[player.id].user.user_model
+
       results[player.id] =
         health: player.health
         outcome: outcomes[player.id]
+        avatarURL: user.avatarURL
+        rating: new_ratings[player.id]
         rating_change: ratings[player.id] - new_ratings[player.id]
         achievements_gained: achievements[player.id]
 
@@ -227,7 +231,7 @@ class Room
       user.timePlayed_s += play_time_s
 
       # Rating
-      user.rating += rating_changes
+      user.rating = new_ratings[pid]
 
       # Played games
       user.gamesPlayed++
