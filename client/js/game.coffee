@@ -10,6 +10,9 @@ hashToLogin =
 
 class @Game
   constructor: (@arena, @statsPaper, @player, @server) ->
+
+    @debugMode = ko.observable true
+
     # Automatic log-in / start
     @autoLogIn = makeCookieObservable 'autoLogIn'
     @autoStart = makeCookieObservable 'autoStart'
@@ -113,6 +116,10 @@ class @Game
     switch num
       when 1, 2, 3, 4
         @player(num-1)
+
+  debugKeyPressed: ->
+    log "Debug Mode " + (if @debugMode() then "Off" else "On")
+    @debugMode !@debugMode()
 
   enterKeyPressed: ->
     if @lobbyVisible()
@@ -474,10 +481,11 @@ class @Game
 
 
   debugShadow: (shadow_info) ->
-    # TODO make a switch to disable this
-    log "shadowInfo", shadow_info
-    if shadow_info
-      @arena.displayShadow shadow_info
+    if @debugMode()
+      # TODO make a switch to disable this
+      log "shadowInfo", shadow_info
+      if shadow_info
+        @arena.displayShadow shadow_info
 
 
   ballInTurret: (ball_model) ->
