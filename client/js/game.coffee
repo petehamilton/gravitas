@@ -1,5 +1,13 @@
 ARENA_SIZE = config.arena_size
 
+hashToLogin =
+  '#sarah': 'sarah'
+  '#lukasz': 'lukasz'
+  '#niklas': 'niklas'
+  '#peter': 'peter'
+  '': ''
+
+
 class @Game
   constructor: (@arena, @statsPaper, @player, @server) ->
     # Automatic log-in / start
@@ -16,6 +24,7 @@ class @Game
     @loggedIn = ko.observable @autoLogIn()
     @gameStarted = ko.observable @autoStart()
     @assembly = ko.observable false
+    @userId = ko.observable null
 
     @lobbyVisible = ko.computed => !@gameStarted() and @loggedIn() and !@assembly()
     @assemblyVisible = ko.computed => !@gameStarted() and @loggedIn() and @assembly()
@@ -25,8 +34,8 @@ class @Game
    # @assemblyContent = ko.observable 'summary'
 
     # Authentication
-    @username = ko.observable 'lukasz'
-    @password = ko.observable 'lukasz'
+    @username = ko.observable hashToLogin[document.location.hash]
+    @password = ko.observable hashToLogin[document.location.hash]
     @authFailed = ko.observable false
     @logInButtonText = ko.computed =>
       if @authFailed() then 'Auth failed' else 'Log In'
@@ -126,10 +135,11 @@ class @Game
 
 
   logIn: =>
-    @server.authenticate @username(), @password(), (res) =>
-      log res
-      if res.ok
+    @server.authenticate @username(), @password(), (ok, user_id) =>
+      log "login response: ok: #{ok}, user_id: #{user_id}"
+      if ok
         log "login successful"
+        @userId user_id
         @getStats()
         @loggedIn true
         @playButtonFocus true
@@ -245,9 +255,17 @@ class @Game
     # The server will call startGame().
 
 
-  startGame: =>
+  startGame: (userIdToPlayerIdMapping) =>
     log "starting game"
+    log "user to player mapping", userIdToPlayerIdMapping
+
+    # Tell the user which turret he has
+    player_id = userIdToPlayerIdMapping[@userId()]
+    @player player_id
+
+    # Start the game
     @gameStarted true
+    @arena.start()
 
 
   pingServer: =>

@@ -340,7 +340,7 @@ class @ArenaModel
   # pull_callback : passed (pulled_ball, target_x, target_y), called once
   #                 coords calculated
   #
-  pull: (player, x, y, everyone, pull_callback, valid_pull_callback, invalid_pull_callback) ->
+  pull: (player, x, y, room_now, pull_callback, valid_pull_callback, invalid_pull_callback) ->
     if @game_play
       # Find the balls that were selected by the pull
       r = config.pull_radius
@@ -358,7 +358,7 @@ class @ArenaModel
         is_powerup = ball.type.kind == config.ball_kinds.powerup
 
         shadow_info = @shadowed player.id, ball
-        everyone.now.debug_receiveShadow shadow_info
+        room_now.debug_receiveShadow shadow_info
 
         if s = shadow_info.ball
           log "player #{player} tried to pull ball #{ball.id} at #{[ball.x, ball.y]}
@@ -398,7 +398,7 @@ class @ArenaModel
   # 2. Calculates the target x and y coordinates
   # 3. Deletes the ball from the player's balls
   # 4. Calls the callback function, passing it the ball model and target coords
-  shoot: (player, everyone, shot_callback, hit_callback) ->
+  shoot: (player, room_now, shot_callback, hit_callback) ->
 
     if @game_play
       angle = player.turret_angle
@@ -471,7 +471,7 @@ class @ArenaModel
                     intersects: true
                     point: impact
 
-                everyone.now.debug_receiveShadow shadow_info
+                room_now.debug_receiveShadow shadow_info
 
                 # Ball arrived at target; do damage
                 on_arrive_at_target = =>
@@ -483,12 +483,12 @@ class @ArenaModel
                   hit_callback(ball, target_player)
 
                   unless target_player.isAlive()
-                    everyone.now.receivePlayerDeath target_player.id
+                    room_now.receivePlayerDeath target_player.id
                     @removeAllBallsFromPlayer target_player
 
                 ball.x = impact.x
                 ball.y = impact.y
-                everyone.now.receiveBallMoved ball, config.shoot_time_ms, '<>'
+                room_now.receiveBallMoved ball, config.shoot_time_ms, '<>'
                 setTimeout on_arrive_at_target, config.shoot_time_ms
 
               else
@@ -498,7 +498,7 @@ class @ArenaModel
         unless hit_a_player
           ball.x = target_point.x
           ball.y = target_point.y
-          everyone.now.receiveBallMoved ball, config.shoot_time_ms, ""
+          room_now.receiveBallMoved ball, config.shoot_time_ms, ""
 
 
   removeAllBallsFromPlayer: (player) ->

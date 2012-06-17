@@ -1,6 +1,7 @@
 http = require 'http'
 express = require 'express'
 nowjs = require 'now'
+assert = require 'assert'
 _ = require './lib/underscore'
 arena_model = require './arena_model'
 pbm = require './ball_model'
@@ -20,7 +21,6 @@ ARENA_SIZE = config.arena_size
 
 # Global Variables
 
-arena = new arena_model.ArenaModel()
 everyone = null
 
 connected = false
@@ -35,29 +35,197 @@ class Room
   constructor: ->
     # Stores nowjs clients (the User class, not the User#user namespace)
     # We call them "client" througout this class to avoid confusion with User.user and our DB User
-    @clients = [ null, null, null, null ]
-    @num_clients = 0
+    @_clients = [ null, null, null, null ]
+    @_num_clients = 0
+    # @arena = null
 
   getClients: ->
-    _.filter @clients, (c) -> c != null
+    _.filter @_clients, (c) -> c != null
 
   addClient: (client) ->
     # TODO highlevel this with underscore
-    for c, i in @clients when c == null
-      @clients[i] = client
-      @num_clients++
+    for c, i in @_clients when c == null
+      @_clients[i] = client
+      @_num_clients++
       return
     throw new Error('room is full!')
 
   removeClient: (client) ->
-    for c, i in @clients when c == client
-      @clients[i] = null
-      @num_clients--
+    for c, i in @_clients when c == client
+      @_clients[i] = null
+      @_num_clients--
       return
     throw new Error("room doesn't contain clientId #{clientId}!")
 
   full: ->
-    @num_clients == @clients.length
+    @_num_clients == @_clients.length
+
+
+  # TODO Pull out the network stuff
+  startArena: (room_group, userIdToPlayerIdMapping) ->
+    # @arena = new arena_model.ArenaModel()
+    arena = new arena_model.ArenaModel()
+
+    room_now = room_group.now
+    assert.ok(room_now, "room_now is not defined")
+
+    @setupArenaRpcs arena, room_now
+
+    log "telling clients of room #{room_group.groupName} to start game with player mapping", JSON.stringify(userIdToPlayerIdMapping)
+
+    room_group.now.receiveStartGame userIdToPlayerIdMapping
+
+    # Send initial ball positions
+    # TODO send other initial game data?
+    room_now.receiveBallsMoved arena.balls
+
+    @startTimers arena, room_now
+
+
+  setupArenaRpcs: (arena, room_now) ->
+    ### ARENA RPCS ###
+
+    room_now.setAngle = (player_id, angle) ->
+      arena.setAngle player_id, angle
+      room_now.receiveAngle(player_id, angle)
+
+
+    room_now.usePlayerModels = (callback) ->
+      callback arena.players
+
+
+    room_now.startGravityGun = (player_id, x, y) ->
+      log "Start Gun"
+      # TODO remove X, Y only allow pulling balls in line
+      player = arena.players[player_id]
+
+      pullCallback = (pulled_ball) =>
+        activateCallback = (powerup_type) =>
+          room_now.receiveActivatePowerup(player_id, powerup_type)
+
+        deactivateCallback = =>
+          player.powerup = null
+          room_now.receiveDeactivatePowerup(player_id)
+
+
+        room_now.receiveBallMoved pulled_ball, config.pull_time_ms, '<>'
+        setTimeout () => # Ball now in turret
+          room_now.receiveBallInTurret(pulled_ball)
+          if pulled_ball.type.kind == config.ball_kinds.powerup
+            arena.setPowerup(player, pulled_ball.type.powerup_kind, activateCallback, deactivateCallback)
+            fadeOut = true
+            room_now.receiveMessage player.id, pulled_ball.type.powerup_message, fadeOut
+
+        , config.pull_time_ms
+
+      arena.pull(
+        player,
+        x,
+        y,
+        room_now,  # TODO don't do this, use some debug object
+        pullCallback,
+        => room_now.receiveValidPull(player.id),
+        => room_now.receiveInvalidPull(player.id),
+      )
+
+
+    room_now.stopGravityGun = (player_id) ->
+      player = arena.players[player_id]
+      arena.shoot(
+        player
+        room_now
+        (shot_ball, hit_player) => room_now.receiveShot player.id, shot_ball, hit_player.id
+        (shot_ball, hit_player) =>
+          room_now.receiveHealth hit_player.id, hit_player.health
+          room_now.receiveRemoveBall shot_ball
+      )
+
+
+    room_now.usePowerup = (player_id) ->
+      arena.usePowerup arena.players[player_id]
+
+
+
+  gameOver: (arena, room_now) ->
+    healths = (p.health for p in arena.players)
+    max_health = Math.max healths...
+    max_healths = (h for h in healths when h == max_health)
+    draw = max_healths.length > 1
+
+    log "DRAW?", max_health, max_healths, draw
+
+    # Outcomes are 0=lose, 1=draw, 2=win
+    outcomes = {}
+    for player in arena.players
+      outcomes[player.id] =
+        if player.health == max_health
+          if draw then 1 else 2
+        else
+          0
+
+    # Present new achievements
+    possible_achievements = [1,2,3,4,5,6] #TODO, get me from database
+    achievements = {}
+    for player in arena.players
+      achievements[player.id] = []
+      for achievement in possible_achievements
+        # TODO: Only if earned!
+        unless achievement not in player.achievements
+          # TODO: Give achievement to player
+
+          # Add achievement to list for client presentation
+          achievements[player.id].push achievement
+
+    results = {}
+    for player in arena.players
+      results[player.id] =
+        health: player.health
+        outcome: outcomes[player.id]
+        points_scored: []
+        acheivements_gained: acheivements[player.id]
+
+    return results
+
+
+  # Start the intervals which control ball rotation and the clock
+  startTimers: (arena, room_now) ->
+    # Ball Triangle Rotations
+    @balls_to_delete = []
+    ball_rotation = setInterval () =>
+      arena.rotateTriangles(ARENA_SIZE, arena.ball_positions)
+      if connected
+        room_now.receiveBallsMoved(arena.balls, config.rotation_time, 'backOut')
+
+        # TODO: Clean me, use .includes? or something
+        for b_id in arena.balls_to_delete
+          i = 0
+          for b in arena.balls
+            if b and b.id == b_id
+              room_now.receiveRemoveBall(b)
+              arena.balls.splice i, 1
+            else
+              i += 1
+
+        @balls_to_delete = []
+    , config.rotation_interval
+
+    # Arena clock time
+    seconds = config.game_time
+    clock = setInterval () =>
+      if connected
+        room_now.receiveClock --seconds
+
+      if seconds == 0 or arena.aliveCount() <= 1
+        clearInterval clock
+        clearInterval ball_rotation
+        results = @gameOver arena, room_now
+        room_now.receiveGameOver results
+
+
+
+    , config.clock_interval
+
+
 
 
 # Creates a new room, adds it to the available rooms and returns the room ID
@@ -75,13 +243,33 @@ getSuitableRoom = ->
   null
 
 
+startRoomGame = (room, room_group) ->
+  userIdToPlayerIdMapping = {}
+  playerIdToUserIdMapping = {}
+
+  clients = room.getClients()
+  assert.ok(clients.length == 4, "game started with != 4 players")
+
+  for c, pid in room.getClients()
+    u = c.user.user_model
+    assert.ok(u, "user model is defined when starting game")
+    playerIdToUserIdMapping[pid] = u._id
+    userIdToPlayerIdMapping[u._id] = pid
+
+  # Start a new game for these players
+  room.startArena room_group, userIdToPlayerIdMapping
+
+
 configureNow = (everyone) ->
 
   nowjs.on 'connect', ->
     console.log "client #{@user.clientId} connected"
-    everyone.now.receiveBallsMoved arena.balls
+    # TODO check this
+    # everyone.now.receiveBallsMoved arena.balls
     connected = true
 
+
+  ### GLOBAL RPCS ###
 
   everyone.now.pingServer = ->
     console.log "pong"
@@ -95,7 +283,7 @@ configureNow = (everyone) ->
   everyone.now.authenticate = (user, pw, callback) ->
     db.User.findOne { username: user, password: pw }, (err, u) =>
       if err or not u
-        callback { ok: false }
+        callback false
         # Don't disconnect the user (@socket.disconnect())
         # Simply allow them to call authenticate() again.
       else
@@ -107,7 +295,7 @@ configureNow = (everyone) ->
         # TODO do the authorization
         @user.user_model = u
 
-        callback { ok: true }
+        callback true, u._id
 
   everyone.now.getStats = (user, callback) ->
     db.User.findOne { username: user }, (err, u) ->
@@ -185,7 +373,7 @@ configureNow = (everyone) ->
         room_group.now.receiveRoomReady READY_TIME
 
         # Start the game after READY_TIME ms
-        setTimeout room_group.now.receiveStartGame, READY_TIME
+        setTimeout (=> startRoomGame room, room_group), READY_TIME
 
 
   everyone.now.leaveRoom = (callback) ->
@@ -204,63 +392,7 @@ configureNow = (everyone) ->
       room_group.now.receiveRoomChat username, msg
 
 
-  everyone.now.setAngle = (player_id, angle) ->
-    arena.setAngle player_id, angle
-    everyone.now.receiveAngle(player_id, angle)
 
-  everyone.now.usePlayerModels = (callback) ->
-    callback arena.players
-
-
-  everyone.now.startGravityGun = (player_id, x, y) ->
-    log "Start Gun"
-    # TODO remove X, Y only allow pulling balls in line
-    player = arena.players[player_id]
-
-    pullCallback = (pulled_ball) =>
-      activateCallback = (powerup_type) =>
-        everyone.now.receiveActivatePowerup(player_id, powerup_type)
-
-      deactivateCallback = =>
-        player.powerup = null
-        everyone.now.receiveDeactivatePowerup(player_id)
-
-
-      everyone.now.receiveBallMoved pulled_ball, config.pull_time_ms, '<>'
-      setTimeout () => # Ball now in turret
-        everyone.now.receiveBallInTurret(pulled_ball)
-        if pulled_ball.type.kind == config.ball_kinds.powerup
-          arena.setPowerup(player, pulled_ball.type.powerup_kind, activateCallback, deactivateCallback)
-          fadeOut = true
-          everyone.now.receiveMessage player.id, pulled_ball.type.powerup_message, fadeOut
-
-      , config.pull_time_ms
-
-    arena.pull(
-      player,
-      x,
-      y,
-      everyone,  # TODO don't do this, use some debug object
-      pullCallback,
-      => everyone.now.receiveValidPull(player.id),
-      => everyone.now.receiveInvalidPull(player.id),
-    )
-
-
-  everyone.now.stopGravityGun = (player_id) ->
-    player = arena.players[player_id]
-    arena.shoot(
-      player
-      everyone
-      (shot_ball, hit_player) => everyone.now.receiveShot player.id, shot_ball, hit_player.id
-      (shot_ball, hit_player) =>
-        everyone.now.receiveHealth hit_player.id, hit_player.health
-        everyone.now.receiveRemoveBall shot_ball
-    )
-
-
-  everyone.now.usePowerup = (player_id) ->
-    arena.usePowerup arena.players[player_id]
 
 
 createApp = ->
@@ -268,82 +400,6 @@ createApp = ->
   app.configure -> app.use express.bodyParser()
   app.listen PORT, ADDRESS
   app
-
-gameOver = ->
-  healths = (p.health for p in arena.players)
-  max_health = Math.max healths...
-  max_healths = (h for h in healths when h == max_health)
-  draw = max_healths.length > 1
-
-  log "DRAW?", max_health, max_healths, draw
-
-  # Outcomes are 0=lose, 1=draw, 2=win
-  outcomes = {}
-  for player in arena.players
-    outcomes[player.id] =
-      if player.health == max_health
-        if draw then 1 else 2
-      else
-        0
-
-  # Present new achievements
-  possible_achievements = [1,2,3,4,5,6] #TODO, get me from database
-  achievements = {}
-  for player in arena.players
-    achievements[player.id] = []
-    for achievement in possible_achievements
-      # TODO: Only if earned!
-      unless achievement not in player.achievements
-        # TODO: Give achievement to player
-
-        # Add achievement to list for client presentation
-        achievements[player.id].push achievement
-
-  results = {}
-  for player in arena.players
-    results[player.id] =
-      health: player.health
-      outcome: outcomes[player.id]
-      points_scored: []
-      acheivements_gained: acheivements[player.id]
-
-  return results
-
-
-# Start the intervals which control ball rotation and the clock
-startTimers = ->
-  # Ball Triangle Rotations
-  @balls_to_delete = []
-  ball_rotation = setInterval () =>
-    arena.rotateTriangles(ARENA_SIZE, arena.ball_positions)
-    if connected
-      everyone.now.receiveBallsMoved(arena.balls, config.rotation_time, 'backOut')
-
-      # TODO: Clean me, use .includes? or something
-      for b_id in arena.balls_to_delete
-        i = 0
-        for b in arena.balls
-          if b and b.id == b_id
-            everyone.now.receiveRemoveBall(b)
-            arena.balls.splice i, 1
-          else
-            i += 1
-
-      @balls_to_delete = []
-  , config.rotation_interval
-
-  # Arena clock time
-  seconds = config.game_time
-  clock = setInterval () =>
-    if connected
-      everyone.now.receiveClock --seconds
-
-    if seconds == 0 or arena.aliveCount() <= 1
-      clearInterval clock
-      clearInterval ball_rotation
-      everyone.now.receiveGameOver gameOver()
-
-  , config.clock_interval
 
 
 run = ->
@@ -354,7 +410,5 @@ run = ->
 
   everyone = nowjs.initialize(app, { socketio: {'browser client minification': true} })
   configureNow everyone
-
-  startTimers()
 
 run()

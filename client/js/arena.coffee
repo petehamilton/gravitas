@@ -4,11 +4,18 @@ class @Arena
     @clock = new CountdownTimer(@paper, 215, 70)
 
   setGame: (@game) ->
+    # NOOP
+
+  # Called when a battle start
+  start: ->
+    assert(@game, "game is not set on Arena.start")
+
     makeTurrets = (player_models) =>
       log "Creating turrets"
       @turrets = (new Turret(@paper, player) for player in player_models)
 
     @game.usePlayerModels(makeTurrets)
+
 
   # Gets server side player models
   getPlayerModels: ->
