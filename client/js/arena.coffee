@@ -16,6 +16,9 @@ class @Arena
 
     @game.usePlayerModels(makeTurrets)
 
+  resetPaper:  ->
+    log "Resetting arena paper"
+    @paper.clear()
 
   # Gets server side player models
   getPlayerModels: ->

@@ -517,6 +517,7 @@ class @Game
       @assembly false
       @gameStarted false
       @resetAssemblyVariables()
+      @arena.resetPaper()
 
       # Refresh profile data
       @getStats()
