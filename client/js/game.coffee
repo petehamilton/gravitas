@@ -507,9 +507,9 @@ class @Game
 
     # Display message
     message = switch result.outcome
-      when LOSS then "GAME OVER\nSorry you lost\nBetter luck next time"
-      when DRAW then "GAME OVER\nCongratulations you tied"
-      when WIN then "GAME OVER\nCongratulations you won"
+      when LOSS then "GAME OVER\nOh blast you lost!\nBetter luck next time."
+      when DRAW then "GAME OVER\nHmmm, you tied."
+      when WIN then "GAME OVER\nJolly good!\nYou won."
 
     @displayMessage(@getPlayerId(), message)
 
