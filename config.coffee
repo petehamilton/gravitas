@@ -95,6 +95,11 @@ config =
   survivable_hits: 6
   hit_damage: 0.1
 
+  outcome:
+    win: 0
+    loss: 1
+    draw: 2
+
   player_colours:
     0: "#00a2ff"
     1: "#72ff00"

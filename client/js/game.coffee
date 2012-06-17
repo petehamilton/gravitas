@@ -467,15 +467,15 @@ class @Game
 
     result = results[@getPlayerId()]
 
-    log result, result.outcome
+    log "game result:", result
+
+    { win: WIN, loss: LOSS, draw: DRAW } = config.outcome
 
     # Display message
     message = switch result.outcome
-      when 0 then "GAME OVER\nSorry you lost\nBetter luck next time"
-      when 1 then "GAME OVER\nCongratulations you tied"
-      when 2 then "GAME OVER\nCongratulations you won"
-
-    log message
+      when LOSS then "GAME OVER\nSorry you lost\nBetter luck next time"
+      when DRAW then "GAME OVER\nCongratulations you tied"
+      when WIN then "GAME OVER\nCongratulations you won"
 
     @displayMessage(@getPlayerId(), message, 'fadeOut')
 

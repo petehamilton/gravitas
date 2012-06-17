@@ -148,18 +148,18 @@ class Room
 
   gameOver: (arena, room_now) ->
     healths = (p.health for p in arena.players)
-    max_health = Math.max healths...
-    max_healths = (h for h in healths when h == max_health)
-    draw = max_healths.length > 1
+    winner_health = Math.max healths...
+    draw = (h for h in healths when h == winner_health).length > 1
 
-    # Outcomes are 0=lose, 1=draw, 2=win
+    { win: WIN, loss: LOSS, draw: DRAW } = config.outcome
+
     outcomes = {}
     for player in arena.players
       outcomes[player.id] =
-        if player.health == max_health
-          if draw then 1 else 2
+        if player.health == winner_health
+          if draw then DRAW else WIN
         else
-          0
+          LOSS
 
     # Present new achievements
     possible_achievements = [1,2,3,4,5,6] #TODO, get me from database
