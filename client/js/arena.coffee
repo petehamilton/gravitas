@@ -9,13 +9,12 @@ class @Arena
   start: ->
     assert(@game, "game is not set on Arena.start")
 
-    @crosshair = new Crosshair(paper)
-    @clock = new CountdownTimer(@paper, 215, 70)
-
     makeTurrets = (player_models) =>
       log "Creating turrets"
       @turrets = (new Turret(@paper, player) for player in player_models)
 
+    @crosshair = new Crosshair(@paper)
+    @clock = new CountdownTimer(@paper, 215, 70)
     @game.usePlayerModels(makeTurrets)
 
   resetPaper:  ->
