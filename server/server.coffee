@@ -169,12 +169,18 @@ class Room
     { win: WIN, loss: LOSS, draw: DRAW } = config.outcome
 
     outcomes = {}
+    places = {}
+
+    place = 1
     for player in arena.players
       outcomes[player.id] =
         if player.health == winner_health
           if draw then DRAW else WIN
         else
           LOSS
+
+      places[player.id] = if player.health == winner_health then 1 else place
+      place += 1
 
     # Present new achievements
     possible_achievements = [1,2,3,4,5,6] #TODO, get me from database
@@ -218,6 +224,7 @@ class Room
         username: user.username
         health: player.health
         outcome: outcomes[player.id]
+        place: places[player.id]
         avatarURL: user.avatarURL
         rating: new_ratings[player.id]
         rating_change: ratings[player.id] - new_ratings[player.id]
