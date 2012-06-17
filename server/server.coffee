@@ -31,6 +31,40 @@ rooms = {}
 next_room_id = 0
 
 
+
+removeFromRoom = (client, callback) ->
+  cid = client.user.clientId
+
+  # If the client is in a room, client.user.room_group is set to the corresponding group.
+
+  unless client.user.room_group?
+    # Client is not in a room
+    log "user with clientId #{cid} is not in a room, so they cannot leave"
+    # Tell user that leaving failed
+    callback false
+  else
+    # Client is in a room
+    { room, room_group } = client.user
+
+    log "user with clientId #{cid} is leaving room group #{room_group.groupName}"
+
+    # Remove user from room
+    room.removeClient client
+    room_group.removeUser cid
+    delete client.user.room
+    delete client.user.room_group
+
+    # Tell user that leaving was successful
+    callback true
+
+    u = client.user.user_model
+    # Tell the other room members that the user left
+    room_group.now.receivePlayerLeft
+      # TODO put this "information for other users" into a user model method
+      id: u._id
+
+
+
 class Room
   constructor: ->
     # Stores nowjs clients (the User class, not the User#user namespace)
@@ -227,7 +261,7 @@ class Room
         place: places[player.id]
         avatarURL: user.avatarURL
         rating: new_ratings[player.id]
-        rating_change: new_ratings[player.id] - ratings[player.id] 
+        rating_change: new_ratings[player.id] - ratings[player.id]
         achievements_gained: achievements[player.id]
 
 
@@ -289,11 +323,12 @@ class Room
         results = @gameOver arena, room_now, play_time_s
         room_now.receiveGameOver results
 
-
+        # Remove all players from the room so that they can join another one
+        for player in arena.players
+          client = @_clients[player.id]
+          removeFromRoom client, (ok) => assert.ok(ok, "client should be removed after game")
 
     , config.clock_interval
-
-
 
 
 # Creates a new room, adds it to the available rooms and returns the room ID
@@ -326,38 +361,6 @@ startRoomGame = (room, room_group) ->
 
   # Start a new game for these players
   room.startArena room_group, userIdToPlayerIdMapping
-
-
-removeFromRoom = (client, callback) ->
-  cid = client.user.clientId
-
-  # If the client is in a room, client.user.room_group is set to the corresponding group.
-
-  unless client.user.room_group?
-    # Client is not in a room
-    log "user with clientId #{cid} is not in a room, so they cannot leave"
-    # Tell user that leaving failed
-    callback false
-  else
-    # Client is in a room
-    { room, room_group } = client.user
-
-    log "user with clientId #{cid} is leaving room group #{room_group.groupName}"
-
-    # Remove user from room
-    room.removeClient client
-    room_group.removeUser cid
-    delete client.user.room
-    delete client.user.room_group
-
-    # Tell user that leaving was successful
-    callback true
-
-    u = client.user.user_model
-    # Tell the other room members that the user left
-    room_group.now.receivePlayerLeft
-      # TODO put this "information for other users" into a user model method
-      id: u._id
 
 
 configureNow = (everyone) ->
