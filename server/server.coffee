@@ -285,6 +285,38 @@ startRoomGame = (room, room_group) ->
   room.startArena room_group, userIdToPlayerIdMapping
 
 
+removeFromRoom = (client, callback) ->
+  cid = client.user.clientId
+
+  # If the client is in a room, client.user.room_group is set to the corresponding group.
+
+  unless client.user.room_group?
+    # Client is not in a room
+    log "user with clientId #{cid} is not in a room, so they cannot leave"
+    # Tell user that leaving failed
+    callback false
+  else
+    # Client is in a room
+    { room, room_group } = client.user
+
+    log "user with clientId #{cid} is leaving room group #{room_group.groupName}"
+
+    # Remove user from room
+    room.removeClient client
+    room_group.removeUser cid
+    delete client.user.room
+    delete client.user.room_group
+
+    # Tell user that leaving was successful
+    callback true
+
+    u = client.user.user_model
+    # Tell the other room members that the user left
+    room_group.now.receivePlayerLeft
+      # TODO put this "information for other users" into a user model method
+      id: u._id
+
+
 configureNow = (everyone) ->
 
   nowjs.on 'connect', ->
@@ -402,38 +434,7 @@ configureNow = (everyone) ->
 
 
   everyone.now.leaveRoom = (callback) ->
-
-    client = @
-    cid = client.user.clientId
-
-    # If the client is in a room, client.user.room_group is set to the corresponding group.
-
-    unless client.user.room_group?
-      # Client is not in a room
-      log "user with clientId #{cid} is not in a room, so they cannot leave"
-      # Tell user that leaving failed
-      callback false
-    else
-      # Client is in a room
-      { room, room_group } = client.user
-
-      log "user with clientId #{cid} is leaving room group #{room_group.groupName}"
-
-      # Remove user from room
-      room.removeClient client
-      room_group.removeUser cid
-      delete client.user.room
-      delete client.user.room_group
-
-      # Tell user that leaving was successful
-      callback true
-
-      u = client.user.user_model
-      # Tell the other room members that the user left
-      room_group.now.receivePlayerLeft
-        # TODO put this "information for other users" into a user model method
-        id: u._id
-
+    removeFromRoom @, callback
 
 
   everyone.now.sendChatToRoom = (msg) ->
