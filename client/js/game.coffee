@@ -206,14 +206,24 @@ class @Game
 
 
   assemblyClick: =>
-    @assembly true
     @withServer =>
       @server.assignRoom (ok, room_id) =>
         log "server assigned us to room #{room_id}"
+        if ok
+          @assembly true
+        else
+          # TODO graphical errors
+          log "server did not assign us a room"
 
 
   assemblyExitClick: =>
-    @assembly false
+    @withServer =>
+      @server.leaveRoom (ok) =>
+        if ok
+          log "left room"
+          @assembly false
+        else
+          log "server did not allow us leaving a room"
 
 
   lobbyPostChat: ->
@@ -273,16 +283,27 @@ class @Game
 
   playerJoined: (user) ->
     log "player joined", user
-    @connectedPlayers.push new connectedPlayer(user.username, user.rating, user.avatarURL)
+    { id, username, rating, avatarURL } = user
+    @connectedPlayers.push new connectedPlayer(id, username, rating, avatarURL)
+
+
+  playerLeft: (user) ->
+    log "player left", user
+    { id } = user
+    # Remove user from list
+    @connectedPlayers.remove (p) -> p.id == id
+
+    # TODO reset all assembly-related observables
 
 
   joinPlayer_debug: ->
-    @connectedPlayers.push new connectedPlayer("fake player", 6668, '/images/ui/placeholder.jpg')
+    @connectedPlayers.push new connectedPlayer('fake id', "fake player", 6668, '/images/ui/placeholder.jpg')
 
 
   # TODO check why this is created with new but not a class
   #Data structure to hold connected players
-  connectedPlayer = (username, rating, avatarURL) ->
+  connectedPlayer = (id, username, rating, avatarURL) ->
+    @id = id
     @username = username
     @rating = rating
     @avatarURL = avatarURL

@@ -35,6 +35,7 @@ class Room
   constructor: ->
     # Stores nowjs clients (the User class, not the User#user namespace)
     # We call them "client" througout this class to avoid confusion with User.user and our DB User
+    # Note that "client" instances are not the same objects across calls!
     @_clients = [ null, null, null, null ]
     @_num_clients = 0
     # @arena = null
@@ -43,11 +44,13 @@ class Room
     _.filter @_clients, (c) -> c != null
 
   getClientIndex: (client) ->
-    for c, i in @_clients when c == client
+    # Note that "client" instances are not the same objects across calls!
+    for c, i in @_clients when c.user.clientId == client.user.clientId
       return i
-    throw new Error("room doesn't contain clientId #{clientId}!")
+    throw new Error("room doesn't contain clientId #{client.user.clientId}!")
 
   addClient: (client) ->
+    # Note that "client" instances are not the same objects across calls!
     # TODO highlevel this with underscore
     for c, i in @_clients when c == null
       @_clients[i] = client
@@ -56,6 +59,7 @@ class Room
     throw new Error('room is full!')
 
   removeClient: (client) ->
+    # Note that "client" instances are not the same objects across calls!
     i = @getClientIndex client
     @_clients[i] = null
     @_num_clients--
@@ -271,7 +275,7 @@ startRoomGame = (room, room_group) ->
   clients = room.getClients()
   assert.ok(clients.length == 4, "game started with != 4 players")
 
-  for c, pid in room.getClients()
+  for c, pid in clients
     u = c.user.user_model
     assert.ok(u, "user model is defined when starting game")
     playerIdToUserIdMapping[pid] = u._id
@@ -343,7 +347,7 @@ configureNow = (everyone) ->
     client = @
     cid = client.user.clientId
 
-    # If the client is in a room, client.user.room_group is set to the corresponding group.
+    # If the client is in a room, client.user.room and client.user.room_group are set.
 
     if (rg = client.user.room_group)?
       # Client is already in a room
@@ -367,6 +371,7 @@ configureNow = (everyone) ->
       room.addClient client
       room_group = nowjs.getGroup "room-#{room_id}"
       room_group.addUser cid
+      client.user.room = room
       client.user.room_group = room_group
 
       # Tell user that joining was successful
@@ -397,8 +402,38 @@ configureNow = (everyone) ->
 
 
   everyone.now.leaveRoom = (callback) ->
-    # TODO implement
-    log "leaveRoom not implemented"
+
+    client = @
+    cid = client.user.clientId
+
+    # If the client is in a room, client.user.room_group is set to the corresponding group.
+
+    unless client.user.room_group?
+      # Client is not in a room
+      log "user with clientId #{cid} is not in a room, so they cannot leave"
+      # Tell user that leaving failed
+      callback false
+    else
+      # Client is in a room
+      { room, room_group } = client.user
+
+      log "user with clientId #{cid} is leaving room group #{room_group.groupName}"
+
+      # Remove user from room
+      room.removeClient client
+      room_group.removeUser cid
+      delete client.user.room
+      delete client.user.room_group
+
+      # Tell user that leaving was successful
+      callback true
+
+      u = client.user.user_model
+      # Tell the other room members that the user left
+      room_group.now.receivePlayerLeft
+        # TODO put this "information for other users" into a user model method
+        id: u._id
+
 
 
   everyone.now.sendChatToRoom = (msg) ->
