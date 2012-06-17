@@ -190,23 +190,44 @@ class Room
     #       # Add achievement to list for client presentation
     #       achievements[player.id].push achievement
 
+    # Gather ratings
+    ratings = {}
+    for player in arena.players
+      ratings[player.id] = @_clients[player.id].user.user_model.rating
+
+
+    # Calculate rating changes
+    new_ratings = {}
+    for player in arena.players
+      player_rating = ratings[player.id]
+      other_ratings = (ratings[p.id] for p in arena.players when p.id != player.id)
+      new_ratings[player.id] = @calculateNewRating(player_rating,
+                                                   other_ratings[0],
+                                                   other_ratings[1],
+                                                   other_ratings[2],
+                                                   outcomes[player.id] == WIN
+                                                  )
+
+    # Gather results
     results = {}
     for player in arena.players
-
       results[player.id] =
         health: player.health
         outcome: outcomes[player.id]
-        points_scored: []
+        rating_change: ratings[player.id] - new_ratings[player.id]
         achievements_gained: achievements[player.id]
 
-    # Update statistics
-    for player in arena.players
 
+    # Update statistics in database
+    for player in arena.players
       pid = player.id
       user = @_clients[pid].user.user_model
 
       # Time played
       user.timePlayed_s += play_time_s
+
+      # Rating
+      user.rating += rating_changes
 
       # Played games
       user.gamesPlayed++

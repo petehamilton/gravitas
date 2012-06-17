@@ -494,11 +494,8 @@ class @Game
 
   # Ends the game, receives a list of results for each player
   gameOver: (results) ->
-    log "Game Over!"
-
+    log "Game Results:", results
     result = results[@getPlayerId()]
-
-    log "game result:", result
 
     { win: WIN, loss: LOSS, draw: DRAW } = config.outcome
 
