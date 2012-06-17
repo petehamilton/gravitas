@@ -152,8 +152,6 @@ class Room
     max_healths = (h for h in healths when h == max_health)
     draw = max_healths.length > 1
 
-    log "DRAW?", max_health, max_healths, draw
-
     # Outcomes are 0=lose, 1=draw, 2=win
     outcomes = {}
     for player in arena.players
