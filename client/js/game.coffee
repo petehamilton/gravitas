@@ -204,6 +204,10 @@ class @Game
 
   # Team A's New Score: 1500 + 32*(1 - 0.38686) = 1500 + 19.62 = 1519.62
 
+  resetAssemblyVariables: ->
+    # TODO reset all assembly-related observables
+    @connectedPlayers []
+    @lobbyMessages []
 
   assemblyClick: =>
     @withServer =>
@@ -222,6 +226,7 @@ class @Game
         if ok
           log "left room"
           @assembly false
+          @resetAssemblyVariables()
         else
           log "server did not allow us leaving a room"
 
@@ -292,8 +297,6 @@ class @Game
     { id } = user
     # Remove user from list
     @connectedPlayers.remove (p) -> p.id == id
-
-    # TODO reset all assembly-related observables
 
 
   joinPlayer_debug: ->
