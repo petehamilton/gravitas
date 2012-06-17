@@ -321,7 +321,7 @@
 
               <!-- Buttons -->
               <div class="buttons">
-                <button data-menu="summary" data-bind="click: assemblyGoTo">
+                <button data-menu="summary" data-bind="click: assemblyGoTo, fadeVisible: debugMode()">
                   SUMMARY DEBUG
                 </button>
                 <button class="playbutton" data-bind="click: assemblyClick">
@@ -383,11 +383,11 @@
 
 
               <div class="buttons">
-                <button data-bind="click: joinPlayer_debug, enable: canAddAnotherPlayer">
+                <button data-bind="click: joinPlayer_debug, enable: canAddAnotherPlayer, fadeVisible: debugMode()">
                   Add a player (debug)
                 </button>
 
-                <button data-bind="click: startGame">
+                <button data-bind="click: startGame, fadeVisible: debugMode()">
                   Start (debug)
                 </button>
 
