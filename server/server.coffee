@@ -383,8 +383,9 @@ configureNow = (everyone) ->
 
   ### GLOBAL RPCS ###
 
-  everyone.now.pingServer = ->
+  everyone.now.pingServer = (callback) ->
     console.log "pong"
+    callback?()
 
 
   everyone.now.getClients = (callback) ->

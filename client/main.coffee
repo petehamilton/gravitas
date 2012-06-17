@@ -142,11 +142,17 @@ main = ->
   ko.applyBindings game
 
   setupNow game
-
   now.ready ->
     log "now ready"
 
     setupDevLog()
+
+    # Refresh page if server is unreachable for 1 second
+    setInterval =>
+      kill_timeout = setTimeout (=> window.location.reload()), 1000
+      now.pingServer =>
+        clearTimeout kill_timeout
+    , 1000
 
   # Debugging global variables
   @a = arena
