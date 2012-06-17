@@ -324,6 +324,14 @@ configureNow = (everyone) ->
     # TODO check this
     connected = true
 
+  nowjs.on 'disconnect', ->
+    console.log "client #{@user.clientId} disconnected"
+
+    # If the client is in a room, remove them
+    removeFromRoom @, (was_removed) => log "removed disconnected client from room: #{was_removed}"
+
+    # TODO remove them from running games
+
 
   ### GLOBAL RPCS ###
 
