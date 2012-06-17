@@ -31,7 +31,7 @@ config =
     health: "Full health powerup!\nPress space to activate."
 
   # Probability of spawning a powerup
-  powerup_probability: 0.2
+  powerup_probability: 0.5
 
   # Game Information
   player_ids: [0..3]
@@ -92,7 +92,7 @@ config =
 
   shield_radius: 80
   shield_damage_speed: 500
-  survivable_hits: 6
+  survivable_hits: 1
   hit_damage: 0.1
 
   outcome:
