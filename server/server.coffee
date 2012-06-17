@@ -186,6 +186,22 @@ class Room
         points_scored: []
         acheivements_gained: acheivements[player.id]
 
+    # Update statistics
+    for player in arena.players
+
+      pid = player.id
+      user = @_clients[pid].user.user_model
+
+      user.gamesPlayed++
+
+      switch results[pid].outcome
+        when WIN then user.gamesWon++
+        when LOSS then user.gamesLost++
+
+      # TODO update time played
+
+      user.save()
+
     return results
 
 
