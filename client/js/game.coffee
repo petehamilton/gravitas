@@ -499,4 +499,10 @@ class @Game
 
     @displayMessage(@getPlayerId(), message)
 
+    setTimeout () =>
+      log "ENDING GAME"
+      @assembly false
+      @gameStarted false
+    , config.post_game_wait
+
 

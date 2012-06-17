@@ -100,6 +100,8 @@ config =
     loss: 1
     draw: 2
 
+  post_game_wait: 3000 # Time to pause after a game
+
   player_colours:
     0: "#00a2ff"
     1: "#72ff00"
