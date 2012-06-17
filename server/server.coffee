@@ -263,7 +263,6 @@ configureNow = (everyone) ->
   nowjs.on 'connect', ->
     console.log "client #{@user.clientId} connected"
     # TODO check this
-    # everyone.now.receiveBallsMoved arena.balls
     connected = true
 
 
