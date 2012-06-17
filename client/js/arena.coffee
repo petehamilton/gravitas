@@ -1,7 +1,6 @@
 class @Arena
   constructor: (@paper) ->
-    @crosshair = new Crosshair(paper)
-    @clock = new CountdownTimer(@paper, 215, 70)
+    log "Arena created"
 
   setGame: (@game) ->
     # NOOP
@@ -9,6 +8,9 @@ class @Arena
   # Called when a battle start
   start: ->
     assert(@game, "game is not set on Arena.start")
+
+    @crosshair = new Crosshair(paper)
+    @clock = new CountdownTimer(@paper, 215, 70)
 
     makeTurrets = (player_models) =>
       log "Creating turrets"
