@@ -442,3 +442,23 @@ class @Game
       log "Powerup in turret"
       @removeBall(ball_model)
 
+
+  # Ends the game, receives a list of results for each player
+  gameOver: (results) ->
+    log "Game Over!"
+
+    result = results[@getPlayerId()]
+
+    log result, result.outcome
+
+    # Display message
+    message = switch result.outcome
+      when 0 then "GAME OVER\nSorry you lost\nBetter luck next time"
+      when 1 then "GAME OVER\nCongratulations you tied"
+      when 2 then "GAME OVER\nCongratulations you won"
+
+    log message
+
+    @displayMessage(@getPlayerId(), message, 'fadeOut')
+
+

@@ -270,20 +270,31 @@ createApp = ->
   app
 
 gameOver = ->
-  winningMessage = "GAME OVER\nCongratulations you won"
-  drawMessage = "GAME OVER\nCongratulations you tied"
-  looseMessage = "GAME OVER\nSorry you lost\nBetter luck next time"
-  fadeOut = false
-  arena.stopGame()
-  winners = arena.getWinners()
+  healths = (p.health for p in arena.players)
+  max_health = Math.max healths...
+  max_healths = (h for h in healths when h == max_health)
+  draw = max_healths.length > 1
+
+  log "DRAW?", max_health, max_healths, draw
+
+  # Outcomes are 0=lose, 1=draw, 2=win
+  outcomes = {}
   for player in arena.players
-    if winners.indexOf(player) != -1
-      if winners.length > 1
-        everyone.now.receiveMessage player.id, drawMessage, fadeOut
+    outcomes[player.id] =
+      if player.health == max_health
+        if draw then 1 else 2
       else
-        everyone.now.receiveMessage player.id, winningMessage, fadeOut
-    else
-      everyone.now.receiveMessage player.id, looseMessage, fadeOut
+        0
+
+  results = {}
+  for player in arena.players
+    results[player.id] =
+      health: player.health
+      outcome: outcomes[player.id]
+      points_scored: []
+      acheivements_gained: []
+
+  return results
 
 
 # Start the intervals which control ball rotation and the clock
@@ -317,7 +328,7 @@ startTimers = ->
     if seconds == 0 or arena.aliveCount() <= 1
       clearInterval clock
       clearInterval ball_rotation
-      gameOver()
+      everyone.now.receiveGameOver gameOver()
 
   , config.clock_interval
 
