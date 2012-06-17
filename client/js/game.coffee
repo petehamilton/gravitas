@@ -22,7 +22,7 @@ class @Game
 
     # Assembly
     @assemblyContent = ko.observable 'profile'
-
+   # @assemblyContent = ko.observable 'summary'
 
     # Authentication
     @username = ko.observable 'lukasz'
