@@ -41,11 +41,83 @@
     <script data-main="js/main" src="js/lib/require.js"></script>
 
     <script type="text/javascript" src="http://localhost:8001/vogue-client.js"></script>
+
+    <script type="text/javascript">
+      function inspect( obj ) {
+        if (typeof obj === "undefined") {
+            return "undefined";
+        }
+        var _props = [];
+
+          for ( var i in obj ) {
+              _props.push( i + " : " + obj[i] );
+          }
+          return " {" + _props.join( ",<br>" ) + "} ";
+      }
+      var dlog = function(t, o) {
+        var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+        setTimeout((__bind(function() {
+          return $('#dev_log').empty();
+        }, this)), 4000);
+        return $('#dev_log').append($('<p>').text(t + " " + JSON.stringify(o)));
+      };
+      function touchStart( e ) {
+        // dlog( "start event=", inspect( e ) );
+        // logDetails( inspect( e.touches.item(0) ) );
+        var targetEvent =  e.targetTouches.item(0);
+
+        p = $('#paper').position();
+        px = p.left;
+        py = p.top;
+
+        var x = targetEvent.clientX - px;
+        var y = targetEvent.clientY - py;
+
+        window.touchstart(x, y);
+
+        e.preventDefault();
+        return false;
+      }
+
+      function touchEnd( e ) {
+        // dlog( "start event=", inspect( e ) );
+        // logDetails( inspect( e.touches.item(0) ) );
+        var targetEvent =  e.targetTouches.item(0);
+
+        p = $('#paper').position();
+        px = p.left;
+        py = p.top;
+
+        var x = targetEvent.clientX - px;
+        var y = targetEvent.clientY - py;
+
+        window.touchend(x, y);
+
+        e.preventDefault();
+        return false;
+      }
+
+      function touchMove( e ) {
+        var targetEvent =  e.targetTouches.item(0);
+
+        p = $('#paper').position();
+        px = p.left;
+        py = p.top;
+
+        var x = targetEvent.clientX - px;
+        var y = targetEvent.clientY - py;
+
+        window.touchmove(x, y);
+
+        e.preventDefault();
+        return false;
+      }
+    </script>
   </head>
 
   <body>
 
-    <div id="app" class="hidden-on-startup">
+    <div id="app" class="hidden-on-startup" ontouchmove="touchMove(event)" ontouchstart="touchStart(event)" ontouchend="touchEnd(event)">
 
       <!-- Menu: Login, Lobby and Assembly -->
       <div id="menu" class="screen" data-bind="fadeVisible: !gameStarted()">
@@ -387,7 +459,9 @@
 
         <div class="window centered-table">
           <div class="centered-table-cell">
-            <div id="paper"></div>
+            <div id="paper-container">
+              <div id="paper"></div>
+            </div>
           </div>
         </div>
 
