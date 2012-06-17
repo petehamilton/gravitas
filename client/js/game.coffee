@@ -5,6 +5,7 @@ hashToLogin =
   '#lukasz': 'lukasz'
   '#niklas': 'niklas'
   '#peter': 'peter'
+  '#mark': 'mark'
   '': ''
 
 
