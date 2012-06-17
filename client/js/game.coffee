@@ -510,6 +510,7 @@ class @Game
       @assembly false
       @gameStarted false
       @resetAssemblyVariables()
+      @getStats()
     , config.post_game_wait
 
 
