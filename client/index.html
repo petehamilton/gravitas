@@ -155,7 +155,7 @@
               <div class="lobby-content" data-bind="visible: assemblyContent() == 'profile'">
                 <label class="large">Profile</label><br />
                 <div class="profile-picture">
-                  <img src="images/ui/placeholder.jpg" data-bind="attr: {src: avatarURL}" class="profile" />
+                  <img src="" data-bind="attr: {src: avatarURL}" class="profile" />
                 </div>
                 <div class="profile-stats">
                   <table>
@@ -370,7 +370,7 @@
                   </thead>
                   <tbody data-bind="foreach: connectedPlayers">
                     <tr>
-                      <td><img src="images/ui/placeholder.jpg" class="profile small" /></td>
+                      <td><img src="" data-bind="attr: {src: searchAvatarURL}" class="profile small" /></td>
                       <td><span data-bind="text: username"></span></td>
                       <td><span data-bind="text: rating"></span></td>
                     </tr>
