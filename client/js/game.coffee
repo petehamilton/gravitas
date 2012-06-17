@@ -256,18 +256,19 @@ class @Game
 
   playerJoined: (user) ->
     log "player joined", user
-    @connectedPlayers.push new connectedPlayer(user.username, user.rating)
+    @connectedPlayers.push new connectedPlayer(user.username, user.rating, user.avatarURL)
 
 
   joinPlayer_debug: ->
-    @connectedPlayers.push new connectedPlayer("fake player", 6668)
+    @connectedPlayers.push new connectedPlayer("fake player", 6668, '/images/ui/placeholder.jpg')
 
 
   # TODO check why this is created with new but not a class
   #Data structure to hold connected players
-  connectedPlayer = (username, rating) ->
+  connectedPlayer = (username, rating, avatarURL) ->
     @username = username
     @rating = rating
+    @avatarURL = avatarURL
 
 
   secToTime : (d) ->
