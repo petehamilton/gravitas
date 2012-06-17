@@ -227,7 +227,7 @@ class Room
         place: places[player.id]
         avatarURL: user.avatarURL
         rating: new_ratings[player.id]
-        rating_change: ratings[player.id] - new_ratings[player.id]
+        rating_change: new_ratings[player.id] - ratings[player.id] 
         achievements_gained: achievements[player.id]
 
 
