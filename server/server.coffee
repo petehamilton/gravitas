@@ -149,7 +149,7 @@ class Room
 
 
 
-  gameOver: (arena, room_now) ->
+  gameOver: (arena, room_now, play_time_s) ->
     healths = (p.health for p in arena.players)
     winner_health = Math.max healths...
     draw = (h for h in healths when h == winner_health).length > 1
@@ -192,13 +192,14 @@ class Room
       pid = player.id
       user = @_clients[pid].user.user_model
 
-      user.gamesPlayed++
+      # Time played
+      user.timePlayed_s += play_time_s
 
+      # Played games
+      user.gamesPlayed++
       switch results[pid].outcome
         when WIN then user.gamesWon++
         when LOSS then user.gamesLost++
-
-      # TODO update time played
 
       user.save()
 
@@ -234,9 +235,11 @@ class Room
         room_now.receiveClock --seconds
 
       if seconds == 0 or arena.aliveCount() <= 1
+        # Game is finished
         clearInterval clock
         clearInterval ball_rotation
-        results = @gameOver arena, room_now
+        play_time_s = config.game_time_s - seconds
+        results = @gameOver arena, room_now, play_time_s
         room_now.receiveGameOver results
 
 
