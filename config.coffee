@@ -92,7 +92,7 @@ config =
 
   shield_radius: 80
   shield_damage_speed: 500
-  survivable_hits: 1
+  survivable_hits: 3
   hit_damage: 0.1
 
   outcome:
