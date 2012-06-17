@@ -88,7 +88,7 @@
             <div id="lobby-window" class="box">
               <div class="logo left"></div>
               <div class="nick">
-                <span data-bind="text: username" placeholder="Username"></span>
+                <span id="username-span" data-bind="text: username" placeholder="Username"></span>
                 <span class="rating" data-bind="style: { color: userRatingColor() }, text: userRating()"></span><br />
                 <div id="navigation">
                   <a href="#" class="glow" data-menu="profile" data-bind="click: assemblyGoTo">A</a>
@@ -363,16 +363,16 @@
                 <table>
                   <thead>
                     <tr>
-                      <td><label class="medium">Player</label></td>
+                      <td><label class="small">Player</label></td>
                       <td></td>
-                      <td><label class="medium">Rating</label></td>
+                      <td><label class="small">Rating</label></td>
                     </tr>
                   </thead>
                   <tbody data-bind="foreach: connectedPlayers">
                     <tr>
                       <td><img src="" data-bind="attr: {src: avatarURL}" class="profile small" /></td>
-                      <td><span data-bind="text: username"></span></td>
-                      <td><span data-bind="text: rating"></span></td>
+                      <td><label data-bind="text: username" class="small"></label></td>
+                      <td><label data-bind="text: rating" class="medium"></label></td>
                     </tr>
                   </tbody>
                 </table>

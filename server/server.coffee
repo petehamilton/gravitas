@@ -444,6 +444,8 @@ configureNow = (everyone) ->
   everyone.now.leaveRoom = (callback) ->
     removeFromRoom @, callback
 
+    capitaliseFirstLetter = (string) ->
+      string.charAt(0).toUpperCase() + string.slice(1)
 
   everyone.now.sendChatToRoom = (msg) ->
     client = @
@@ -452,6 +454,7 @@ configureNow = (everyone) ->
       log 'cannot send chat message: client #{client.user.clientId} is not in a room'
     else
       username = client.user.user_model.username
+      username = username.charAt(0).toUpperCase() + username.slice(1)
       log 'chat message from #{username} to room #{room_group.groupName}'
       room_group.now.receiveRoomChat username, msg
 
