@@ -165,9 +165,9 @@ class Room
           LOSS
 
     # Present new achievements
+    possible_achievements = [1,2,3,4,5,6] #TODO, get me from database
+    achievements = {}
     # TODO fix bug
-    # possible_achievements = [1,2,3,4,5,6] #TODO, get me from database
-    # achievements = {}
     # for player in arena.players
     #   achievements[player.id] = []
     #   for achievement in possible_achievements
@@ -184,7 +184,7 @@ class Room
         health: player.health
         outcome: outcomes[player.id]
         points_scored: []
-        acheivements_gained: acheivements[player.id]
+        achievements_gained: achievements[player.id]
 
     # Update statistics
     for player in arena.players
