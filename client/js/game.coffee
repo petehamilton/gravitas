@@ -313,11 +313,14 @@ class @Game
 
 
   secToTime : (d) ->
-    d = Number(d)
+    d = Number(d) or 0
     h = Math.floor(d / 3600)
     m = Math.floor(d % 3600 / 60)
     s = Math.floor(d % 3600 % 60)
-    (if h > 0 then h + ":" else "") + (if m > 0 then (if h > 0 and m < 10 then "0" else "") + m + ":" else "0:") + (if s < 10 then "0" else "") + s
+
+    (if h > 0 then h + ":" else "") +
+    (if m > 0 then (if m < 10 then "0" else "") + m + ":" else "0:") +
+    (if s < 10 then "0" else "") + s
 
   # Makes sure the server connection is esablished before executing fn.
   # Otherwise sets the lag indicator.
@@ -506,6 +509,7 @@ class @Game
       log "ENDING GAME"
       @assembly false
       @gameStarted false
+      @resetAssemblyVariables()
     , config.post_game_wait
 
 
