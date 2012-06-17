@@ -214,6 +214,8 @@ class Room
       user = @_clients[player.id].user.user_model
 
       results[player.id] =
+        id: user._id
+        username: user.username
         health: player.health
         outcome: outcomes[player.id]
         avatarURL: user.avatarURL

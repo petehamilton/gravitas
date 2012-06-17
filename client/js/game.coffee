@@ -99,6 +99,9 @@ class @Game
     @searchWinLossRatio =  ko.computed =>
       Math.round((@searchGamesWon()/(@searchGamesPlayed()-@searchGamesWon()))*100)/100
 
+    # Summary
+    @summaryList = ko.observable []
+
     # Whether lag is currently happening
     @lag = ko.observable false
 
@@ -309,11 +312,12 @@ class @Game
 
   # TODO check why this is created with new but not a class
   #Data structure to hold connected players
-  connectedPlayer = (id, username, rating, avatarURL) ->
+  connectedPlayer = (id, username, rating, avatarURL, ratingChange) ->
     @id = id
     @username = username
     @rating = rating
     @avatarURL = avatarURL
+    @ratingChange = ratingChange
 
 
   secToTime : (d) ->
@@ -511,8 +515,17 @@ class @Game
       @assembly false
       @gameStarted false
       @resetAssemblyVariables()
+
+      # Refresh profile data
       @getStats()
+
+      # Populate summary data and show summary
+      @summaryList(for pid, r of results
+        new connectedPlayers(r.id, r.username, r.rating, r.avatarURL, r.ratingChange)
+      )
+
       @assemblyContent('summary')
+
     , config.post_game_wait
 
 
