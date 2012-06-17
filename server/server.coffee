@@ -317,12 +317,14 @@ class Room
 
       if seconds == 0 or arena.aliveCount() <= 1
         # Game is finished
+        log "game over"
         clearInterval clock
         clearInterval ball_rotation
         play_time_s = config.game_time_s - seconds
         results = @gameOver arena, room_now, play_time_s
         room_now.receiveGameOver results
 
+        log "booting players from room to allow rejoin"
         # Remove all players from the room so that they can join another one
         for player in arena.players
           client = @_clients[player.id]
