@@ -151,7 +151,15 @@ class Room
     room_now.usePowerup = (player_id) ->
       arena.usePowerup arena.players[player_id]
 
+  calculateNewRating: (userRating, enemyRating1, enemyRating2, enemyRating3, won) =>
+        allyTeamRating = userRating
+        enemyTeamRating = ((enemyRating1 + enemyRating2 + enemyRating3) / 3)
+        winChance = @calculateWinChance(allyTeamRating,enemyTeamRating)
+        Math.floor(userRating + 32 * ( (if won then 1 else 0) - winChance))
 
+
+  calculateWinChance: (allyTeamRating, enemyTeamRating) ->
+        1 / (1 + Math.pow(10, ((enemyTeamRating - allyTeamRating) / 400)))
 
   gameOver: (arena, room_now, play_time_s) ->
     healths = (p.health for p in arena.players)
@@ -184,6 +192,7 @@ class Room
 
     results = {}
     for player in arena.players
+
       results[player.id] =
         health: player.health
         outcome: outcomes[player.id]

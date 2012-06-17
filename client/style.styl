@@ -97,20 +97,8 @@ span.caps
   text-transform: uppercase
 
 table.allBorders
-  border: 1px solid #525e67
-  border-collapse: collapse
-  text-align: center
-
-
-
-
-table.allBorders th
-  border: 1px solid #525e67
-
-
-table.allBorders thead
-  text-align: middle
-  font-weight: 600
+  border-collapse:separate;
+  border-spacing:10px 5px;  text-align: center
 
 
 
@@ -148,6 +136,9 @@ label.small
 
 label.medium[type=grey]
   color: #68727B
+
+label.medium[type=white]
+  color: #fff
 
 img.profile
   width: 140px
@@ -387,20 +378,22 @@ a.glow:focus
       padding-left: 30px
       diplay: inline-block
 
-    .lobby_chat_container
+    .lobby-chat-container
       position: absolute
-      top: 150px
+      top: 100px
       right: 20px
-      width: 250px
+      width: 200px
       color: white
 
-      .lobby_chat
+      .lobby-chat
         overflow-y: scroll
-        height: 100px
+        height: 160px
         margin-top: 10px
         p
-          font-size: 14px
+          font-size: 11px
           margin: .4em .1em
+          color: #a2b5c6
+          font-size: 11px
 
     .search-result
       padding:30px

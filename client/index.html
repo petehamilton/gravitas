@@ -237,15 +237,6 @@
                       <td><label class="small">Rating Change</label></td>
                     </tr>
                   </thead>
-                  <!-- <tbody data-bind="foreach: connectedPlayers">
-                    <tr>
-                      <td><span>#1</span></td>
-                      <td><img src="images/ui/placeholder.jpg" class="profile small" /></td>
-                      <td><span data-bind="text: username"></span></td>
-                      <td><span data-bind="text: rating"></span></td>
-                      <td><span data-bind="text: ratingChange"></span></td>
-                    </tr>
-                  </tbody> -->
                   <tbody >
                     <tr>
                       <td><span>#1</span></td>
@@ -278,7 +269,15 @@
                   </tbody>
                 </table>
               </center>
-
+              <label class="large">You have earned:</label>
+              <table valign="middle">
+                <tbody>
+                  <tr>
+                    <td><img src="images/medals/first.png" class="medal" data-bind="css: { achieved: true }" /></td>
+                    <td><label class="medium" type="white">Step Into Gravitas</label></td>
+                  </tr>
+                </tbody>
+              </table>
               </div>
 
               <!-- Search Panel -->
@@ -322,6 +321,9 @@
 
               <!-- Buttons -->
               <div class="buttons">
+                <button data-menu="summary" data-bind="click: assemblyGoTo">
+                  SUMMARY DEBUG
+                </button>
                 <button class="playbutton" data-bind="click: assemblyClick">
                   Play
                 </button>
@@ -342,11 +344,11 @@
                 <span class="rating" data-bind="style: { color: userRatingColor() }, text: userRating()"></span>
 
               </div>
-              <div class="lobby_chat_container">
+              <div class="lobby-chat-container">
                 <form data-bind="submit: lobbyPostChat">
-                   Say: <input type="text" class="small" data-bind="value: lobbyMessageInput" />
+                   <label for="chatInput">Chat</label><input type="text" id="chatInput" class="small" data-bind="value: lobbyMessageInput"/>
                 </form>
-                <div class="lobby_chat" data-bind="foreach: lobbyMessages, onChange: scrollChatDown">
+                <div class="lobby-chat" data-bind="foreach: lobbyMessages, onChange: scrollChatDown">
                   <p data-bind="text: $data">CHAT MESSAGE</p>
                 </div>
               </div>
