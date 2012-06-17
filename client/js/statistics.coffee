@@ -16,6 +16,10 @@ class @Statistics
 
     @piechart = @piePaper.piechart(140, 30, 30, [winsNumber,lossNumber],
       {legend: ["Win - %%", "Loss - %%"], legendpos: "west", legendcolor: '#68727b', colors:["#50a20e","#a20e0f"], smooth: true, stroke: "#000"})
+
+    # TODO account for draws
+
+
   # Draws the rating line graph
   drawLineGraph: (ratingValues) ->
     @graph?.remove()

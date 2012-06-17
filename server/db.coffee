@@ -27,8 +27,9 @@ User = mongoose.model 'User', new mongoose.Schema
   password: String
   avatarURL: String
   timePlayed: Number
-  gamesWon: Number
   gamesPlayed: Number
+  gamesWon: Number
+  gamesLost: Number
   rating: Number
   achievements: [ Achievement_schema ]
   ratingHistory: [ RatingHistory_schema ]
@@ -49,8 +50,9 @@ setup = (callback) ->
         password: details.pass
         avatarURL: details.avatar
         timePlayed: 39603
-        gamesWon: 31
         gamesPlayed: 70
+        gamesWon: 31
+        gamesLost: 25
         rating: (Math.floor(Math.random() * 1700)) + 500  # min: 500, max: 1700 + 500 = 2200
         achievements: [
           {id : 0, date : "12.03.2012"}
