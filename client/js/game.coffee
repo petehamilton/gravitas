@@ -66,9 +66,8 @@ class @Game
     # Logged in user stats
     @gamesWon = ko.observable 0
     @gamesPlayed = ko.observable 0
-    @timePlayed =  ko.observable 0
-    @timePlayedConverted = ko.computed(=>
-      @secToTime(@timePlayed()))
+    @timePlayed_s =  ko.observable 0
+    @timePlayedConverted = ko.computed => @secToTime(@timePlayed_s())
 
     @achievementStep = ko.observable ""
     @achievementVeteran = ko.observable ""
@@ -91,11 +90,11 @@ class @Game
     @searchAvatarURL = ko.observable ""
     @searchGamesWon = ko.observable ""
     @searchGamesPlayed = ko.observable ""
-    @searchTimePlayed = ko.observable ""
-    @searchTimePlayedConverted = ko.computed(=>
-      @secToTime(@searchTimePlayed()))
-    @searchWinLossRatio =  ko.computed(=>
-      Math.round((@searchGamesWon()/(@searchGamesPlayed()-@searchGamesWon()))*100)/100)
+    @searchTimePlayed_s = ko.observable ""
+    @searchTimePlayedConverted = ko.computed => @secToTime(@searchTimePlayed_s())
+    @searchWinLossRatio =  ko.computed =>
+      Math.round((@searchGamesWon()/(@searchGamesPlayed()-@searchGamesWon()))*100)/100
+
     # Whether lag is currently happening
     @lag = ko.observable false
 
@@ -156,7 +155,7 @@ class @Game
       @avatarURL res.avatarURL
       @gamesWon res.gamesWon
       @gamesPlayed res.gamesPlayed
-      @timePlayed res.timePlayed
+      @timePlayed_s res.timePlayed_s
       @statsPaper.drawPieChart(@gamesWon(),(@gamesPlayed() - @gamesWon()))
       @statsPaper.drawLineGraph([
         res.ratingHistory[0].rating
@@ -181,7 +180,7 @@ class @Game
       @searchAvatarURL res.avatarURL
       @searchGamesWon res.gamesWon
       @searchGamesPlayed res.gamesPlayed
-      @searchTimePlayed res.timePlayed
+      @searchTimePlayed_s res.timePlayed_s
 
   computeAchievements: (step, veteran, winner, hardcore, unlucky) =>
     @achievementStep step

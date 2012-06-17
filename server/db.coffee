@@ -26,7 +26,7 @@ User = mongoose.model 'User', new mongoose.Schema
     index: true
   password: String
   avatarURL: String
-  timePlayed: Number
+  timePlayed_s: Number
   gamesPlayed: Number
   gamesWon: Number
   gamesLost: Number
@@ -49,7 +49,7 @@ setup = (callback) ->
         username: name
         password: details.pass
         avatarURL: details.avatar
-        timePlayed: 39603
+        timePlayed_s: 39603
         gamesPlayed: 70
         gamesWon: 31
         gamesLost: 25

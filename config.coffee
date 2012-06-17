@@ -75,7 +75,7 @@ config =
   rotation_time: 500 # Milliseconds to rotate balls
 
   # Time for game rounds in seconds
-  game_time: 180
+  game_time_s: 180
 
   # Milliseconds between ticks (i.e. 1 second)
   clock_interval: 1000

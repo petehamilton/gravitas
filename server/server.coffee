@@ -228,7 +228,7 @@ class Room
     , config.rotation_interval
 
     # Arena clock time
-    seconds = config.game_time
+    seconds = config.game_time_s
     clock = setInterval () =>
       if connected
         room_now.receiveClock --seconds
@@ -321,7 +321,7 @@ configureNow = (everyone) ->
         avatarURL: u.avatarURL
         gamesWon: u.gamesWon
         gamesPlayed: u.gamesPlayed
-        timePlayed: u.timePlayed
+        timePlayed_s: u.timePlayed_s
         achievements: u.achievements
         ratingHistory: u.ratingHistory
 
