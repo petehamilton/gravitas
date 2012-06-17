@@ -126,6 +126,8 @@ main = ->
       when 32                                # Spacebar
         if game.gameStarted()
           arena.spacebarPressed()
+      when 68                                # d
+        game.debugKeyPressed()
 
 
   $(document).bind "touchmove", (e) ->

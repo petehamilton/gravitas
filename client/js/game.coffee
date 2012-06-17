@@ -10,6 +10,9 @@ hashToLogin =
 
 class @Game
   constructor: (@arena, @statsPaper, @player, @server) ->
+
+    @debugMode = ko.observable false
+
     # Automatic log-in / start
     @autoLogIn = makeCookieObservable 'autoLogIn'
     @autoStart = makeCookieObservable 'autoStart'
@@ -114,6 +117,10 @@ class @Game
       when 1, 2, 3, 4
         @player(num-1)
 
+  debugKeyPressed: ->
+    log "Debug Mode " + (if @debugMode() then "Off" else "On")
+    @debugMode !@debugMode()
+
   enterKeyPressed: ->
     if @lobbyVisible()
       @assemblyClick()
@@ -204,6 +211,10 @@ class @Game
 
   # Team A's New Score: 1500 + 32*(1 - 0.38686) = 1500 + 19.62 = 1519.62
 
+  resetAssemblyVariables: ->
+    # TODO reset all assembly-related observables
+    @connectedPlayers []
+    @lobbyMessages []
 
   assemblyClick: =>
     @withServer =>
@@ -222,6 +233,7 @@ class @Game
         if ok
           log "left room"
           @assembly false
+          @resetAssemblyVariables()
         else
           log "server did not allow us leaving a room"
 
@@ -293,8 +305,6 @@ class @Game
     # Remove user from list
     @connectedPlayers.remove (p) -> p.id == id
 
-    # TODO reset all assembly-related observables
-
 
   joinPlayer_debug: ->
     @connectedPlayers.push new connectedPlayer('fake id', "fake player", 6668, '/images/ui/placeholder.jpg')
@@ -310,11 +320,14 @@ class @Game
 
 
   secToTime : (d) ->
-    d = Number(d)
+    d = Number(d) or 0
     h = Math.floor(d / 3600)
     m = Math.floor(d % 3600 / 60)
     s = Math.floor(d % 3600 % 60)
-    (if h > 0 then h + ":" else "") + (if m > 0 then (if h > 0 and m < 10 then "0" else "") + m + ":" else "0:") + (if s < 10 then "0" else "") + s
+
+    (if h > 0 then h + ":" else "") +
+    (if m > 0 then (if m < 10 then "0" else "") + m + ":" else "0:") +
+    (if s < 10 then "0" else "") + s
 
   # Makes sure the server connection is esablished before executing fn.
   # Otherwise sets the lag indicator.
@@ -468,10 +481,11 @@ class @Game
 
 
   debugShadow: (shadow_info) ->
-    # TODO make a switch to disable this
-    log "shadowInfo", shadow_info
-    if shadow_info
-      @arena.displayShadow shadow_info
+    if @debugMode()
+      # TODO make a switch to disable this
+      log "shadowInfo", shadow_info
+      if shadow_info
+        @arena.displayShadow shadow_info
 
 
   ballInTurret: (ball_model) ->
@@ -503,6 +517,8 @@ class @Game
       log "ENDING GAME"
       @assembly false
       @gameStarted false
+      @resetAssemblyVariables()
+      @getStats()
     , config.post_game_wait
 
 
