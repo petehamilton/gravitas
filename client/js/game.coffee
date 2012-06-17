@@ -100,7 +100,7 @@ class @Game
       Math.round((@searchGamesWon()/(@searchGamesPlayed()-@searchGamesWon()))*100)/100
 
     # Summary
-    @summaryList = ko.observable []
+    @summaryPlayers = ko.observable []
 
     # Whether lag is currently happening
     @lag = ko.observable false
@@ -312,12 +312,14 @@ class @Game
 
   # TODO check why this is created with new but not a class
   #Data structure to hold connected players
-  connectedPlayer = (id, username, rating, avatarURL, ratingChange) ->
+  # ratingChange: String with '+' or '-' attached
+  connectedPlayer = (id, username, rating, avatarURL, ratingChange, place) ->
     @id = id
     @username = username
     @rating = rating
     @avatarURL = avatarURL
     @ratingChange = ratingChange
+    @place = place
 
 
   secToTime : (d) ->
@@ -520,8 +522,11 @@ class @Game
       @getStats()
 
       # Populate summary data and show summary
-      @summaryList(for pid, r of results
-        new connectedPlayers(r.id, r.username, r.rating, r.avatarURL, r.ratingChange)
+      @summaryPlayers(for pid, r of results
+        rating_sign = ''
+        rating_sign = '+' if r.rating_change > 0
+        rating_change_str = rating_sign + r.rating_change
+        new connectedPlayer(r.id, r.username, r.rating, r.avatarURL, rating_change_str, r.place)
       )
 
       @assemblyContent('summary')

@@ -230,43 +230,21 @@
                 <table class="allBorders">
                   <thead>
                     <tr>
-                      <td><label class="small">Team</label></td>
+                      <td><label class="small">Place</label></td>
                       <td><label class="small">Player</label></td>
                       <td></td>
                       <td><label class="small">Rating</label></td>
                       <td><label class="small">Rating Change</label></td>
                     </tr>
                   </thead>
-                  <tbody >
+                  <tbody data-bind="foreach: summaryPlayers">
                     <tr>
-                      <td><span>#1</span></td>
-                      <td><img src="images/ui/placeholder.jpg" class="profile small" /></td>
-                      <td><span >Name</span></td>
-                      <td><span >1234</span></td>
-                      <td><span >+16</span></td>
+                      <td><span data-bind="text: place"></span></td>
+                      <td><span data-bind="text: username">USERNAME</span></td>
+                      <td><img class="profile small" data-bind="attr: { src: avatarURL }" /></td>
+                      <td><span data-bind="text: rating">RATING</span></td>
+                      <td><span data-bind="text: ratingChange">RATING_CHANGE</span></td>
                     </tr>
-                    <tr>
-                      <td><span>#1</span></td>
-                      <td><img src="images/ui/placeholder.jpg" class="profile small" /></td>
-                      <td><span >Name</span></td>
-                      <td><span >1234</span></td>
-                      <td><span >+16</span></td>
-                    </tr>
-                    <tr>
-                      <td><span>#2</span></td>
-                      <td><img src="images/ui/placeholder.jpg" class="profile small" /></td>
-                      <td><span >Name</span></td>
-                      <td><span >1112</span></td>
-                      <td><span >-9</span></td>
-                    </tr>
-                    <tr>
-                      <td><span>#2</span></td>
-                      <td><img src="images/ui/placeholder.jpg" class="profile small" /></td>
-                      <td><span >Name</span></td>
-                      <td><span >1112</span></td>
-                      <td><span >-9</span></td>
-                    </tr>
-                  </tbody>
                 </table>
               </center>
               <label class="large">You have earned:</label>
