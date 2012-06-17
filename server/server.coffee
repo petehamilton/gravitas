@@ -45,7 +45,7 @@ class Room
 
   getClientIndex: (client) ->
     # Note that "client" instances are not the same objects across calls!
-    for c, i in @_clients when c.user.clientId == client.user.clientId
+    for c, i in @_clients when (c != null and c.user.clientId == client.user.clientId)
       return i
     throw new Error("room doesn't contain clientId #{client.user.clientId}!")
 
