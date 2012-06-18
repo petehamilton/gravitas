@@ -2,6 +2,7 @@ http = require 'http'
 express = require 'express'
 nowjs = require 'now'
 assert = require 'assert'
+path = require 'path'
 _ = require './lib/underscore'
 arena_model = require './arena_model'
 pbm = require './ball_model'
@@ -13,7 +14,7 @@ config = require('../config').config
 
 # Server configuration
 
-PORT = 7777
+PORT = 8000
 ADDRESS = "0.0.0.0"
 MODEL_FPS = config.model_fps
 BALLS_ENABLED = config.balls_enabled
@@ -513,7 +514,14 @@ configureNow = (everyone) ->
 
 createApp = ->
   app = express.createServer()
-  app.configure -> app.use express.bodyParser()
+  app.configure ->
+    # app.use express.methodOverride()
+    app.use express.bodyParser()
+    # app.use app.router
+    client_path = path.join(path.dirname(__dirname), 'client')
+    log "serving static files from #{client_path}"
+    app.use '/', express.static(client_path)
+    # app.use(express.errorHandler({ dumpExceptions: true, showStack: true }))
   app.listen PORT, ADDRESS
   app
 

@@ -176,6 +176,6 @@ main = ->
 
 $ ->
   host = window.location.hostname
-  $.getScript "http://#{host}:7777/nowjs/now.js", ->
+  $.getScript "http://#{host}:8000/nowjs/now.js", ->
     main()
 
