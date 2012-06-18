@@ -276,17 +276,21 @@ class @Game
     # The server will call startGame().
 
 
-  startGame: (userIdToPlayerIdMapping) =>
+  startGame: (userIdToPlayerIdMapping, userIdToUsernameMapping) =>
     log "starting game"
     log "user to player mapping", userIdToPlayerIdMapping
+    log "user to username mapping", userIdToUsernameMapping
 
     # Tell the user which turret he has
     player_id = userIdToPlayerIdMapping[@userId()]
     @player player_id
 
+    usernames = (name for uid, name of userIdToUsernameMapping)
+    log "usernames", usernames
+
     # Start the game
     @gameStarted true
-    @arena.start()
+    @arena.start(usernames)
 
 
   pingServer: =>

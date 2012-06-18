@@ -4,7 +4,7 @@ config = require('../config').config
 
 class @PlayerModel
 
-  constructor: (@id, @colour) ->
+  constructor: (@id, @colour, @label) ->
     # console.log "Creating Player with ID #{@id}"
     @health = 1 # Float from 0..1
     @alive = true
