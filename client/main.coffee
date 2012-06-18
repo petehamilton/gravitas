@@ -162,8 +162,12 @@ main = ->
     setupDevLog()
 
     # Refresh page if server is unreachable for 5 seconds
-    setInterval =>
-      kill_timeout = setTimeout (=> alert 'you might want to refresh'), 5000
+    popupInterval = null
+    popupInterval = setInterval =>
+      kill_timeout = setTimeout (=>
+        clearInterval popupInterval
+        alert 'you might want to refresh'
+      ), 5000
       now.pingServer =>
         clearTimeout kill_timeout
     , 5000
