@@ -73,7 +73,11 @@ class @Turret
                         .transform("r#{@angle},#{@center.x},#{@center.y}")
 
       # Turret labels (player names)
-      l = @paper.text(@offset_center.x - 40, @offset_center.y - 20, label)
+      # TODO move hardcodes
+      x = if @offset_center.x < 200 then (@offset_center.x - 30) else (@offset_center.x + 95)
+      y = if @offset_center.y < 200 then (@offset_center.y - 65) else (@offset_center.y + 110)
+      log "x y #{[x, y]}"
+      l = @paper.text(x, y, label)
       l.attr
         fill: config.player_colours[@position]
         'font-size': 20
