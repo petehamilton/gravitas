@@ -518,7 +518,7 @@ createApp = ->
     # app.use express.methodOverride()
     app.use express.bodyParser()
     # app.use app.router
-    client_path = path.join(path.dirname(__dirname), 'client')
+    client_path = path.join(path.dirname(__dirname), 'client', { maxAge: 31557600000 })
     log "serving static files from #{client_path}"
     app.use '/', express.static(client_path)
     # app.use(express.errorHandler({ dumpExceptions: true, showStack: true }))
