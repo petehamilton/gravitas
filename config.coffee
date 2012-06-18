@@ -49,8 +49,6 @@ config =
   pull_time_ms: 300
   shoot_time_ms: 300
 
-  vortex_mass: 10000
-
   turret_width: TURRET_WIDTH
   turret_height: TURRET_HEIGHT
 

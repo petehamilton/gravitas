@@ -86,8 +86,6 @@ main = ->
   piePaper = createPaper 'piePaper', 200, 70, 0
 
 
-  vortex = new Vortex(paper)
-
   # create game
   arena = new Arena(paper)
 
