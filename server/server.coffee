@@ -522,6 +522,15 @@ createApp = ->
     log "serving static files from #{client_path}"
     app.use '/', express.static(client_path)
     # app.use(express.errorHandler({ dumpExceptions: true, showStack: true }))
+
+  app.get '/reset', (req, res) =>
+    log "rooms", rooms
+    log "resetting"
+    rooms = {}
+    log "rooms", rooms
+    next_room_id = 0
+    res.send "resetted"
+
   app.listen PORT, ADDRESS
   app
 
