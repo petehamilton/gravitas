@@ -41,7 +41,7 @@ class @Arena
       @game.startGravityGun x, y
 
 
-  mouseReleased: (x, y) ->
+  mouseReleased: ->
     # Tell the game about the player clicking their mouse
    if @turrets[@game.getPlayerId()].alive
      @game.stopGravityGun()

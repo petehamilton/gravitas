@@ -61,9 +61,7 @@
         }, this)), 4000);
         return $('#dev_log').append($('<p>').text(t + " " + JSON.stringify(o)));
       };
-      function touchStart( e ) {
-        // dlog( "start event=", inspect( e ) );
-        // logDetails( inspect( e.touches.item(0) ) );
+      function touchStart(e) {
         var targetEvent =  e.targetTouches.item(0);
 
         p = $('#paper').position();
@@ -79,25 +77,14 @@
         return false;
       }
 
-      function touchEnd( e ) {
-        // dlog( "start event=", inspect( e ) );
-        // logDetails( inspect( e.touches.item(0) ) );
-        var targetEvent =  e.targetTouches.item(0);
-
-        p = $('#paper').position();
-        px = p.left;
-        py = p.top;
-
-        var x = targetEvent.clientX - px;
-        var y = targetEvent.clientY - py;
-
-        window.touchend(x, y);
+      function touchEnd(e) {
+        window.touchend();
 
         e.preventDefault();
         return false;
       }
 
-      function touchMove( e ) {
+      function touchMove(e) {
         var targetEvent =  e.targetTouches.item(0);
 
         p = $('#paper').position();

@@ -122,7 +122,7 @@ main = ->
 
   # listen to mouse events
   $(paper.canvas).mouseup (e) ->
-    arena.mouseReleased e.offsetX, e.offsetY
+    arena.mouseReleased()
     o = {x:e.offsetX, y:e.offsetY}
     $('#dev_log').append($('<p>').text("up " + JSON.stringify(o)))
 
@@ -147,56 +147,11 @@ main = ->
     arena.mouseMoved x, y
     arena.mousePressed x, y
 
-  window.touchend = (x, y) ->
-    alert "touchend #{x}, #{y}"
-    arena.mouseMoved x, y
-    arena.mouseReleased x, y
+  window.touchend = ->
+    arena.mouseReleased()
 
   window.touchmove = (x, y) ->
     arena.mouseMoved x, y
-
-
-  # $('#app').bind 'touchmove', (e) ->
-  #   # alert('touchmove')
-  #   # dlog( "start event=", inspect( e ) )
-  #   # var targetEvent =  e.touches.item(0)
-  #   # alert e
-  #   targetEvent = e.targetTouches.item(0)
-  #   alert targetEvent
-  #   # dlog( "targetevent=", inspect( targetEvent ) )
-
-  #   p = $('#paper').position()
-  #   px = p.left
-  #   py = p.top
-
-  #   x = targetEvent.clientX - px
-  #   y = targetEvent.clientY - py
-  #   dlog( "xy=", inspect( {x:x, y:y} ) )
-
-  #   e.preventDefault()
-  #   return false
-
-
-  # $(document).bind "touchmove", (e) ->
-  #   e.preventDefault()
-  #   dlog "touchmove"
-  #   # dlog "touchmove1", e
-  #   dlog "touchmove2", e.touches
-  #   dlog "something", e.originalEvent
-  #   touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-  #   dlog "touchmove3", touch
-
-  #   # dlog "touchmove", e
-  #   x = e.touches[0].pageX
-  #   y = e.touches[0].pageY
-  #   o = {x:x, y:y}
-  #   $('#dev_log').append($('<p>').text(JSON.stringify(o)))
-  #   arena.mouseMoved x, y
-
-
-  # $(document).bind 'touchmove', (e) ->
-  #   dlog 'touchmove'
-  #   dlog 'touchmove1', e.touches.item(0)
 
 
   # Use game as toplevel knockout ViewModel
