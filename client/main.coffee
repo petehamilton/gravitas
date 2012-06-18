@@ -143,7 +143,7 @@ main = ->
   # TODO try and put it here. For some reason the events lack fields...
   window.touchstart = (x, y) ->
     arena.mouseMoved x, y
-    setTimeout (=> arena.mousePressed x, y), 100
+    setTimeout (=> arena.mousePressed x, y), 50
 
   window.touchend = ->
     arena.mouseReleased()
