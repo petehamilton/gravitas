@@ -4,7 +4,7 @@ class @Turret
 
   # Positions are clockwise from top left to bottom left
   # 0 => TL, 1 => TR, 2 => BR, 3 => BL
-  constructor: (@paper, player_model) ->
+  constructor: (@paper, player_model, label) ->
     makeTurretOffset = (x, y) =>
       switch @position
         when 0 then { x: @center.x + x, y: @center.y + y }
@@ -71,6 +71,14 @@ class @Turret
       height = config.turret_height
       @turret_sprite = @paper.image(@image, @offset_center.x, @offset_center.y, width, height)
                         .transform("r#{@angle},#{@center.x},#{@center.y}")
+
+      # Turret labels (player names)
+      l = @paper.text(@offset_center.x - 40, @offset_center.y - 20, label)
+      l.attr
+        fill: config.player_colours[@position]
+        'font-size': 20
+        opacity: 0.7
+
 
   do_pulse: () =>
     @turret_pulse_anim.transform("s0").attr {opacity: 1}

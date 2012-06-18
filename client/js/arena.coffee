@@ -6,12 +6,13 @@ class @Arena
     # NOOP
 
   # Called when a battle start
-  start: ->
+  start: (usernames) ->
+    log "Arena.start, usernames:", usernames
     assert(@game, "game is not set on Arena.start")
 
     makeTurrets = (player_models) =>
       log "Creating turrets"
-      @turrets = (new Turret(@paper, player) for player in player_models)
+      @turrets = (new Turret(@paper, player, usernames[i]) for player, i in player_models)
 
     @crosshair = new Crosshair(@paper)
     @clock = new CountdownTimer(@paper, 215, 70)

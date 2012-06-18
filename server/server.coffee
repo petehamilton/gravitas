@@ -104,7 +104,7 @@ class Room
 
 
   # TODO Pull out the network stuff
-  startArena: (room_group, userIdToPlayerIdMapping) ->
+  startArena: (room_group, userIdToPlayerIdMapping, userIdToUsernameMapping) ->
     # @arena = new arena_model.ArenaModel()
     arena = new arena_model.ArenaModel()
 
@@ -115,7 +115,7 @@ class Room
 
     log "telling clients of room #{room_group.groupName} to start game with player mapping", JSON.stringify(userIdToPlayerIdMapping)
 
-    room_group.now.receiveStartGame userIdToPlayerIdMapping
+    room_group.now.receiveStartGame userIdToPlayerIdMapping, userIdToUsernameMapping
 
     # Send initial ball positions
     # TODO send other initial game data?
@@ -351,6 +351,7 @@ getSuitableRoom = ->
 
 startRoomGame = (room, room_group) ->
   userIdToPlayerIdMapping = {}
+  userIdToUsernameMapping = {}
   playerIdToUserIdMapping = {}
 
   clients = room.getClients()
@@ -361,9 +362,10 @@ startRoomGame = (room, room_group) ->
     assert.ok(u, "user model is defined when starting game")
     playerIdToUserIdMapping[pid] = u._id
     userIdToPlayerIdMapping[u._id] = pid
+    userIdToUsernameMapping[u._id] = u.username
 
   # Start a new game for these players
-  room.startArena room_group, userIdToPlayerIdMapping
+  room.startArena room_group, userIdToPlayerIdMapping, userIdToUsernameMapping
 
 
 configureNow = (everyone) ->
