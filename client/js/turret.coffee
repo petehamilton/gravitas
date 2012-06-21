@@ -81,7 +81,7 @@ class @Turret
       l.attr
         fill: config.player_colours[@position]
         'font-size': 20
-        opacity: 0.7
+        opacity: 0.5
 
 
   do_pulse: () =>
