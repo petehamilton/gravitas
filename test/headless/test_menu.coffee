@@ -1,6 +1,8 @@
 TEST_USER = 'niklas'
 TEST_PASSWORD = 'niklas'
+TEST_DISPLAY_NAME = 'Niklas'
 
+RESPONSE_TIMEOUT_MS = 50  # Timeout in ms we expect a websocked roundtrip to be done in
 
 casper = require('casper').create
   clientScripts:  []
@@ -95,6 +97,16 @@ casper.then ->
     assertVisible '.lobby-chat-container', 'chat is visible'
     assertEvalSelectorTextEqual '.assembly-content label.player:first', TEST_USER, 'player name appears in waiting list'
 
+    @test.comment "Chat"
+    fillJquery '.lobby-chat-form', { text: 'Message 1' }, true
+    @wait RESPONSE_TIMEOUT_MS, ->
+      assertEvalSelectorTextEqual '.lobby-chat p:first', "#{TEST_DISPLAY_NAME}: Message 1", 'chat works'
+      screenshot 'chat_result'
+
+      @test.comment "Leave"
+      @click '#assembly-window .leavebutton'
+      @waitWhileVisible '#assembly-window', ->
+        assertVisible '#search-form', 'back in the menu where in we were before on clicking Leave'
 
 # Run
 casper.run -> @test.renderResults true
