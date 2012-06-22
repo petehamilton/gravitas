@@ -37,6 +37,10 @@ test:
 	@echo "See ../client/test.html for browser tests"
 	mocha --compilers coffee:coffee-script spec/*  -R spec -w
 
+test_headless:
+	rm -rf test/headless/screenshots/*
+	cd test/headless && casperjs test ./
+
 
 uglify:
 	echo "" > client/js/ugly.js
