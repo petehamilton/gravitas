@@ -113,7 +113,7 @@
           <div class="centered-table-cell">
 
             <div id="login-window" class="box">
-              <form>
+              <form id="login-form">
                 <a href="http://en.wikipedia.org/wiki/Gravitas"><div class="logo"></div></a>
                 <p>
                   <label for="userName">Username</label>
@@ -320,9 +320,11 @@
               <!-- Search Panel -->
               <div class="lobby-content" data-bind="visible: assemblyContent() == 'search'">
                 <label class="large">Search</label><br/>
-                <span class="caps">Lookup Player</span>
-                <input class="small" type="text" placeholder="Search..." data-bind="value: searchUserUsername" />
-                <button data-bind="click: searchPlayer">Search</button>
+                <form id="search-form" data-bind="submit: searchPlayer">
+                  <span class="caps">Lookup Player</span>
+                  <input type="text" name="user" class="small" placeholder="Search..." data-bind="value: searchUserUsername" />
+                  <input type="submit" value="Search" />
+                </form>
                 <div class="search-result" data-bind="visible: searchUserRating() != 0">
                   <div class="search-profile-picture">
                     <img data-bind="attr: {src: searchAvatarURL}" class="profile" type="off" />
@@ -410,8 +412,8 @@
                   <tbody data-bind="foreach: connectedPlayers">
                     <tr>
                       <td><img src="" data-bind="attr: {src: avatarURL}" class="profile small" /></td>
-                      <td><label data-bind="text: username" class="small"></label></td>
-                      <td><label data-bind="text: rating" class="medium"></label></td>
+                      <td><label class="player small" data-bind="text: username"></label></td>
+                      <td><label class="rating medium" data-bind="text: rating"></label></td>
                     </tr>
                   </tbody>
                 </table>
