@@ -11,21 +11,28 @@ casper = require('casper').create
 
 { dump } = utils = require 'utils'
 
-
+# Takes a screenshots and saves it into screenshot directory.
 screenshot = (name) -> casper.capture "screenshots/#{name}.png"
 
+# Returns the text contained by elements matching `selector`.
+evalText = (selector) ->
+  casper.evaluate ((selector) -> $(selector).text()), selector: selector
+
+# Asserts that the elements of given selector are visible.
 assertVisible = (selector, msg) ->
   visible = casper.evaluate ((selector) -> $(selector).is ':visible'), selector: selector
   casper.test.assert visible, msg
 
+# Asserts that the expression extracted from the page by `testValueFn` is equal `expected`.
 assertEvalEqual = (testValueFn, expected, msg, replacements) ->
   testValue = casper.evaluate testValueFn, replacements
   casper.test.assertEquals testValue, expected, msg
 
-# Trims the text.
+# Assert that the (trimmed) text of the elements matching `selector` equals `expected`.
 assertEvalSelectorTextEqual = (selector, expected, msg) ->
   assertEvalEqual ((selector) -> $.trim($(selector).text())), expected, msg, selector: selector
 
+# Fills in the form matching `selector` and optionally submits it with jQuery's `.submit()`.
 fillJquery = (selector, vals, submit) ->
   casper.fill selector, vals, false
   if submit == true
