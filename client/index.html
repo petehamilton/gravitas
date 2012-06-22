@@ -384,8 +384,9 @@
 
               </div>
               <div class="lobby-chat-container">
-                <form data-bind="submit: lobbyPostChat">
-                   <label for="chatInput">Chat</label><input type="text" id="chatInput" class="small" data-bind="value: lobbyMessageInput"/>
+                <form class="lobby-chat-form" data-bind="submit: lobbyPostChat">
+                   <label for="chatInput">Chat</label>
+                   <input type="text" name="text" id="chatInput" class="small" data-bind="value: lobbyMessageInput"/>
                 </form>
                 <div class="lobby-chat" data-bind="foreach: lobbyMessages, onChange: scrollChatDown">
                   <p data-bind="text: $data">CHAT MESSAGE</p>
