@@ -126,7 +126,8 @@ class @Game
     @debugMode !@debugMode()
 
   enterKeyPressed: ->
-    if @lobbyVisible()
+    # Allow jumping quickly into the game using Enter on the profile page
+    if @lobbyVisible() and @assemblyContent() == 'profile'
       @assemblyClick()
 
 
