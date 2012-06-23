@@ -518,25 +518,25 @@ class @Game
 
     @displayMessage(@getPlayerId(), message)
 
-    setTimeout () =>
-      @assembly false
-      @gameStarted false
-      @resetAssemblyVariables()
-      @arena.resetPaper()
-
-      # Refresh profile data
-      @getStats()
-
-      # Populate summary data and show summary
-      @summaryPlayers(for pid, r of results
-        rating_sign = ''
-        rating_sign = '+' if r.rating_change > 0
-        rating_change_str = rating_sign + r.rating_change
-        new connectedPlayer(r.id, r.username, r.rating, r.avatarURL, rating_change_str, r.place)
-      )
-
-      @mainmenuContent('summary')
-
-    , config.post_game_wait
+    setTimeout @showSummary, config.post_game_wait
 
 
+  # Shows a game summary based on game results.
+  showSummary: (results) ->
+    @assembly false
+    @gameStarted false
+    @resetAssemblyVariables()
+    @arena.resetPaper()
+
+    # Refresh profile data
+    @getStats()
+
+    # Populate summary data and show summary
+    @summaryPlayers(for pid, r of results
+      rating_sign = ''
+      rating_sign = '+' if r.rating_change > 0
+      rating_change_str = rating_sign + r.rating_change
+      new connectedPlayer(r.id, r.username, r.rating, r.avatarURL, rating_change_str, r.place)
+    )
+
+    @mainmenuContent 'summary'
