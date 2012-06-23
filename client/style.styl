@@ -1,3 +1,6 @@
+TEXT_LIGHT = #a2b5c6
+TEXT_GRAY = #68727b
+
 linear-gradient()
   background: -moz-linear-gradient(arguments)
   background: -webkit-linear-gradient(arguments)
@@ -14,7 +17,6 @@ playbutton(fontSize)
   padding-left: 15px
   padding-right: 15px
   color: #fff2fa
-  //linear-gradient top, #e4a0cb 0%, #704268 100%
   linear-gradient top, #e5983c 0%, #a63500 100%
   font-weight: normal
   border: 1px solid #f7b465
@@ -105,39 +107,55 @@ table.allBorders
 input[type=text]
 input[type=password]
   color: #eee
-  padding: 7px
-  font-size: 14px
   border: 1px solid #444
   border-radius: 5px
   background: rgba(black, 0.5)
 
-input.small
-  font-size: 10px
+  font-size: 11px
   padding: 3px
   width: 150px
 
+  &.large
+    padding: 7px
+    font-size: 14px
+
 label
-  color: #68727b
   display: block
   padding-bottom: 2px
   font-size: 11px
+  color: TEXT_LIGHT
   text-transform: uppercase
 
-label[type=red]
+
+.achievement
+  text-transform: uppercase
+  font-size: 11px
+
+  p
+    color: TEXT_GRAY
+
+  .medal
+    // Align middle of the medal plate with text
+    position: relative
+    top: -7px
+    width: 34px
+    opacity: 0.4
+    padding-right: 6px
+
+  &.achieved
+    .medal
+      opacity: 1
+    .title
+      color: #9D8A66
+    .description
+      color: TEXT_LIGHT
+
+p.error
   color: #a20e0f
-  font-weight: 600
+  font-weight: bold
 
 label.large
   font-size: 14px
-  color: #fff
-
-label.small
-  color: #a2b5c6
-
-label.medium[type=grey]
-  color: #68727B
-
-label.medium[type=white]
   color: #fff
 
 img.profile
@@ -149,20 +167,12 @@ img.profile.small
   width: 32px
   height: 32px
 
-img.medal
-  width: 34px
-  opacity: 0.4
-
-  &.achieved
-    opacity: 1
-
 th
   color: #bccddc
 
 tr
-  color: #68727b
+  color: TEXT_GRAY
   font-size: 12px
-  font-variant:small-caps
 
 input[type=submit]
 button
@@ -410,7 +420,7 @@ a.glow:focus
         p
           font-size: 11px
           margin: .4em .1em
-          color: #a2b5c6
+          color: TEXT_LIGHT
           font-size: 11px
 
     .search-result

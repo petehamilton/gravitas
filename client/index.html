@@ -116,13 +116,13 @@
               <form id="login-form">
                 <a href="http://en.wikipedia.org/wiki/Gravitas"><div class="logo"></div></a>
                 <p>
-                  <label for="username">Username</label>
-                  <input type="text" name="username" maxlength="32" data-bind="value: username, event: { keypress: resetAuthStatus }, hasfocus: usernameFocus" />
+                  <label for="login-username">Username</label>
+                  <input type="text" id="login-username" name="username" class="large" maxlength="32" data-bind="value: username, event: { keypress: resetAuthStatus }, hasfocus: usernameFocus" />
                 </p>
 
                 <p>
-                  <label for="password">Password</label>
-                  <input type="password" name="password" data-bind="value: password, event: { keypress: resetAuthStatus }" />
+                  <label for="login-password">Password</label>
+                  <input type="password" id="login-password" name="password" class="large" data-bind="value: password, event: { keypress: resetAuthStatus }" />
                 </p>
 
                 <div class="buttons">
@@ -163,37 +163,37 @@
                 <table>
                   <tbody>
                     <tr>
-                      <td><label class="small">Display Name:</label></td>
+                      <td><label>Display Name:</label></td>
                       <td data-bind="text: username">DISPLAY_NAME</td>
                     </tr>
                     <tr>
-                      <td><label class="small">Email address:</label></td>
+                      <td><label>Email address:</label></td>
                       <td>EMAIL_ADDRESS</td>
                     </tr>
                     <tr>
                       <td><label class="large table-section">Profile Picture</label></td>
                     </tr>
                     <tr>
-                      <td><label class="small">Picture URL</label></td>
-                      <td><input class="small" type="text" data-bind="value: avatarURL" /></td>
+                      <td><label>Picture URL</label></td>
+                      <td><input type="text" data-bind="value: avatarURL" /></td>
                     </tr>
                     <tr>
                       <td><button>Save new URL</button></td>
                     </tr>
                     <tr>
-                     <td><label class="large table-section">Change Password</label></td>
+                      <td><label class="large table-section">Change Password</label></td>
                     </tr>
                     <tr>
-                      <td><label class="small">Old Password:</label></td>
-                      <td><input class="small" type="password" data-bind="value: oldPasswordInput" /></td>
+                      <td><label>Old Password:</label></td>
+                      <td><input type="password" data-bind="value: oldPasswordInput" /></td>
                     </tr>
                     <tr>
-                      <td><label class="small">New Password:</label></td>
-                      <td><input class="small" type="password" data-bind="value: newPasswordInput1" /></td>
+                      <td><label>New Password:</label></td>
+                      <td><input type="password" data-bind="value: newPasswordInput1" /></td>
                     </tr>
                     <tr>
-                      <td><label class="small">Confirm Password:</label></td>
-                      <td><input class="small" type="password" data-bind="value: newPasswordInput2" /></td>
+                      <td><label>Confirm Password:</label></td>
+                      <td><input type="password" data-bind="value: newPasswordInput2" /></td>
                     </tr>
                     <tr>
                       <td>
@@ -202,7 +202,7 @@
                         </button>
                       </td>
                       <td>
-                        <label type="red" data-bind="visible: passwordsMismatch()">Passwords do not match!</label>
+                        <p class="error" data-bind="visible: passwordsMismatch()">Passwords do not match!</p>
                       </td>
                     </tr>
                   </tbody>
@@ -219,19 +219,19 @@
                   <table>
                     <tbody>
                       <tr>
-                        <td><label class="small">Games Won</label></td>
+                        <td><label>Games Won</label></td>
                         <td data-bind="text: gamesWon()">999</td>
                       </tr>
                       <tr>
-                        <td><label class="small">Games Played</label></td>
+                        <td><label>Games Played</label></td>
                         <td data-bind="text: gamesPlayed()">123</td>
                       </tr>
                       <tr>
-                        <td><label class="small">Time Played</label></td>
+                        <td><label>Time Played</label></td>
                         <td data-bind="text: timePlayedConverted()">13h 19mins</td>
                       </tr>
                       <tr>
-                        <td><label class="small">Win/Loss Ratio</label></td>
+                        <td><label>Win/Loss Ratio</label></td>
                       </tr>
                     </tbody>
                   </table>
@@ -246,35 +246,36 @@
 
                 <table valign="middle">
                   <tbody>
-                    <tr>
-                      <td><img src="images/medals/first.png" class="medal" data-bind="css: { achieved: achievementStep() != '' }" /></td>
-                      <td><label class="medium">Step Into Gravitas</label></td>
-                      <td><label class="small">Win one game.</label></td>
-                      <td data-bind="text: achievementStep()"></td>
+                    <!-- TODO remove hardcode -->
+                    <tr class="achievement" data-bind="css: { achieved: achievementStep() != '' }">
+                      <td><img src="images/medals/first.png" class="medal" /></td>
+                      <td><p class="title">Step Into Gravitas</p></td>
+                      <td><p class="description">Win one game.</p></td>
+                      <td class="date" data-bind="text: achievementStep()"></td>
                     </tr>
-                    <tr>
-                      <td><img src="images/medals/veteran.png" class="medal" data-bind="css: { achieved: achievementVeteran() != '' }" /></td>
-                      <td><label class="medium" type="grey">Veteran</label></td>
-                      <td><label class="small">Win 100 games.</label></td>
-                      <td data-bind="text: achievementVeteran()"></td>
+                    <tr class="achievement" data-bind="css: { achieved: achievementVeteran() != '' }">
+                      <td><img src="images/medals/veteran.png" class="medal" /></td>
+                      <td><p class="title">Veteran</p></td>
+                      <td><p class="description">Win 100 games.</p></td>
+                      <td class="date" data-bind="text: achievementVeteran()"></td>
                     </tr>
-                    <tr>
-                      <td><img src="images/medals/winner.png" class="medal" data-bind="css: { achieved: achievementWinner() != '' }" /></td>
-                      <td><label class="medium" type="grey">Winner</label></td>
-                      <td><label class="small">Win more than 50 games and have more wins than losses.</label></td>
-                      <td data-bind="text: achievementWinner()"></td>
+                    <tr class="achievement" data-bind="css: { achieved: achievementWinner() != '' }">
+                      <td><img src="images/medals/winner.png" class="medal" /></td>
+                      <td><p class="title">Winner</p></td>
+                      <td><p class="description">Win more than 50 games and have more wins than losses.</p></td>
+                      <td class="date" data-bind="text: achievementWinner()"></td>
                     </tr>
-                    <tr>
-                      <td><img src="images/medals/addict.png" class="medal" data-bind="css: { achieved: achievementHardcore() != '' }" /></td>
-                      <td><label class="medium" type="grey">Hardcore</label></td>
-                      <td><label class="small">Spend 10 hours playing Gravitas.</label></td>
-                      <td data-bind="text: achievementHardcore()"></td>
+                    <tr class="achievement" data-bind="css: { achieved: achievementHardcore() != '' }">
+                      <td><img src="images/medals/addict.png" class="medal" /></td>
+                      <td><p class="title">Hardcore</p></td>
+                      <td><p class="description">Spend 10 hours playing Gravitas.</p></td>
+                      <td class="date" data-bind="text: achievementHardcore()"></td>
                     </tr>
-                    <tr>
-                      <td><img src="images/medals/unlucky.png" class="medal" data-bind="css: { achieved: achievementUnlucky() != '' }" /></td>
-                      <td><label class="medium" type="grey">Unlucky</label></td>
-                      <td><label class="small">Lose 50 games.</label></td>
-                      <td data-bind="text: achievementUnlucky()"></td>
+                    <tr class="achievement" data-bind="css: { achieved: achievementUnlucky() != '' }">
+                      <td><img src="images/medals/unlucky.png" class="medal" /></td>
+                      <td><p class="title">Unlucky</p></td>
+                      <td><p class="description">Lose 50 games.</p></td>
+                      <td class="date" data-bind="text: achievementUnlucky()"></td>
                     </tr>
                   </tbody>
                 </table>
@@ -288,11 +289,11 @@
                 <table class="allBorders">
                   <thead>
                     <tr>
-                      <td><label class="small">Place</label></td>
-                      <td><label class="small">Player</label></td>
+                      <td><label>Place</label></td>
+                      <td><label>Player</label></td>
                       <td></td>
-                      <td><label class="small">Rating</label></td>
-                      <td><label class="small">Rating Change</label></td>
+                      <td><label>Rating</label></td>
+                      <td><label>Rating Change</label></td>
                     </tr>
                   </thead>
                   <tbody data-bind="foreach: summaryPlayers">
@@ -311,7 +312,7 @@
                   <tr>
                     <!-- TODO Make this dynamic -->
                     <td><img src="images/medals/first.png" class="medal" data-bind="css: { achieved: true }" /></td>
-                    <td><label class="medium" type="white">Owned! You have lost 50 times.</label></td>
+                    <td><label>Owned! You have lost 50 times.</label></td>
                   </tr>
                 </tbody>
               </table>
@@ -321,8 +322,8 @@
               <div class="mainmenu-content" data-bind="visible: mainmenuContent() == 'search'">
                 <label class="large menu-heading">Search</label><br/>
                 <form id="search-form" data-bind="submit: searchPlayer">
-                  <span class="caps">Lookup Player</span>
-                  <input type="text" name="user" class="small" placeholder="Search..." data-bind="value: searchUserUsername" />
+                  <label>Lookup Player</label>
+                  <input type="text" name="user" placeholder="Search..." data-bind="value: searchUserUsername" />
                   <input type="submit" value="Search" />
                 </form>
                 <div class="search-result" data-bind="visible: searchUserRating() != 0">
@@ -333,23 +334,23 @@
                     <table>
                       <tbody>
                         <tr>
-                          <td><label class="small">Rating</label></td>
+                          <td><label>Rating</label></td>
                           <td data-bind="text: searchUserRating()">999</td>
                         </tr>
                         <tr>
-                          <td><label class="small">Games Won</label></td>
+                          <td><label>Games Won</label></td>
                           <td data-bind="text: searchGamesWon()">999</td>
                         </tr>
                         <tr>
-                          <td><label class="small">Games Played</label></td>
+                          <td><label>Games Played</label></td>
                           <td data-bind="text: searchGamesPlayed()">123</td>
                         </tr>
                         <tr>
-                          <td><label class="small">Time Played</label></td>
+                          <td><label>Time Played</label></td>
                           <td data-bind="text: searchTimePlayedConverted()">13h 19mins</td>
                         </tr>
                         <tr>
-                          <td><label class="small">Win/Loss Ratio</label></td>
+                          <td><label>Win/Loss Ratio</label></td>
                           <td data-bind="text: searchWinLossRatio()"></td>
                         </tr>
                       </tbody>
@@ -386,8 +387,8 @@
 
               <div class="lobby-chat-container">
                 <form class="lobby-chat-form" data-bind="submit: lobbyPostChat">
-                   <label for="chatInput">Chat</label>
-                   <input type="text" name="text" id="chatInput" class="small" data-bind="value: lobbyMessageInput"/>
+                  <label for="lobby-chat-input">Chat</label>
+                  <input type="text" name="text" id="lobby-chat-input" data-bind="value: lobbyMessageInput"/>
                 </form>
                 <div class="lobby-chat" data-bind="foreach: lobbyMessages, onChange: scrollChatDown">
                   <p data-bind="text: $data">CHAT MESSAGE</p>
@@ -406,9 +407,9 @@
                 <table>
                   <thead>
                     <tr>
-                      <td><label class="small">Player</label></td>
+                      <td><label>Player</label></td>
                       <td></td>
-                      <td><label class="small">Rating</label></td>
+                      <td><label>Rating</label></td>
                     </tr>
                   </thead>
                   <tbody data-bind="foreach: connectedPlayers">
