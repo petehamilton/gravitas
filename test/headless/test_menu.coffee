@@ -12,7 +12,7 @@ casper = require('casper').create
 { dump } = utils = require 'utils'
 
 # Takes a screenshots and saves it into screenshot directory.
-screenshot = (name) -> casper.capture "screenshots/#{name}.png"
+screenshot = (name) -> casper.capture "gen/screenshots/#{name}.png"
 
 # Returns the text contained by elements matching `selector`.
 evalText = (selector) ->

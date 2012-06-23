@@ -38,7 +38,7 @@ test:
 	mocha --compilers coffee:coffee-script spec/*  -R spec -w
 
 test_headless:
-	rm -rf test/headless/screenshots/*
+	rm -rf test/headless/gen/screenshots/*
 	cd test/headless && casperjs test ./
 
 
