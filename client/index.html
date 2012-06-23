@@ -105,19 +105,19 @@
 
     <div id="app" class="hidden-on-startup" ontouchmove="touchMove(event)" ontouchstart="touchStart(event)" ontouchend="touchEnd(event)">
 
-      <!-- Menu: Login, Lobby and Assembly -->
+      <!-- Menu: Login, Mainmenu and Lobby -->
       <div id="menu" class="screen" data-bind="fadeVisible: !gameStarted()">
 
-        <!-- Login window -->
-        <div class="window centered-table" data-bind="fadeVisible: !loggedIn()">
+        <!-- Login -->
+        <div id="login" class="window centered-table" data-bind="fadeVisible: !loggedIn()">
           <div class="centered-table-cell">
+            <div class="box">
 
-            <div id="login-window" class="box">
               <form id="login-form">
                 <a href="http://en.wikipedia.org/wiki/Gravitas"><div class="logo"></div></a>
                 <p>
-                  <label for="userName">Username</label>
-                  <input type="text" name="userName" maxlength="32" data-bind="value: username, event: { keypress: resetAuthStatus }, hasfocus: usernameFocus" />
+                  <label for="username">Username</label>
+                  <input type="text" name="username" maxlength="32" data-bind="value: username, event: { keypress: resetAuthStatus }, hasfocus: usernameFocus" />
                 </p>
 
                 <p>
@@ -134,44 +134,44 @@
                   <a href="#" data-bind="click: showSignupWindow">Sign up</a>
                 </p>
               </form>
-            </div>
 
+            </div>
           </div>
         </div>
 
-        <!-- Lobby window -->
-        <div class="window centered-table" data-bind="fadeVisible: lobbyVisible()">
+        <!-- Mainmenu: Profile, Achievements, Settings, Search -->
+        <div id="mainmenu" class="window centered-table" data-bind="fadeVisible: mainmenuVisible()">
           <div class="centered-table-cell">
+            <div class="box">
 
-            <div id="lobby-window" class="box">
+              <!-- WARNING: This is partially duplicated in #lobby -->
               <div class="logo left"></div>
               <div class="nick">
-                <span id="username-span" data-bind="text: username" placeholder="Username"></span>
-                <span class="rating" data-bind="style: { color: userRatingColor() }, text: userRating()"></span><br />
+                <span class="username" data-bind="text: username">USERNAME</span>
+                <span class="rating" data-bind="style: { color: userRatingColor() }, text: userRating()">RATING</span><br />
                 <div id="navigation">
-                  <a href="#" class="glow" data-menu="profile" data-bind="click: assemblyGoTo">A</a>
-                  <a href="#" class="glow" data-menu="achievements" data-bind="click: assemblyGoTo">s</a>
-                  <a href="#" class="glow" data-menu="settings" data-bind="click: assemblyGoTo">C</a>
-                  <a href="#" class="glow" data-menu="search" data-bind="click: assemblyGoTo">M</a>
+                  <!-- The letters are for the corresponding symbols in the symbol font. -->
+                  <a href="#" class="glow" data-menu="profile" data-bind="click: menuGoTo">A</a>
+                  <a href="#" class="glow" data-menu="achievements" data-bind="click: menuGoTo">s</a>
+                  <a href="#" class="glow" data-menu="settings" data-bind="click: menuGoTo">C</a>
+                  <a href="#" class="glow" data-menu="search" data-bind="click: menuGoTo">M</a>
                 </div>
               </div>
-              <br />
-              <div class="lobby-content" data-bind="visible: assemblyContent() == 'settings'">
-                <label class="large">Settings</label><br />
+
+              <div class="mainmenu-content" data-bind="visible: mainmenuContent() == 'settings'">
+                <label class="large menu-heading">Settings</label>
                 <table>
                   <tbody>
                     <tr>
                       <td><label class="small">Display Name:</label></td>
-                      <td data-bind="text: username"></td>
+                      <td data-bind="text: username">DISPLAY_NAME</td>
                     </tr>
                     <tr>
                       <td><label class="small">Email address:</label></td>
-                      <td>user@email.address</td>
+                      <td>EMAIL_ADDRESS</td>
                     </tr>
                     <tr>
-                      <td>
-                        <br /><label class="large">Profile Picture</label>
-                      </td>
+                      <td><label class="large table-section">Profile Picture</label></td>
                     </tr>
                     <tr>
                       <td><label class="small">Picture URL</label></td>
@@ -181,7 +181,7 @@
                       <td><button>Save new URL</button></td>
                     </tr>
                     <tr>
-                     <td><br /><label class="large">Change Password</label></td>
+                     <td><label class="large table-section">Change Password</label></td>
                     </tr>
                     <tr>
                       <td><label class="small">Old Password:</label></td>
@@ -210,8 +210,8 @@
 
               </div>
 
-              <div class="lobby-content" data-bind="visible: assemblyContent() == 'profile'">
-                <label class="large">Profile</label><br />
+              <div class="mainmenu-content" data-bind="visible: mainmenuContent() == 'profile'">
+                <label class="large menu-heading">Profile</label><br />
                 <div class="profile-picture">
                   <img src="" data-bind="attr: {src: avatarURL}" class="profile" />
                 </div>
@@ -241,8 +241,8 @@
               </div>
 
               <!-- Achievements -->
-              <div class="lobby-content" data-bind="visible: assemblyContent() == 'achievements'">
-                <label class="large">Achievements</label><br />
+              <div class="mainmenu-content" data-bind="visible: mainmenuContent() == 'achievements'">
+                <label class="large menu-heading">Achievements</label><br />
 
                 <table valign="middle">
                   <tbody>
@@ -282,8 +282,8 @@
               </div>
 
               <!-- Game Summary -->
-              <div class="lobby-content" data-bind="visible: assemblyContent() == 'summary'">
-              <label class="large"> Congratulations: you have won!</label><br />
+              <div class="mainmenu-content" data-bind="visible: mainmenuContent() == 'summary'">
+              <label class="large menu-heading"> Congratulations: you have won!</label><br />
                 <center>
                 <table class="allBorders">
                   <thead>
@@ -318,8 +318,8 @@
               </div>
 
               <!-- Search Panel -->
-              <div class="lobby-content" data-bind="visible: assemblyContent() == 'search'">
-                <label class="large">Search</label><br/>
+              <div class="mainmenu-content" data-bind="visible: mainmenuContent() == 'search'">
+                <label class="large menu-heading">Search</label><br/>
                 <form id="search-form" data-bind="submit: searchPlayer">
                   <span class="caps">Lookup Player</span>
                   <input type="text" name="user" class="small" placeholder="Search..." data-bind="value: searchUserUsername" />
@@ -360,7 +360,7 @@
 
               <!-- Buttons -->
               <div class="buttons">
-                <button data-menu="summary" data-bind="click: assemblyGoTo, fadeVisible: debugMode()">
+                <button data-menu="summary" data-bind="click: menuGoTo, fadeVisible: debugMode()">
                   SUMMARY DEBUG
                 </button>
                 <button class="playbutton" data-bind="click: assemblyClick">
@@ -373,16 +373,17 @@
         </div>
 
         <!-- Assembly (where you join a game) -->
-        <div class="window centered-table" data-bind="fadeVisible: assemblyVisible()">
+        <div id="assembly" class="window centered-table" data-bind="fadeVisible: assemblyVisible()">
           <div class="centered-table-cell">
+            <div class="box">
 
-            <div id="assembly-window" class="box">
+              <!-- WARNING: This is partially duplicated in #mainmenu -->
               <div class="logo left"></div>
               <div class="nick">
-                <span data-bind="text: username" placeholder="Username"></span>
-                <span class="rating" data-bind="style: { color: userRatingColor() }, text: userRating()"></span>
-
+                <span class="username" data-bind="text: username">USERNAME</span>
+                <span class="rating" data-bind="style: { color: userRatingColor() }, text: userRating()">RATING</span><br />
               </div>
+
               <div class="lobby-chat-container">
                 <form class="lobby-chat-form" data-bind="submit: lobbyPostChat">
                    <label for="chatInput">Chat</label>

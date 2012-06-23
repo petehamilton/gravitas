@@ -55,11 +55,11 @@ casper.then ->
     screenshot 'login_form'
 
     # TODO check why submitting from with true doesn't work
-    @fill '#login-form', { userName: TEST_USER, password: TEST_PASSWORD }, false
+    @fill '#login-form', { username: TEST_USER, password: TEST_PASSWORD }, false
 
     screenshot 'login_form_filled'
 
-    @click '#login-window input[type=submit]'
+    @click '#login input[type=submit]'
 
     @waitWhileVisible '#login-form', =>
       screenshot 'after_login'
@@ -67,7 +67,7 @@ casper.then ->
 
       assertVisible '#menu .playbutton', 'Play button is visible'
       assertEvalSelectorTextEqual '#menu .playbutton', 'Play', 'Play button text is right'
-      assertEvalSelectorTextEqual '#username-span', TEST_USER, 'Player name is set'
+      assertEvalSelectorTextEqual '#mainmenu .username', TEST_USER, 'Player name is set'
 
       @wait 1000, =>
         screenshot 'after_login_time'
@@ -93,15 +93,15 @@ casper.then ->
     screenshot 'search_result'
     assertVisible '.search-profile-picture', 'profile picture is shown'
 
-  rating = evalText '#lobby-window .rating'
+  rating = evalText '#mainmenu .rating'
   @test.assert (500 <= rating <= 2200), 'user rating is valid'
 
 
 casper.then ->
   @test.info "Lobby"
 
-  @click '#lobby-window .playbutton'
-  @waitUntilVisible '#assembly-window', ->
+  @click '#mainmenu .playbutton'
+  @waitUntilVisible '#assembly', ->
     screenshot 'lobby'
     assertVisible '.waiting-label', 'waiting label is visible'
     assertVisible '.lobby-chat-container', 'chat is visible'
@@ -114,8 +114,8 @@ casper.then ->
       screenshot 'chat_result'
 
       @test.comment "Leave"
-      @click '#assembly-window .leavebutton'
-      @waitWhileVisible '#assembly-window', ->
+      @click '#assembly .leavebutton'
+      @waitWhileVisible '#assembly', ->
         assertVisible '#search-form', 'back in the menu where in we were before on clicking Leave'
 
 

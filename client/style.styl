@@ -253,7 +253,6 @@ a.glow:focus
 .centered-table-cell
   display: table-cell
   width: 100%
-  text-align: center
   vertical-align: middle
 
 
@@ -303,6 +302,10 @@ a.glow:focus
     top: 0
     right: 0
 
+.table-section
+  padding-top: 1em
+  padding-bottom: .2em
+
 
 #app
   &.hidden-on-startup
@@ -320,12 +323,12 @@ a.glow:focus
 
 
 #menu
-  background-image: url(images/ui/bgnologo.jpg)
+  background-image: url('/images/ui/bgnologo.jpg')
   background-position: center center
   background-size-cover()
   z-index: 1000
 
-  #login-window
+  #login .box
     width: 180px
     height: 250px
 
@@ -341,32 +344,47 @@ a.glow:focus
       margin-left: 3px
       font-size: 12px
 
-  #assembly-window
-  #lobby-window
-    width: 600px
-    min-height: 380px
+  .menu-heading
+    margin-bottom: 1.2em
 
-    .lobby-content
+  #mainmenu
+  #assembly
+
+    .box
+      width: 600px
+      min-height: 380px
+
+    .nick
+      position: absolute
+      top: 10px
+      right: 15px
+      text-align: right
+      display: inline-block
+      font-size: 24px
+      color: #fff
+      font-variant: small-caps
+
+      .username
+        text-transform: capitalize
+
+      .rating
+        font-size: 28px
+        font-variant: small-caps
+
+      #navigation
+        font-family:'HeydingsIconsRegular'
+        display: inline-block
+        color: #bccddc
+        font-size: 24px
+        font-variant: normal
+
+    .mainmenu-content
       padding-left: 30px
       padding-top: 20px
       color: #bccddc
       //color: rgb(30%,70%,0%)
       font-size: 11px
       width: 70%
-
-    .nick
-      text-align: right
-      display: inline-block
-      position: absolute
-      top: 10px
-      right: 15px
-      font-size: 24px
-      color: #fff
-      font-variant: small-caps
-
-    .rating
-      font-size: 28px
-      font-variant: small-caps
 
     .buttons
       position: absolute
@@ -397,16 +415,6 @@ a.glow:focus
 
     .search-result
       padding:30px
-
-    #navigation
-      font-family:'HeydingsIconsRegular'
-      display: inline-block
-      color: #bccddc
-      font-size: 24px
-      font-variant: normal
-
-    #username-span
-      text-transform: capitalize
 
 
     .playbutton

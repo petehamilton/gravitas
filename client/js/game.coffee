@@ -30,12 +30,12 @@ class @Game
     @assembly = ko.observable false
     @userId = ko.observable null
 
-    @lobbyVisible = ko.computed => !@gameStarted() and @loggedIn() and !@assembly()
+    @mainmenuVisible = ko.computed => !@gameStarted() and @loggedIn() and !@assembly()
     @assemblyVisible = ko.computed => !@gameStarted() and @loggedIn() and @assembly()
 
     # Assembly
-    @assemblyContent = ko.observable 'profile'
-   # @assemblyContent = ko.observable 'summary'
+    @mainmenuContent = ko.observable 'profile'
+   # @mainmenuContent = ko.observable 'summary'
 
     # Authentication
     @username = ko.observable hashToLogin[document.location.hash]
@@ -127,7 +127,7 @@ class @Game
 
   enterKeyPressed: ->
     # Allow jumping quickly into the game using Enter on the profile page
-    if @lobbyVisible() and @assemblyContent() == 'profile'
+    if @mainmenuVisible() and @mainmenuContent() == 'profile'
       @assemblyClick()
 
 
@@ -136,8 +136,8 @@ class @Game
     # TODO implement
 
 
-  assemblyGoTo: (game, event) =>
-    @assemblyContent $(event.target).data('menu')
+  menuGoTo: (game, event) =>
+    @mainmenuContent $(event.target).data('menu')
 
 
   resetAuthStatus: =>
@@ -535,7 +535,7 @@ class @Game
         new connectedPlayer(r.id, r.username, r.rating, r.avatarURL, rating_change_str, r.place)
       )
 
-      @assemblyContent('summary')
+      @mainmenuContent('summary')
 
     , config.post_game_wait
 
