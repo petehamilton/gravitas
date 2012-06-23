@@ -1,5 +1,5 @@
-TEXT_LIGHT = #a2b5c6
-TEXT_GRAY = #68727b
+COLOR_TEXT_LIGHT = #a2b5c6
+COLOR_TEXT_GRAY = #68727b
 
 linear-gradient()
   background: -moz-linear-gradient(arguments)
@@ -82,6 +82,13 @@ lion-scrollbars()
 
 }
 
+medal-with-text()
+  // Align middle of the medal plate with text
+  position: relative
+  top: -7px
+  width: 34px
+  padding-right: 6px
+
 
 body
   margin: 0
@@ -95,14 +102,6 @@ body
   lion-scrollbars()
 
 
-span.caps
-  text-transform: uppercase
-
-table.allBorders
-  border-collapse:separate;
-  border-spacing:10px 5px;  text-align: center
-
-
 
 input[type=text]
 input[type=password]
@@ -111,7 +110,8 @@ input[type=password]
   border-radius: 5px
   background: rgba(black, 0.5)
 
-  font-size: 11px
+  margin: 0
+  font-size: inherit
   padding: 3px
   width: 150px
 
@@ -119,28 +119,36 @@ input[type=password]
     padding: 7px
     font-size: 14px
 
+
 label
-  display: block
+  margin-right: .8em
   padding-bottom: 2px
   font-size: 11px
-  color: TEXT_LIGHT
+  color: COLOR_TEXT_LIGHT
   text-transform: uppercase
 
+.label
+  margin-right: .8em
+  color: COLOR_TEXT_LIGHT
+  text-transform: uppercase
+  font-weight: normal
+
+
+.menu-heading
+  font-size: 14px
+  text-transform: uppercase
+  color: white
+  margin-top: 0
+  margin-bottom: 16px
 
 .achievement
   text-transform: uppercase
   font-size: 11px
-
-  p
-    color: TEXT_GRAY
+  color: COLOR_TEXT_GRAY
 
   .medal
-    // Align middle of the medal plate with text
-    position: relative
-    top: -7px
-    width: 34px
     opacity: 0.4
-    padding-right: 6px
+    medal-with-text()
 
   &.achieved
     .medal
@@ -148,7 +156,8 @@ label
     .title
       color: #9D8A66
     .description
-      color: TEXT_LIGHT
+      color: COLOR_TEXT_LIGHT
+
 
 p.error
   color: #a20e0f
@@ -169,10 +178,6 @@ img.profile.small
 
 th
   color: #bccddc
-
-tr
-  color: TEXT_GRAY
-  font-size: 12px
 
 input[type=submit]
 button
@@ -200,16 +205,14 @@ button
     background: red
     linear-gradient top, red 0%, red 100%
 
-  &.play
-    color: #9fc181
+  &[disabled]
+    linear-gradient top, #4a6f9a 0%, #2c4e71 100%
 
-button[disabled]
-  linear-gradient top, #4a6f9a 0%, #2c4e71 100%
+    &:hover
+    &:focus
+      color: #b7d1dc
+      border: 1px solid #21619b
 
-  &:hover
-  &:focus
-    color: #b7d1dc
-    border: 1px solid #21619b
 
 .screen
   position: absolute
@@ -218,9 +221,6 @@ button[disabled]
   left: 0
   right: 0
 
-
-p
-  color: #aaa
 
 a
   &:link
@@ -271,10 +271,6 @@ a.glow:focus
   text-align: left
   border: 3px solid #525e67
 
-  .centered-table-cell
-    display: table-cell
-    vertical-align: middle
-
 
 .box
   margin-left: auto
@@ -312,24 +308,14 @@ a.glow:focus
     top: 0
     right: 0
 
-.table-section
-  padding-top: 1em
-  padding-bottom: .2em
-
-
 #app
   &.hidden-on-startup
     visibility: hidden
 
-
-.profile-picture
-.profile-stats
-.search-profile-stats
-.search-profile-picture
+stats-inline-block()
   display: inline-block
   vertical-align: middle
-  padding-bottom: 0px
-  padding-right: 20px
+  margin-right: 20px
 
 
 #menu
@@ -391,10 +377,44 @@ a.glow:focus
     .mainmenu-content
       padding-left: 30px
       padding-top: 20px
-      color: #bccddc
-      //color: rgb(30%,70%,0%)
       font-size: 11px
-      width: 70%
+      color: COLOR_TEXT_GRAY
+
+    #profile
+      .picture
+      .stats
+        stats-inline-block()
+
+    #search
+      .stats
+      .picture
+        stats-inline-block()
+
+    #achievements
+      table.medals
+        width: 80%
+
+    #settings
+      font-size: 11px
+
+      .section
+        padding-top: 20px
+        .label
+          color: white
+          font-size: 14px
+
+    #summary
+      table.scores
+        margin: 0 auto
+        border-collapse: separate
+        border-spacing: 10px 5px
+        text-align: center
+
+      table.earned-achievements
+        margin-top: 10px
+
+        .medal
+          medal-with-text()
 
     .buttons
       position: absolute
@@ -420,8 +440,7 @@ a.glow:focus
         p
           font-size: 11px
           margin: .4em .1em
-          color: TEXT_LIGHT
-          font-size: 11px
+          color: COLOR_TEXT_LIGHT
 
     .search-result
       padding:30px

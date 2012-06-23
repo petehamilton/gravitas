@@ -91,7 +91,7 @@ casper.then ->
   screenshot 'search_filled'
   @waitUntilVisible '.search-result', ->
     screenshot 'search_result'
-    assertVisible '.search-profile-picture', 'profile picture is shown'
+    assertVisible '#search .picture', 'profile picture is shown'
 
   rating = evalText '#mainmenu .rating'
   @test.assert (500 <= rating <= 2200), 'user rating is valid'

@@ -159,28 +159,28 @@
               </div>
 
               <!-- Profile -->
-              <div class="mainmenu-content" data-bind="visible: mainmenuContent() == 'profile'">
-                <label class="large menu-heading">Profile</label><br />
-                <div class="profile-picture">
-                  <img src="" data-bind="attr: {src: avatarURL}" class="profile" />
+              <div id="profile" class="mainmenu-content" data-bind="visible: mainmenuContent() == 'profile'">
+                <p class="menu-heading">Profile</p>
+                <div class="picture">
+                  <img class="profile" data-bind="attr: { src: avatarURL }" />
                 </div>
-                <div class="profile-stats">
+                <div class="stats">
                   <table>
                     <tbody>
                       <tr>
-                        <td><label>Games Won</label></td>
+                        <td><span class="label">Games Won</span></td>
                         <td data-bind="text: gamesWon()">999</td>
                       </tr>
                       <tr>
-                        <td><label>Games Played</label></td>
+                        <td><span class="label">Games Played</span></td>
                         <td data-bind="text: gamesPlayed()">123</td>
                       </tr>
                       <tr>
-                        <td><label>Time Played</label></td>
+                        <td><span class="label">Time Played</span></td>
                         <td data-bind="text: timePlayedConverted()">13h 19mins</td>
                       </tr>
                       <tr>
-                        <td><label>Win/Loss Ratio</label></td>
+                        <td><span class="label">Win/Loss Ratio</span></td>
                       </tr>
                     </tbody>
                   </table>
@@ -190,10 +190,10 @@
               </div>
 
               <!-- Achievements -->
-              <div class="mainmenu-content" data-bind="visible: mainmenuContent() == 'achievements'">
-                <label class="large menu-heading">Achievements</label><br />
+              <div id="achievements" class="mainmenu-content" data-bind="visible: mainmenuContent() == 'achievements'">
+                <p class="menu-heading">Achievements</p>
 
-                <table valign="middle">
+                <table class="medals">
                   <tbody>
                     <!-- TODO remove hardcode -->
                     <tr class="achievement" data-bind="css: { achieved: achievementStep() != '' }">
@@ -231,41 +231,41 @@
               </div>
 
               <!-- Settings -->
-              <div class="mainmenu-content" data-bind="visible: mainmenuContent() == 'settings'">
-                <label class="large menu-heading">Settings</label>
+              <div id="settings" class="mainmenu-content" data-bind="visible: mainmenuContent() == 'settings'">
+                <p class="menu-heading">Settings</p>
                 <table>
                   <tbody>
                     <tr>
-                      <td><label>Display Name</label></td>
+                      <td><span class="label">Display Name</span></td>
                       <td data-bind="text: username">DISPLAY_NAME</td>
                     </tr>
                     <tr>
-                      <td><label>Email address</label></td>
+                      <td><span class="label">Email address</span></td>
                       <td>EMAIL_ADDRESS</td>
                     </tr>
                     <tr>
-                      <td><label class="large table-section">Profile Picture</label></td>
+                      <td class="section"><span class="label">Profile Picture</span></td>
                     </tr>
                     <tr>
-                      <td><label>Picture URL</label></td>
+                      <td><span class="label">Picture URL</span></td>
                       <td><input type="text" data-bind="value: avatarURL" /></td>
                     </tr>
                     <tr>
                       <td><button>Save new URL</button></td>
                     </tr>
                     <tr>
-                      <td><label class="large table-section">Change Password</label></td>
+                      <td class="section"><span class="label">Change Password</span></td>
                     </tr>
                     <tr>
-                      <td><label>Old Password</label></td>
+                      <td><span class="label">Old Password</span></td>
                       <td><input type="password" data-bind="value: oldPasswordInput" /></td>
                     </tr>
                     <tr>
-                      <td><label>New Password</label></td>
+                      <td><span class="label">New Password</span></td>
                       <td><input type="password" data-bind="value: newPasswordInput1" /></td>
                     </tr>
                     <tr>
-                      <td><label>Confirm Password</label></td>
+                      <td><span class="label">Confirm Password</span></td>
                       <td><input type="password" data-bind="value: newPasswordInput2" /></td>
                     </tr>
                     <tr>
@@ -283,39 +283,39 @@
               </div>
 
               <!-- Search -->
-              <div class="mainmenu-content" data-bind="visible: mainmenuContent() == 'search'">
-                <label class="large menu-heading">Search</label><br/>
+              <div id="search" class="mainmenu-content" data-bind="visible: mainmenuContent() == 'search'">
+                <p class="menu-heading">Search</p>
                 <form id="search-form" data-bind="submit: searchPlayer">
-                  <label>Lookup Player</label>
-                  <input type="text" name="user" placeholder="Search..." data-bind="value: searchUserUsername" />
+                  <label for="search-user">Lookup Player</label>
+                  <input type="text" id="search-user" name="user" placeholder="Search..." data-bind="value: searchUserUsername" />
                   <input type="submit" value="Search" />
                 </form>
                 <div class="search-result" data-bind="visible: searchUserRating() != 0">
-                  <div class="search-profile-picture">
-                    <img data-bind="attr: {src: searchAvatarURL}" class="profile" type="off" />
+                  <div class="picture">
+                    <img data-bind="attr: { src: searchAvatarURL }" class="profile" type="off" />
                   </div>
-                  <div class="search-profile-stats">
+                  <div class="stats">
                     <table>
                       <tbody>
                         <tr>
-                          <td><label>Rating</label></td>
-                          <td data-bind="text: searchUserRating()">999</td>
+                          <td><span class="label">Rating</span></td>
+                          <td data-bind="text: searchUserRating()">RATING</td>
                         </tr>
                         <tr>
-                          <td><label>Games Won</label></td>
-                          <td data-bind="text: searchGamesWon()">999</td>
+                          <td><span class="label">Games Won</span></td>
+                          <td data-bind="text: searchGamesWon()">WON</td>
                         </tr>
                         <tr>
-                          <td><label>Games Played</label></td>
-                          <td data-bind="text: searchGamesPlayed()">123</td>
+                          <td><span class="label">Games Played</span></td>
+                          <td data-bind="text: searchGamesPlayed()">PLAYED</td>
                         </tr>
                         <tr>
-                          <td><label>Time Played</label></td>
-                          <td data-bind="text: searchTimePlayedConverted()">13h 19mins</td>
+                          <td><span class="label">Time Played</span></td>
+                          <td data-bind="text: searchTimePlayedConverted()">TIME</td>
                         </tr>
                         <tr>
-                          <td><label>Win/Loss Ratio</label></td>
-                          <td data-bind="text: searchWinLossRatio()"></td>
+                          <td><span class="label">Win/Loss Ratio</span></td>
+                          <td data-bind="text: searchWinLossRatio()">RATIO</td>
                         </tr>
                       </tbody>
                     </table>
@@ -324,39 +324,40 @@
               </div>
 
               <!-- Game Summary -->
-              <div class="mainmenu-content" data-bind="visible: mainmenuContent() == 'summary'">
-              <label class="large menu-heading"> Congratulations: you have won!</label><br />
-                <center>
-                <table class="allBorders">
+              <div id="summary" class="mainmenu-content" data-bind="visible: mainmenuContent() == 'summary'">
+
+                <p class="menu-heading">Congratulations: you have won!</p>
+                <table class="scores">
                   <thead>
                     <tr>
-                      <td><label>Place</label></td>
-                      <td><label>Player</label></td>
-                      <td></td>
-                      <td><label>Rating</label></td>
-                      <td><label>Rating Change</label></td>
+                      <th class="label">Rank</th>
+                      <th class="label">Player</th>
+                      <th></th>
+                      <th class="label">Rating</th>
+                      <th class="label">Rating Change</th>
                     </tr>
                   </thead>
                   <tbody data-bind="foreach: summaryPlayers">
                     <tr>
-                      <td><span data-bind="text: place"></span></td>
+                      <td># <span data-bind="text: place">N</span></td>
                       <td><span data-bind="text: username">USERNAME</span></td>
                       <td><img class="profile small" data-bind="attr: { src: avatarURL }" /></td>
                       <td><span data-bind="text: rating">RATING</span></td>
                       <td><span data-bind="text: ratingChange">RATING_CHANGE</span></td>
                     </tr>
                 </table>
-              </center>
-              <label class="large">You have earned</label>
-              <table valign="middle">
-                <tbody>
-                  <tr>
-                    <!-- TODO Make this dynamic -->
-                    <td><img src="images/medals/first.png" class="medal" data-bind="css: { achieved: true }" /></td>
-                    <td><label>Owned! You have lost 50 times.</label></td>
-                  </tr>
-                </tbody>
-              </table>
+
+                <label class="large">You have earned</label>
+                <table class="earned-achievements">
+                  <tbody>
+                    <tr>
+                      <!-- TODO Make this dynamic -->
+                      <td><img src="images/medals/first.png" class="medal" data-bind="css: { achieved: true }" /></td>
+                      <td><label>Owned! You have lost 50 times.</label></td>
+                    </tr>
+                  </tbody>
+                </table>
+
               </div>
 
               <!-- Buttons -->
@@ -414,7 +415,7 @@
                   </thead>
                   <tbody data-bind="foreach: connectedPlayers">
                     <tr>
-                      <td><img src="" data-bind="attr: {src: avatarURL}" class="profile small" /></td>
+                      <td><img data-bind="attr: { src: avatarURL }" class="profile small" /></td>
                       <td><label class="player small" data-bind="text: username"></label></td>
                       <td><label class="rating medium" data-bind="text: rating"></label></td>
                     </tr>
