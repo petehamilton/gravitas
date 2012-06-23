@@ -43,32 +43,32 @@ test_headless:
 
 
 uglify:
-	echo "" > client/js/ugly.js
+	echo "" > client/gen/ugly.js
 
-	# uglifyjs client/js/lib/CoffeeScript.js                    >> client/js/ugly.js
-	uglifyjs client/js/lib/raphael.js                         >> client/js/ugly.js
-	uglifyjs client/js/lib/g.raphael.js                       >> client/js/ugly.js
-	uglifyjs client/js/lib/g.pie.js                           >> client/js/ugly.js
-	uglifyjs client/js/lib/g.line.js                          >> client/js/ugly.js
-	uglifyjs client/js/lib/date.format.1.2.3.min.js           >> client/js/ugly.js
-	uglifyjs client/js/lib/jquery.js                          >> client/js/ugly.js
-	uglifyjs client/js/lib/jquery.cookie.js                   >> client/js/ugly.js
-	uglifyjs client/js/lib/knockout.js                        >> client/js/ugly.js
-	uglifyjs client/js/lib/sonic.js                           >> client/js/ugly.js
+	# uglifyjs client/js/lib/CoffeeScript.js                    >> client/gen/ugly.js
+	uglifyjs client/js/lib/raphael.js                         >> client/gen/ugly.js
+	uglifyjs client/js/lib/g.raphael.js                       >> client/gen/ugly.js
+	uglifyjs client/js/lib/g.pie.js                           >> client/gen/ugly.js
+	uglifyjs client/js/lib/g.line.js                          >> client/gen/ugly.js
+	uglifyjs client/js/lib/date.format.1.2.3.min.js           >> client/gen/ugly.js
+	uglifyjs client/js/lib/jquery.js                          >> client/gen/ugly.js
+	uglifyjs client/js/lib/jquery.cookie.js                   >> client/gen/ugly.js
+	uglifyjs client/js/lib/knockout.js                        >> client/gen/ugly.js
+	uglifyjs client/js/lib/sonic.js                           >> client/gen/ugly.js
 
-	coffee -p client/js/ko-extras.coffee           | uglifyjs >> client/js/ugly.js
-	coffee -p client/js/config.coffee              | uglifyjs >> client/js/ugly.js
-	coffee -p client/js/common/utils.coffee        | uglifyjs >> client/js/ugly.js
-	coffee -p client/js/common/intersect.coffee    | uglifyjs >> client/js/ugly.js
-	coffee -p client/js/crosshair.coffee           | uglifyjs >> client/js/ugly.js
-	coffee -p client/js/countdown_timer.coffee     | uglifyjs >> client/js/ugly.js
-	coffee -p client/js/shield_powerup_view.coffee | uglifyjs >> client/js/ugly.js
-	coffee -p client/js/health_powerup_view.coffee | uglifyjs >> client/js/ugly.js
-	coffee -p client/js/turret.coffee              | uglifyjs >> client/js/ugly.js
-	coffee -p client/js/arena.coffee               | uglifyjs >> client/js/ugly.js
-	coffee -p client/js/statistics.coffee          | uglifyjs >> client/js/ugly.js
-	coffee -p client/js/game.coffee                | uglifyjs >> client/js/ugly.js
-	coffee -p client/js/ball_view.coffee           | uglifyjs >> client/js/ugly.js
-	coffee -p client/js/spinners.coffee            | uglifyjs >> client/js/ugly.js
-	coffee -p client/main.coffee                   | uglifyjs >> client/js/ugly.js
+	coffee -p client/js/ko-extras.coffee           | uglifyjs >> client/gen/ugly.js
+	coffee -p client/js/config.coffee              | uglifyjs >> client/gen/ugly.js
+	coffee -p client/js/common/utils.coffee        | uglifyjs >> client/gen/ugly.js
+	coffee -p client/js/common/intersect.coffee    | uglifyjs >> client/gen/ugly.js
+	coffee -p client/js/crosshair.coffee           | uglifyjs >> client/gen/ugly.js
+	coffee -p client/js/countdown_timer.coffee     | uglifyjs >> client/gen/ugly.js
+	coffee -p client/js/shield_powerup_view.coffee | uglifyjs >> client/gen/ugly.js
+	coffee -p client/js/health_powerup_view.coffee | uglifyjs >> client/gen/ugly.js
+	coffee -p client/js/turret.coffee              | uglifyjs >> client/gen/ugly.js
+	coffee -p client/js/arena.coffee               | uglifyjs >> client/gen/ugly.js
+	coffee -p client/js/statistics.coffee          | uglifyjs >> client/gen/ugly.js
+	coffee -p client/js/game.coffee                | uglifyjs >> client/gen/ugly.js
+	coffee -p client/js/ball_view.coffee           | uglifyjs >> client/gen/ugly.js
+	coffee -p client/js/spinners.coffee            | uglifyjs >> client/gen/ugly.js
+	coffee -p client/main.coffee                   | uglifyjs >> client/gen/ugly.js
 
