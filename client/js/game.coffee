@@ -540,3 +540,24 @@ class @Game
     )
 
     @mainmenuContent 'summary'
+
+
+  # Shows the summary based on fake game results.
+  debug_summary: ->
+    { win: WIN, loss: LOSS, draw: DRAW } = config.outcome
+
+    fake_results = {}
+
+    for pid in [0...4]
+      fake_results[pid] =
+        id: 12345
+        username: "player#{pid}"
+        health: 0.4
+        outcome: if pid == 0 then WIN else LOSS
+        place: pid + 1
+        avatarURL: 'noimage'
+        rating: 2200
+        rating_change: 3
+        achievements_gained: []
+
+    @showSummary fake_results
