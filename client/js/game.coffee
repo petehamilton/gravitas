@@ -33,8 +33,17 @@ class @Game
     @mainmenuVisible = ko.computed => !@gameStarted() and @loggedIn() and !@assembly()
     @assemblyVisible = ko.computed => !@gameStarted() and @loggedIn() and @assembly()
 
-    # Assembly
+    # Menu
     @mainmenuContent = ko.observable 'profile'
+
+    menuVisible = (name) =>
+      ko.computed => @mainmenuContent() == name
+
+    @profileVisible      = menuVisible 'profile'
+    @achievementsVisible = menuVisible 'achievements'
+    @settingsVisible     = menuVisible 'settings'
+    @searchVisible       = menuVisible 'search'
+    @summaryVisible      = menuVisible 'summary'
 
     # Authentication
     @username = ko.observable hashToLogin[document.location.hash]

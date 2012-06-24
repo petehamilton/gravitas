@@ -159,7 +159,7 @@
               </div>
 
               <!-- Profile -->
-              <div id="profile" class="mainmenu-content" data-bind="visible: mainmenuContent() == 'profile'">
+              <div id="profile" class="mainmenu-content" data-bind="visible: profileVisible()">
                 <p class="menu-heading">Profile</p>
                 <div class="picture">
                   <img class="profile" data-bind="attr: { src: avatarURL }" />
@@ -190,7 +190,7 @@
               </div>
 
               <!-- Achievements -->
-              <div id="achievements" class="mainmenu-content" data-bind="visible: mainmenuContent() == 'achievements'">
+              <div id="achievements" class="mainmenu-content" data-bind="visible: achievementsVisible()">
                 <p class="menu-heading">Achievements</p>
 
                 <table class="medals">
@@ -231,7 +231,7 @@
               </div>
 
               <!-- Settings -->
-              <div id="settings" class="mainmenu-content" data-bind="visible: mainmenuContent() == 'settings'">
+              <div id="settings" class="mainmenu-content" data-bind="visible: settingsVisible()">
                 <p class="menu-heading">Settings</p>
                 <table>
                   <tbody>
@@ -283,7 +283,7 @@
               </div>
 
               <!-- Search -->
-              <div id="search" class="mainmenu-content" data-bind="visible: mainmenuContent() == 'search'">
+              <div id="search" class="mainmenu-content" data-bind="visible: searchVisible()">
                 <p class="menu-heading">Search</p>
                 <form id="search-form" data-bind="submit: searchPlayer">
                   <label for="search-user">Lookup Player</label>
@@ -324,7 +324,7 @@
               </div>
 
               <!-- Game Summary -->
-              <div id="summary" class="mainmenu-content" data-bind="visible: mainmenuContent() == 'summary'">
+              <div id="summary" class="mainmenu-content" data-bind="visible: summaryVisible()">
 
                 <p class="menu-heading">Congratulations: you have won!</p>
                 <table class="scores">
