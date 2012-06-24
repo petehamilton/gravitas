@@ -35,7 +35,6 @@ class @Game
 
     # Assembly
     @mainmenuContent = ko.observable 'profile'
-   # @mainmenuContent = ko.observable 'summary'
 
     # Authentication
     @username = ko.observable hashToLogin[document.location.hash]
