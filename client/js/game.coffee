@@ -27,11 +27,11 @@ class @Game
     # Log-in / start
     @loggedIn = ko.observable @autoLogIn()
     @gameStarted = ko.observable @autoStart()
-    @assembly = ko.observable false
+    @lobby = ko.observable false
     @userId = ko.observable null
 
-    @mainmenuVisible = ko.computed => !@gameStarted() and @loggedIn() and !@assembly()
-    @assemblyVisible = ko.computed => !@gameStarted() and @loggedIn() and @assembly()
+    @mainmenuVisible = ko.computed => !@gameStarted() and @loggedIn() and !@lobby()
+    @lobbyVisible = ko.computed => !@gameStarted() and @loggedIn() and @lobby()
 
     # Menu
     @mainmenuContent = ko.observable 'profile'
@@ -136,7 +136,7 @@ class @Game
   enterKeyPressed: ->
     # Allow jumping quickly into the game using Enter on the profile page
     if @mainmenuVisible() and @mainmenuContent() == 'profile'
-      @assemblyClick()
+      @goToLobby()
 
 
   showSignupWindow: ->
@@ -219,30 +219,30 @@ class @Game
 
   # Team A's New Score: 1500 + 32*(1 - 0.38686) = 1500 + 19.62 = 1519.62
 
-  resetAssemblyVariables: ->
-    # TODO reset all assembly-related observables
+  resetLobbyVariables: ->
+    # TODO reset all lobby-related observables
     @connectedPlayers []
     @lobbyMessages []
 
 
-  assemblyClick: =>
+  goToLobby: =>
     @withServer =>
       @server.assignRoom (ok, room_id) =>
         log "server assigned us to room #{room_id}"
         if ok
-          @assembly true
+          @lobby true
         else
           # TODO graphical errors
           log "server did not assign us a room"
 
 
-  assemblyExitClick: =>
+  leaveLobby: =>
     @withServer =>
       @server.leaveRoom (ok) =>
         if ok
           log "left room"
-          @assembly false
-          @resetAssemblyVariables()
+          @lobby false
+          @resetLobbyVariables()
         else
           log "server did not allow us leaving a room"
 
@@ -531,9 +531,9 @@ class @Game
 
   # Shows a game summary based on game results.
   showSummary: (results) ->
-    @assembly false
+    @lobby false
     @gameStarted false
-    @resetAssemblyVariables()
+    @resetLobbyVariables()
     @arena.resetPaper()
 
     # Refresh profile data

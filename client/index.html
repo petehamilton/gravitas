@@ -365,7 +365,7 @@
                 <button data-menu="summary" data-bind="click: menuGoTo, fadeVisible: debugMode()">
                   SUMMARY DEBUG
                 </button>
-                <button class="playbutton" data-bind="click: assemblyClick">
+                <button class="playbutton" data-bind="click: goToLobby">
                   Play
                 </button>
               </div>
@@ -374,8 +374,8 @@
           </div>
         </div>
 
-        <!-- Assembly (where you join a game) -->
-        <div id="assembly" class="window centered-table" data-bind="fadeVisible: assemblyVisible()">
+        <!-- Lobby (where you join a game) -->
+        <div id="lobby" class="window centered-table" data-bind="fadeVisible: lobbyVisible()">
           <div class="centered-table-cell">
             <div class="box">
 
@@ -386,25 +386,27 @@
                 <span class="rating" data-bind="style: { color: userRatingColor() }, text: userRating()">RATING</span><br />
               </div>
 
-              <div class="lobby-chat-container">
+              <!-- Chat -->
+              <div class="lobby-chat">
                 <form class="lobby-chat-form" data-bind="submit: lobbyPostChat">
                   <label for="lobby-chat-input">Chat</label>
-                  <input type="text" name="text" id="lobby-chat-input" data-bind="value: lobbyMessageInput"/>
+                  <input type="text" id="lobby-chat-input" name="text" data-bind="value: lobbyMessageInput"/>
                 </form>
-                <div class="lobby-chat" data-bind="foreach: lobbyMessages, onChange: scrollChatDown">
+                <div class="messages" data-bind="foreach: lobbyMessages, onChange: scrollChatDown">
                   <p data-bind="text: $data">CHAT MESSAGE</p>
                 </div>
               </div>
-              <br />
+
+              <!-- Waiting message -->
               <div class="waiting-label">
                 <span class="spinner"></span>
-                  <span data-bind="text: waitMessage">WAIT_MESSAGE</span>
+                <span data-bind="text: waitMessage">WAIT_MESSAGE</span>
                 <div class="autostart-label" data-bind="fadeVisible: !countingDown()">
                   The game will start automatically.
                 </div>
               </div>
-              <div class="assembly-content">
 
+              <div class="lobby-content">
                 <table>
                   <thead>
                     <tr>
@@ -421,7 +423,6 @@
                     </tr>
                   </tbody>
                 </table>
-
               </div>
 
 
@@ -434,7 +435,7 @@
                   Start (debug)
                 </button>
 
-                <button class="leavebutton" data-bind="click: assemblyExitClick">
+                <button class="leavebutton" data-bind="click: leaveLobby">
                   Leave
                 </button>
               </div>

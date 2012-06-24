@@ -101,11 +101,11 @@ casper.then ->
   @test.info "Lobby"
 
   @click '#mainmenu .playbutton'
-  @waitUntilVisible '#assembly', ->
+  @waitUntilVisible '#lobby', ->
     screenshot 'lobby'
     assertVisible '.waiting-label', 'waiting label is visible'
-    assertVisible '.lobby-chat-container', 'chat is visible'
-    assertEvalSelectorTextEqual '.assembly-content label.player:first', TEST_USER, 'player name appears in waiting list'
+    assertVisible '.lobby-chat', 'chat is visible'
+    assertEvalSelectorTextEqual '.lobby-content label.player:first', TEST_USER, 'player name appears in waiting list'
 
     @test.comment "Chat"
     fillJquery '.lobby-chat-form', { text: 'Message 1' }, true
@@ -114,8 +114,8 @@ casper.then ->
       screenshot 'chat_result'
 
       @test.comment "Leave"
-      @click '#assembly .leavebutton'
-      @waitWhileVisible '#assembly', ->
+      @click '#lobby .leavebutton'
+      @waitWhileVisible '#lobby', ->
         assertVisible '#search-form', 'back in the menu where in we were before on clicking Leave'
 
 
