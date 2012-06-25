@@ -42,64 +42,7 @@
 
     <script type="text/javascript" src="http://localhost:8001/vogue-client.js"></script>
 
-    <script type="text/javascript">
-      function inspect( obj ) {
-        if (typeof obj === "undefined") {
-            return "undefined";
-        }
-        var _props = [];
-
-          for ( var i in obj ) {
-              _props.push( i + " : " + obj[i] );
-          }
-          return " {" + _props.join( ",<br>" ) + "} ";
-      }
-      var dlog = function(t, o) {
-        var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-        setTimeout((__bind(function() {
-          return $('#dev_log').empty();
-        }, this)), 4000);
-        return $('#dev_log').append($('<p>').text(t + " " + JSON.stringify(o)));
-      };
-      function touchStart(e) {
-        var targetEvent =  e.targetTouches.item(0);
-
-        p = $('#paper').position();
-        px = p.left;
-        py = p.top;
-
-        var x = targetEvent.clientX - px;
-        var y = targetEvent.clientY - py;
-
-        window.touchstart(x, y);
-
-        e.preventDefault();
-        return false;
-      }
-
-      function touchEnd(e) {
-        window.touchend();
-
-        e.preventDefault();
-        return false;
-      }
-
-      function touchMove(e) {
-        var targetEvent =  e.targetTouches.item(0);
-
-        p = $('#paper').position();
-        px = p.left;
-        py = p.top;
-
-        var x = targetEvent.clientX - px;
-        var y = targetEvent.clientY - py;
-
-        window.touchmove(x, y);
-
-        e.preventDefault();
-        return false;
-      }
-    </script>
+    <script type="text/javascript" src="js/ipad.js"></script>
   </head>
 
   <body>
@@ -163,7 +106,7 @@
               <div id="profile" class="mainmenu-content" data-bind="visible: profileVisible()">
                 <p class="menu-heading">Profile</p>
                 <div class="picture">
-                  <img class="profile" data-bind="attr: { src: avatarURL }" />
+                  <img src="" class="profile" alt="Avatar" data-bind="attr: { src: avatarURL }" />
                 </div>
                 <div class="stats">
                   <table>
@@ -198,31 +141,31 @@
                   <tbody>
                     <!-- TODO remove hardcode -->
                     <tr class="achievement" data-bind="css: { achieved: achievementStep() != '' }">
-                      <td><img src="images/medals/first.png" class="medal" /></td>
+                      <td><img src="images/medals/first.png" class="medal" alt="Medal" /></td>
                       <td><p class="title">Step Into Gravitas</p></td>
                       <td><p class="description">Win one game.</p></td>
                       <td class="date" data-bind="text: achievementStep()"></td>
                     </tr>
                     <tr class="achievement" data-bind="css: { achieved: achievementVeteran() != '' }">
-                      <td><img src="images/medals/veteran.png" class="medal" /></td>
+                      <td><img src="images/medals/veteran.png" class="medal" alt="Medal" /></td>
                       <td><p class="title">Veteran</p></td>
                       <td><p class="description">Win 100 games.</p></td>
                       <td class="date" data-bind="text: achievementVeteran()"></td>
                     </tr>
                     <tr class="achievement" data-bind="css: { achieved: achievementWinner() != '' }">
-                      <td><img src="images/medals/winner.png" class="medal" /></td>
+                      <td><img src="images/medals/winner.png" class="medal" alt="Medal" /></td>
                       <td><p class="title">Winner</p></td>
                       <td><p class="description">Win more than 50 games and have more wins than losses.</p></td>
                       <td class="date" data-bind="text: achievementWinner()"></td>
                     </tr>
                     <tr class="achievement" data-bind="css: { achieved: achievementHardcore() != '' }">
-                      <td><img src="images/medals/addict.png" class="medal" /></td>
+                      <td><img src="images/medals/addict.png" class="medal" alt="Medal" /></td>
                       <td><p class="title">Hardcore</p></td>
                       <td><p class="description">Spend 10 hours playing Gravitas.</p></td>
                       <td class="date" data-bind="text: achievementHardcore()"></td>
                     </tr>
                     <tr class="achievement" data-bind="css: { achieved: achievementUnlucky() != '' }">
-                      <td><img src="images/medals/unlucky.png" class="medal" /></td>
+                      <td><img src="images/medals/unlucky.png" class="medal" alt="Medal" /></td>
                       <td><p class="title">Unlucky</p></td>
                       <td><p class="description">Lose 50 games.</p></td>
                       <td class="date" data-bind="text: achievementUnlucky()"></td>
@@ -293,7 +236,7 @@
                 </form>
                 <div class="search-result" data-bind="visible: searchUserRating() != 0">
                   <div class="picture">
-                    <img data-bind="attr: { src: searchAvatarURL }" class="profile" type="off" />
+                    <img src="" class="profile" alt="Avatar" data-bind="attr: { src: searchAvatarURL }" />
                   </div>
                   <div class="stats">
                     <table>
@@ -342,7 +285,7 @@
                     <tr>
                       <td># <span data-bind="text: place">N</span></td>
                       <td><span data-bind="text: username">USERNAME</span></td>
-                      <td><img class="profile small" data-bind="attr: { src: avatarURL }" /></td>
+                      <td><img src="" class="profile small" alt="Avatar" data-bind="attr: { src: avatarURL }" /></td>
                       <td><span data-bind="text: rating">RATING</span></td>
                       <td><span data-bind="text: ratingChange">RATING_CHANGE</span></td>
                     </tr>
@@ -354,7 +297,7 @@
                   <tbody>
                     <tr>
                       <!-- TODO Make this dynamic -->
-                      <td><img src="images/medals/first.png" class="medal" data-bind="css: { achieved: true }" /></td>
+                      <td><img src="images/medals/first.png" class="medal" alt="Medal" data-bind="css: { achieved: true }" /></td>
                       <td><span class="label">Owned! You have lost 50 times.</span></td>
                     </tr>
                   </tbody>
@@ -412,16 +355,16 @@
                 <table>
                   <thead>
                     <tr>
-                      <td><label>Player</label></td>
-                      <td></td>
-                      <td><label>Rating</label></td>
+                      <th><span class="label">Player</span></th>
+                      <th></th>
+                      <th><span class="label">Rating</span></th>
                     </tr>
                   </thead>
                   <tbody data-bind="foreach: connectedPlayers">
                     <tr>
-                      <td><img data-bind="attr: { src: avatarURL }" class="profile small" /></td>
-                      <td><label class="player small" data-bind="text: username"></label></td>
-                      <td><label class="rating medium" data-bind="text: rating"></label></td>
+                      <td><img src="" class="profile small" alt="Avatar" data-bind="attr: { src: avatarURL }" /></td>
+                      <td><span class="label player small" data-bind="text: username"></span></td>
+                      <td><span class="label rating medium" data-bind="text: rating"></span></td>
                     </tr>
                   </tbody>
                 </table>

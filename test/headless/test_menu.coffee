@@ -105,7 +105,7 @@ casper.then ->
     screenshot 'lobby'
     assertVisible '.waiting-label', 'waiting label is visible'
     assertVisible '.lobby-chat', 'chat is visible'
-    assertEvalSelectorTextEqual '.lobby-content label.player:first', TEST_USER, 'player name appears in waiting list'
+    assertEvalSelectorTextEqual '.lobby-content .player:first', TEST_USER, 'player name appears in waiting list'
 
     @test.comment "Chat"
     fillJquery '.lobby-chat-form', { text: 'Message 1' }, true
