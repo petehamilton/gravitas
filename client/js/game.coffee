@@ -130,7 +130,7 @@ class @Game
         @player(num-1)
 
   debugKeyPressed: ->
-    log "Debug Mode " + (if @debugMode() then "Off" else "On")
+    log "Turning Debug Mode " + (if @debugMode() then "off" else "on")
     @debugMode !@debugMode()
 
   enterKeyPressed: ->

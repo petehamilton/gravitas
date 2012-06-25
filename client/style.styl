@@ -90,6 +90,10 @@ medal-with-text()
   padding-right: 6px
 
 
+.hidden-during-startup
+  visibility: hidden
+
+
 body
   margin: 0
   padding: 0
@@ -308,9 +312,6 @@ a.glow:focus
     top: 0
     right: 0
 
-#app
-  &.hidden-on-startup
-    visibility: hidden
 
 stats-inline-block()
   display: inline-block
@@ -322,7 +323,6 @@ stats-inline-block()
   background-image: url('/images/ui/bgnologo.jpg')
   background-position: center center
   background-size-cover()
-  z-index: 1000
   font-size: 11px
 
   #login .box
@@ -469,7 +469,6 @@ stats-inline-block()
   background-image: url('/images/ui/gamebg.jpg')
   background-position: center center
   background-size-cover()
-  z-index: 500
 
 #paper-container
   text-align: center

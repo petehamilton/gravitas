@@ -126,7 +126,7 @@ main = ->
 
   # listen to key presses (powerup use)
   $(document).keydown (e) ->
-    # log "key pressed", e.keyCode
+    # log "key pressed", [e.keyCode, e]
     if 48 <= e.keyCode <= 57                 # Keys 1, 2, 3, 4
       game.numberKeyPressed(e.keyCode - 48)
     else switch e.keyCode
@@ -135,8 +135,9 @@ main = ->
       when 32                                # Spacebar
         if game.gameStarted()
           arena.spacebarPressed()
-      when 68                                # d
-        game.debugKeyPressed()
+      when 192                               # Ctrl + Backtick
+        if e.ctrlKey
+          game.debugKeyPressed()
 
 
   # Called by inline-js

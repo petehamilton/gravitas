@@ -47,7 +47,7 @@
 
   <body>
 
-    <div id="app" class="hidden-on-startup" ontouchmove="touchMove(event)" ontouchstart="touchStart(event)" ontouchend="touchEnd(event)">
+    <div id="app" class="hidden-during-startup" ontouchmove="touchMove(event)" ontouchstart="touchStart(event)" ontouchend="touchEnd(event)">
 
       <!-- Menu: Login, Mainmenu and Lobby -->
       <div id="menu" class="screen" data-bind="fadeVisible: !gameStarted()">
@@ -403,45 +403,47 @@
           </div>
         </div>
 
-        <!-- Development / Debugging panel -->
-        <div id="dev-panel" data-bind="fadeVisible: debugMode()">
-
-          <div class="divlabel">dev</div>
-
-          <p class="lag_indicator" data-bind="css: { lag: lag }">Lag indicator</p>
-
-          <p>
-            <input type="checkbox" data-bind="checked: autoLogIn" />Logged in
-          </p>
-          <p>
-            <input type="checkbox" data-bind="checked: autoStart" />Game Started
-          </p>
-          <p>
-            <input type="checkbox" data-bind="checked: !disableSound()" />Sound
-          </p>
-
-          <p>
-            Player:
-            <input type="radio" class="player" name="player" value="0" data-bind="checked: player" />
-            <input type="radio" class="player" name="player" value="1" data-bind="checked: player" />
-            <input type="radio" class="player" name="player" value="2" data-bind="checked: player" />
-            <input type="radio" class="player" name="player" value="3" data-bind="checked: player" />
-          </p>
-
-          <div id="dev_log_container">
-
-            <form id="dev_log_chat_form">
-              <input type="text" id="dev_log_chat_input" />
-            </form>
-
-            <div id="dev_log"></div>
-          </div>
-
-        </div>
-
       </div>
 
     </div>
+
+
+    <!-- Development / Debugging panel -->
+    <div id="dev-panel" class="hidden-during-startup" data-bind="fadeVisible: debugMode()">
+
+      <div class="divlabel">dev</div>
+
+      <p class="lag_indicator" data-bind="css: { lag: lag }">Lag indicator</p>
+
+      <p>
+        <input type="checkbox" data-bind="checked: autoLogIn" />Logged in
+      </p>
+      <p>
+        <input type="checkbox" data-bind="checked: autoStart" />Game Started
+      </p>
+      <p>
+        <input type="checkbox" data-bind="checked: !disableSound()" />Sound
+      </p>
+
+      <p>
+        Player:
+        <input type="radio" class="player" name="player" value="0" data-bind="checked: player" />
+        <input type="radio" class="player" name="player" value="1" data-bind="checked: player" />
+        <input type="radio" class="player" name="player" value="2" data-bind="checked: player" />
+        <input type="radio" class="player" name="player" value="3" data-bind="checked: player" />
+      </p>
+
+      <div id="dev_log_container">
+
+        <form id="dev_log_chat_form">
+          <input type="text" id="dev_log_chat_input" />
+        </form>
+
+        <div id="dev_log"></div>
+      </div>
+
+    </div>
+
 
   </body>
 
