@@ -1,5 +1,7 @@
-COLOR_TEXT_LIGHT = #a2b5c6
+COLOR_TEXT_HIGHLIGHT = #a2b5c6
+COLOR_TEXT_LIGHT = #bccddc
 COLOR_TEXT_GRAY = #68727b
+COLOR_MEDAL_BRONZE = #9D8A66
 
 linear-gradient()
   background: -moz-linear-gradient(arguments)
@@ -128,12 +130,12 @@ label
   margin-right: .8em
   padding-bottom: 2px
   font-size: 11px
-  color: COLOR_TEXT_LIGHT
+  color: COLOR_TEXT_HIGHLIGHT
   text-transform: uppercase
 
 .label
   margin-right: .8em
-  color: COLOR_TEXT_LIGHT
+  color: COLOR_TEXT_HIGHLIGHT
   text-transform: uppercase
   font-weight: normal
 
@@ -158,30 +160,26 @@ label
     .medal
       opacity: 1
     .title
-      color: #9D8A66
+      color: COLOR_MEDAL_BRONZE
     .description
-      color: COLOR_TEXT_LIGHT
+      color: COLOR_TEXT_HIGHLIGHT
 
 
 p.error
   color: #a20e0f
   font-weight: bold
 
-label.large
-  font-size: 14px
-  color: #fff
-
-img.profile
+img.avatar
   width: 140px
   height: 140px
   border: 1px solid #525e67
 
-img.profile.small
+img.avatar.small
   width: 32px
   height: 32px
 
 th
-  color: #bccddc
+  color: COLOR_TEXT_LIGHT
 
 input[type=submit]
 button
@@ -303,7 +301,7 @@ a.glow:focus
   margin-top: 15px
   margin-bottom: 40px
   font-size: 15px
-  color: #bccddc
+  color: COLOR_TEXT_LIGHT
   font-variant:small-caps
   position: relative
 
@@ -372,7 +370,7 @@ stats-inline-block()
       #navigation
         font-family:'HeydingsIconsRegular'
         display: inline-block
-        color: #bccddc
+        color: COLOR_TEXT_LIGHT
         font-size: 24px
         font-variant: normal
 
@@ -440,7 +438,7 @@ stats-inline-block()
         p
           font-size: 11px
           margin: .4em .1em
-          color: COLOR_TEXT_LIGHT
+          color: COLOR_TEXT_HIGHLIGHT
 
     .search-result
       padding:30px

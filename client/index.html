@@ -106,7 +106,7 @@
               <div id="profile" class="mainmenu-content" data-bind="visible: profileVisible()">
                 <p class="menu-heading">Profile</p>
                 <div class="picture">
-                  <img src="" class="profile" alt="Avatar" data-bind="attr: { src: avatarURL }" />
+                  <img src="" class="avatar" alt="Avatar" data-bind="attr: { src: avatarURL }" />
                 </div>
                 <div class="stats">
                   <table>
@@ -236,7 +236,7 @@
                 </form>
                 <div class="search-result" data-bind="visible: searchUserRating() != 0">
                   <div class="picture">
-                    <img src="" class="profile" alt="Avatar" data-bind="attr: { src: searchAvatarURL }" />
+                    <img src="" class="avatar" alt="Avatar" data-bind="attr: { src: searchAvatarURL }" />
                   </div>
                   <div class="stats">
                     <table>
@@ -285,7 +285,7 @@
                     <tr>
                       <td># <span data-bind="text: place">N</span></td>
                       <td><span data-bind="text: username">USERNAME</span></td>
-                      <td><img src="" class="profile small" alt="Avatar" data-bind="attr: { src: avatarURL }" /></td>
+                      <td><img src="" class="avatar small" alt="Avatar" data-bind="attr: { src: avatarURL }" /></td>
                       <td><span data-bind="text: rating">RATING</span></td>
                       <td><span data-bind="text: ratingChange">RATING_CHANGE</span></td>
                     </tr>
@@ -362,9 +362,9 @@
                   </thead>
                   <tbody data-bind="foreach: connectedPlayers">
                     <tr>
-                      <td><img src="" class="profile small" alt="Avatar" data-bind="attr: { src: avatarURL }" /></td>
-                      <td><span class="label player small" data-bind="text: username"></span></td>
-                      <td><span class="label rating medium" data-bind="text: rating"></span></td>
+                      <td><img src="" class="avatar small" alt="Avatar" data-bind="attr: { src: avatarURL }" /></td>
+                      <td><span class="label player" data-bind="text: username"></span></td>
+                      <td><span class="label rating" data-bind="text: rating"></span></td>
                     </tr>
                   </tbody>
                 </table>
