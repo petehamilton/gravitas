@@ -541,7 +541,11 @@ run = ->
 
   app = createApp()
 
-  db.connect()
+  log "connecting to the database"
+  db.connect (err) ->
+    if err
+      console.error(err)
+      process.exit(1)
 
   everyone = nowjs.initialize(app, { socketio: {'browser client minification': true} })
   configureNow everyone

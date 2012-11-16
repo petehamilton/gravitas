@@ -35,8 +35,12 @@ User = mongoose.model 'User', new mongoose.Schema
   ratingHistory: [ RatingHistory_schema ]
 
 
-connect = ->
-  mongoose.connect MONGO_URL
+connect = (errfn) ->
+  mongoose.connect MONGO_URL, (err) ->
+    errfn?(err)
+    # Make sure that the exception is shown at least
+    # somewhere if there is no error handler.
+    throw err
 
 
 setup = (callback) ->
