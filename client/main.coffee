@@ -180,7 +180,7 @@ main = ->
 
 
 $ ->
-  host = window.location.hostname
-  $.getScript "http://#{host}:8000/nowjs/now.js", ->
+  origin = window.location.origin
+  $.getScript "#{origin}/nowjs/now.js", ->
     main()
 
