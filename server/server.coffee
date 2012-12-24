@@ -14,7 +14,7 @@ config = require('../config').config
 
 # Server configuration
 
-PORT = 8000
+PORT = 22123
 ADDRESS = "0.0.0.0"
 MODEL_FPS = config.model_fps
 BALLS_ENABLED = config.balls_enabled
