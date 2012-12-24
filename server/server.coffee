@@ -523,7 +523,7 @@ configureNow = (everyone) ->
 
 
 
-createApp = ->
+createServer = ->
   app = express()
   app.configure ->
     # app.use express.methodOverride()
@@ -542,13 +542,15 @@ createApp = ->
     next_room_id = 0
     res.send "resetted"
 
-  app.listen PORT, ADDRESS
-  app
+  # Wrap express app in node http server
+  server = http.createServer(app).listen PORT, ADDRESS
+
+  server
 
 
 run = ->
 
-  app = createApp()
+  server = createServer()
 
   log "connecting to the database"
   db.connect (err) ->
@@ -556,7 +558,7 @@ run = ->
       console.error(err)
       process.exit(1)
 
-  everyone = nowjs.initialize(app, { socketio: {'browser client minification': true} })
+  everyone = nowjs.initialize(server, { socketio: {'browser client minification': true} })
   configureNow everyone
 
 run()
