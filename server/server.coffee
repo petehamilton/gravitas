@@ -524,7 +524,7 @@ configureNow = (everyone) ->
 
 
 createApp = ->
-  app = express.createServer()
+  app = express()
   app.configure ->
     # app.use express.methodOverride()
     app.use express.bodyParser()
