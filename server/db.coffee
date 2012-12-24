@@ -36,11 +36,15 @@ User = mongoose.model 'User', new mongoose.Schema
 
 
 connect = (errfn) ->
-  mongoose.connect MONGO_URL, (err) ->
-    errfn?(err)
-    # Make sure that the exception is shown at least
-    # somewhere if there is no error handler.
-    throw err
+  mongoose.connect MONGO_URL
+
+  mongoose.connection.on 'error', (err) ->
+    if errfn
+      errfn err
+    else
+      # Make sure that the exception is shown at least
+      # somewhere if there is no error handler.
+      throw err
 
 
 setup = (callback) ->

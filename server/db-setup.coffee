@@ -5,9 +5,10 @@ db = require './db'
 
 log "Initialising database..."
 
-db.connect()
+db.connect (err) ->
+  log "DB connection error: ", err
 
-mongoose.connection.on 'open', ->
+mongoose.connection.once 'open', ->
   log "Mongoose connected"
 
   db.setup (err) ->
