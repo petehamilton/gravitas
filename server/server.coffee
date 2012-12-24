@@ -73,6 +73,7 @@ class Room
     # Note that "client" instances are not the same objects across calls!
     @_clients = [ null, null, null, null ]
     @_num_clients = 0
+    @_open = true
     # @arena = null
 
   getClients: ->
@@ -102,6 +103,11 @@ class Room
   full: ->
     @_num_clients == @_clients.length
 
+  isOpen: ->
+    @_open
+
+  close: ->
+    @_open = false
 
   # TODO Pull out the network stuff
   startArena: (room_group, userIdToPlayerIdMapping, userIdToUsernameMapping) ->
@@ -344,7 +350,7 @@ allocateNewRoom = ->
 # TODO allocate room based on player skills
 getSuitableRoom = ->
   for id, r of rooms
-    if not r.full()
+    if not r.full() and r.isOpen()
       return id
   null
 
@@ -485,6 +491,9 @@ configureNow = (everyone) ->
       # If room is full, tell everyone that the game will start soon and start it after some seconds
       if room.full()
         READY_TIME = config.ready_time_ms
+
+        # Close the room so that no more players can
+        room.close()
 
         # Notify that everyone is ready and that the game will start in READY_TIME ms
         room_group.now.receiveRoomReady READY_TIME
