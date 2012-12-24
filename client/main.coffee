@@ -167,7 +167,7 @@ main = ->
     popupInterval = setInterval =>
       kill_timeout = setTimeout (=>
         clearInterval popupInterval
-        alert 'you might want to refresh'
+        console.error 'you might want to refresh'
       ), 5000
       now.pingServer =>
         clearTimeout kill_timeout
