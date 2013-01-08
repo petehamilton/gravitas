@@ -551,6 +551,7 @@ createServer = ->
 run = ->
 
   server = createServer()
+  log "webserver running on #{ADDRESS}:#{PORT}"
 
   log "connecting to the database"
   db.connect (err) ->
