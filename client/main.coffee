@@ -180,7 +180,9 @@ main = ->
 
 
 $ ->
-  origin = window.location.origin
+  # Unfortunately not all browsers have window.location.origin
+  origin = window.location.protocol + '//' + window.location.host
+
   $.getScript "#{origin}/nowjs/now.js", ->
     main()
 
