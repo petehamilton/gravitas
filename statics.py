@@ -28,7 +28,7 @@ STATICS = {
 	'client/js/lib/g.raphael.js': 'https://raw.github.com/DmitryBaranovskiy/g.raphael/master/min/g.raphael-min.js',
 	'client/js/lib/g.pie.js': 'https://raw.github.com/DmitryBaranovskiy/g.raphael/master/min/g.pie-min.js',
 	'client/js/lib/g.line.js': 'https://raw.github.com/DmitryBaranovskiy/g.raphael/master/g.line.js',
-	'client/js/lib/date.format.1.2.3.min.js': 'http://www.exratione.com/assets/date.format.1.2.3.min.js'
+	'client/js/lib/date.format.1.2.3.min.js': 'http://www.exratione.com/assets/date.format.1.2.3.min.js',
 
 
 	# Runtogether to run multiple daemons in parallel
