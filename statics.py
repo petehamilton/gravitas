@@ -24,11 +24,11 @@ STATICS = {
 	'client/js/lib/jquery.cookie.js': 'https://raw.github.com/carhartl/jquery-cookie/master/jquery.cookie.js',
 
 	# Raphael for simple graphics manipulation
-	'client/js/lib/raphael.js': 'http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael.js',
+	'client/js/lib/raphael.js': 'https://raw.github.com/DmitryBaranovskiy/g.raphael/master/raphael-min.js',
 	'client/js/lib/g.raphael.js': 'https://raw.github.com/DmitryBaranovskiy/g.raphael/master/min/g.raphael-min.js',
-	'client/js/lib/g.pie.js': 'https://raw.github.com/LucasSeveryn/g.raphael/master/min/g.pie-min.js',
+	'client/js/lib/g.pie.js': 'https://raw.github.com/DmitryBaranovskiy/g.raphael/master/min/g.pie-min.js',
 	'client/js/lib/g.line.js': 'https://raw.github.com/DmitryBaranovskiy/g.raphael/master/g.line.js',
-	'client/js/lib/date.format.1.2.3.min.js': 'http://www.exratione.com/assets/date.format.1.2.3.min.js',
+	'client/js/lib/date.format.1.2.3.min.js': 'http://www.exratione.com/assets/date.format.1.2.3.min.js'
 
 
 	# Runtogether to run multiple daemons in parallel
